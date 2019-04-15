@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Havvka</string>
+    <string name="email">Електронна пошта</string>
+    <string name="password">Пароль</string>
+    <string name="login">Увійти</string>
+    <string name="noAccount">Немає аккаунту?</string>
+    <string name="createAccount">Немає аккаунта? Створи новий</string>
+    <string name="loginGuest">Увійти як гість</string>
+    <string name="forgotPassword">Забули пароль?</string>
+    <string name="register">Зареєструватися</string>
+    <string name="repeatPassword">Повторіть пароль</string>
+    <string name="loginAccount">Вже є аккаунт? Увійдіть</string>
+    <string name="passwordError">Паролі не співпадають</string>
+    <string name="emailError">Пошта не в домені nure.ua</string>
+    <string name="smallPassword">Пароль менше 5 символів</string>
+    <string name="title_home">Головне</string>
+    <string name="title_favourites">Улюблене</string>
+    <string name="title_cart">Кошик</string>
+    <string name="title_orders">Замовлення</string>
+    <string name="title_settings">Параметри</string>
+</resources>
