@@ -18,11 +18,6 @@ public class MainActivity extends AppCompatActivity implements ListFragment.List
         OrdersFragment.OrdersFragmentInteractionListener, SettingFragment.SettingFragmentInteractionListener, CartFragment.CartFragmentInteractionListener
 {
 
-    static final int LIST_GET_DATA = 101;
-    static final int FAVOURITES_GET_DATA = 102;
-    static final int ORDERS_GET_DATA = 103;
-    static final int SETTING_SET = 104;
-
 
 
     private List<Item> listOfItems = new ArrayList<>();
