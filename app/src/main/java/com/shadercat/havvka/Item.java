@@ -4,9 +4,12 @@ import java.io.Serializable;
 
 public class Item implements Serializable {
 
+    private int ID;
     private String name;
     private String smallDescr;
     private String bigDescr;
+    private String ingridients;
+    private double price;
     private int image;
 
     public Item(String name, String smallDescr, String bigDescr, int image)
@@ -49,4 +52,11 @@ public class Item implements Serializable {
     {
         this.image = image;
     }
+    public double GetPrice(){return this.price;}
+    public void SetPrice(double price){this.price = price; }
+    public int GetID(){return  this.ID;}
+    public void SetID(int id){this.ID = id;}
+    public String GetIngridients(){return this.ingridients;}
+    public void SetIngridients(String ingridients){this.ingridients = ingridients;}
+
 }

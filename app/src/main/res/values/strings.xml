@@ -18,4 +18,10 @@
     <string name="title_cart">Кошик</string>
     <string name="title_orders">Замовлення</string>
     <string name="title_settings">Параметри</string>
+    <string name="infoAcivity_sample">Sample name</string>
+    <string name="addToCart">Додати у кошик</string>
+    <string name="addToFavourites">Додати у улюблене</string>
+    <string name="cancel">Скасувати</string>
+    <string name="add">Додати</string>
+    <string name="chooseQuantity">Оберіть кількість</string>
 </resources>

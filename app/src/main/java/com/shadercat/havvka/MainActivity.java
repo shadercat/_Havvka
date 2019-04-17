@@ -99,15 +99,16 @@ public class MainActivity extends AppCompatActivity implements ListFragment.List
         {
             case "data":
                 //TODO: logic for list fragment
-                for(int i = 0; i < 101; i++)
-                {
-                    listOfItems.add(new Item("Name of Food " + i, "Small descrition","Big Description", R.drawable.food_test));
-                }
+                listOfItems = WebAPI.GetItems();
                 adapter = new ItemAdapter(this, R.layout.list_item, listOfItems);
                 listFragment.addAdapter(adapter);
                 break;
             case "itemClick":
-                Toast.makeText(getApplicationContext(),"Click on " + Integer.parseInt(link.getSchemeSpecificPart()) + " item", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(),"Click on " + Integer.parseInt(link.getSchemeSpecificPart()) + " item", Toast.LENGTH_LONG).show();
+                int number = Integer.parseInt(link.getSchemeSpecificPart());
+                Intent product_info = new Intent(this, InformationActivity.class);
+                product_info.putExtra(Item.class.getSimpleName(), listOfItems.get(number));
+                startActivity(product_info);
                 break;
             default:
                 //default
