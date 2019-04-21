@@ -1,105 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:scrollbars="none"
     tools:context=".InformationActivity">
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:scrollbars="none"
         >
-        <LinearLayout
-            android:orientation="vertical"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="24dp"
-            android:paddingRight="24dp">
-            <ImageView android:src="@drawable/food_test"
-                android:id="@+id/picture_InformationActivity"
-                android:layout_marginTop="50dp"
-                android:layout_width="290dp"
-                android:layout_height="290dp"
-                android:layout_marginBottom="24dp"
-                android:layout_gravity="center_horizontal" />
-            <TextView
-                android:id="@+id/name_InformationActivity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/infoAcivity_sample"
-                android:textAlignment="center"
-                android:textSize="26sp"
-                android:textColor="@color/colorBlack"
-                android:layout_marginBottom="24dp"/>
-            <TextView
-                android:id="@+id/smallDescr_InformationActivity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:text="@string/infoAcivity_sample"
-                android:textSize="19sp"
-                android:textColor="@color/colorBlack"
-                android:layout_marginBottom="24dp"/>
-            <TextView
-                android:id="@+id/bigDescr_InformationActivity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:text="@string/infoAcivity_sample"
-                android:textSize="19sp"
-                android:textColor="@color/colorBlack"
-                android:layout_marginBottom="24dp"/>
-            <TextView
-                android:id="@+id/ingridients_InformationActivity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:text="@string/infoAcivity_sample"
-                android:textSize="19sp"
-                android:textColor="@color/colorBlack"
-                android:layout_marginBottom="24dp"/>
-            <TextView
-                android:id="@+id/price_InformationActivity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:textAlignment="center"
-                android:text="@string/infoAcivity_sample"
-                android:textSize="19sp"
-                android:textColor="@color/colorGreen"
-                android:layout_marginBottom="24dp"/>
+            android:layout_gravity="top"
+            >
             <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <Button
-                    android:id="@+id/btn_addFavourites_InformationActivity"
-                    android:layout_width="0dp"
+                android:paddingLeft="24dp"
+                android:paddingRight="24dp">
+                <ImageView android:src="@drawable/food_test"
+                    android:id="@+id/picture_InformationActivity"
+                    android:layout_marginTop="50dp"
+                    android:layout_width="290dp"
+                    android:layout_height="290dp"
+                    android:layout_marginBottom="24dp"
+                    android:layout_gravity="center_horizontal" />
+                <TextView
+                    android:id="@+id/name_InformationActivity"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:padding="12dp"
-                    android:layout_weight="1"
-                    android:text="@string/addToFavourites"
-                    style="@style/Widget.AppCompat.Button.Colored"
-                    />
-                <Button
-                    android:id="@+id/btn_buy_InformationActivity"
-                    android:layout_width="0dp"
+                    android:text="@string/infoAcivity_sample"
+                    android:textAlignment="center"
+                    android:textSize="26sp"
+                    android:textColor="@color/colorBlack"
+                    android:layout_marginBottom="24dp"/>
+                <TextView
+                    android:id="@+id/smallDescr_InformationActivity"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:padding="12dp"
-                    android:layout_weight="1"
-                    android:text="@string/addToCart"
-                    style="@style/Widget.AppCompat.Button.Colored"
-                    />
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:text="@string/infoAcivity_sample"
+                    android:textSize="19sp"
+                    android:textColor="@color/colorBlack"
+                    android:layout_marginBottom="24dp"/>
+                <TextView
+                    android:id="@+id/bigDescr_InformationActivity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:text="@string/infoAcivity_sample"
+                    android:textSize="19sp"
+                    android:textColor="@color/colorBlack"
+                    android:layout_marginBottom="24dp"/>
+                <TextView
+                    android:id="@+id/ingridients_InformationActivity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:text="@string/infoAcivity_sample"
+                    android:textSize="19sp"
+                    android:textColor="@color/colorBlack"
+                    android:layout_marginBottom="24dp"/>
+                <TextView
+                    android:id="@+id/price_InformationActivity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:textAlignment="center"
+                    android:text="@string/infoAcivity_sample"
+                    android:textSize="19sp"
+                    android:textColor="@color/colorGreen"
+                    android:layout_marginBottom="24dp"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <Button
+                        android:id="@+id/btn_addFavourites_InformationActivity"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:padding="12dp"
+                        android:layout_weight="1"
+                        android:text="@string/addToFavourites"
+                        style="@style/Widget.AppCompat.Button.Colored"
+                        />
+                    <Button
+                        android:id="@+id/btn_buy_InformationActivity"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:padding="12dp"
+                        android:layout_weight="1"
+                        android:text="@string/addToCart"
+                        style="@style/Widget.AppCompat.Button.Colored"
+                        />
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
-    </RelativeLayout>
-</ScrollView>
+        </RelativeLayout>
+    </ScrollView>
+</android.support.design.widget.CoordinatorLayout>

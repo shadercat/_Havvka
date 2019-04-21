@@ -1,17 +1,27 @@
 package com.shadercat.havvka;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.NumberPicker;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class CartFragment extends Fragment {
 
 
     private CartFragmentInteractionListener mListener;
+    CartItemAdapter adapter;
+    ListView list;
 
     public CartFragment() {
         // Required empty public constructor
@@ -34,7 +44,9 @@ public class CartFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_cart, container, false);
+        View view =  inflater.inflate(R.layout.fragment_cart, container, false);
+        list = (ListView) view.findViewById(R.id.cartItemsList);
+        return view;
     }
 
 
@@ -49,13 +61,91 @@ public class CartFragment extends Fragment {
         }
     }
 
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mListener.CartFragmentInteraction(Uri.parse("data:1"));
+    }
+
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
     }
 
+    public void AddAdapter(final CartItemAdapter adapter)
+    {
+        this.adapter = adapter;
+        list.setAdapter(adapter);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Dialog(position);
+            }
+        });
+        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                mListener.CartFragmentInteraction(Uri.parse("itemLongClick:" + String.valueOf(position)));
+                return false;
+            }
+        });
+    }
+
     public interface CartFragmentInteractionListener {
         void CartFragmentInteraction(Uri link);
     }
+
+    private void Dialog(final int index)
+    {
+        final CartItem item = ListCartItem.list.get(index);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        // Get the layout inflater
+        View inflater = this.getLayoutInflater().inflate(R.layout.dialog_cart_item_edit, null);
+        final NumberPicker picker = (NumberPicker) inflater.findViewById(R.id.numberPicker2);
+        picker.setMaxValue(10);
+        picker.setMinValue(1);
+        picker.setValue(item.getQuantity());
+        // Inflate and set the layout for the dialog
+        // Pass null as the parent view because its going in the dialog layout
+        builder.setView(inflater)
+                // Add action buttons
+                .setPositiveButton(R.string.changeQuantity, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        item.setQuantity(picker.getValue());
+                        adapter.notifyDataSetChanged();
+                        dialog.cancel();
+                    }
+                })
+                .setNeutralButton(R.string.deleteItem, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        ListCartItem.RemoveCartItem(index);
+                        SnackbarShow();
+                        adapter.notifyDataSetChanged();
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+    private void SnackbarShow()
+    {
+        Snackbar mSnackbar = Snackbar.make(list, getString(R.string.removedFromCart), Snackbar.LENGTH_LONG)
+                .setAction(R.string.cancel, snackbarOnClickListener)
+                .setActionTextColor(getResources().getColor(R.color.colorBlue));
+        View snackbarView = mSnackbar.getView();
+        snackbarView.setBackgroundResource(R.color.colorPrimaryDark);
+        TextView snackTextView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+        snackTextView.setTextColor(getResources().getColor(R.color.colorWhite));
+        mSnackbar.show();
+    }
+    private View.OnClickListener snackbarOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            ListCartItem.RemoveAction();
+            adapter.notifyDataSetChanged();
+        }
+    };
+
 }

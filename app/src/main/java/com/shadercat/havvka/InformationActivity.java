@@ -1,16 +1,15 @@
 package com.shadercat.havvka;
 
 import android.content.DialogInterface;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.Locale;
 
@@ -24,6 +23,7 @@ public class InformationActivity extends AppCompatActivity {
     TextView price;
     Button buy;
     Button addFavourites;
+    Item item;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +41,7 @@ public class InformationActivity extends AppCompatActivity {
         Bundle arguments = getIntent().getExtras();
         if(arguments != null)
         {
-            Item item = (Item) arguments.getSerializable(Item.class.getSimpleName());
+            item = (Item) arguments.getSerializable(Item.class.getSimpleName());
 
             image.setImageResource(item.GetImage());
             name.setText(item.GetName());
@@ -51,6 +51,7 @@ public class InformationActivity extends AppCompatActivity {
             price.setText(String.format(Locale.getDefault(),"%.2f",item.GetPrice()));
 
         }
+        
 
         buy.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,7 +75,7 @@ public class InformationActivity extends AppCompatActivity {
         View inflater = this.getLayoutInflater().inflate(R.layout.dialog_quantity, null);
         final NumberPicker picker = (NumberPicker) inflater.findViewById(R.id.numberPicker);
         picker.setMaxValue(10);
-        picker.setMinValue(0);
+        picker.setMinValue(1);
         // Inflate and set the layout for the dialog
         // Pass null as the parent view because its going in the dialog layout
         builder.setView(inflater)
@@ -82,8 +83,10 @@ public class InformationActivity extends AppCompatActivity {
                 .setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-
-                        Toast.makeText(getApplicationContext(),"Choose " + picker.getValue(), Toast.LENGTH_LONG).show();
+                        CartItem ct = new CartItem(item, picker.getValue());
+                        ListCartItem.AddCartItem(ct);
+                        //Toast.makeText(getApplicationContext(),getString(R.string.addedToCart), Toast.LENGTH_LONG).show();
+                        SnackbarShow();
                         dialog.cancel();
                     }
                 })
@@ -95,4 +98,21 @@ public class InformationActivity extends AppCompatActivity {
         AlertDialog alert = builder.create();
         alert.show();
     }
+    private void SnackbarShow()
+    {
+        Snackbar mSnackbar = Snackbar.make(buy, getString(R.string.addedToCart), Snackbar.LENGTH_LONG)
+                .setAction(R.string.cancel, snackbarOnClickListener)
+                .setActionTextColor(getResources().getColor(R.color.colorBlue));
+        View snackbarView = mSnackbar.getView();
+        snackbarView.setBackgroundResource(R.color.colorPrimaryDark);
+        TextView snackTextView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+        snackTextView.setTextColor(getResources().getColor(R.color.colorWhite));
+        mSnackbar.show();
+    }
+    private View.OnClickListener snackbarOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            ListCartItem.RemoveAction();
+        }
+    };
 }

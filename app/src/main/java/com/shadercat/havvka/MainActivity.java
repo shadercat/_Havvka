@@ -23,6 +23,8 @@ public class MainActivity extends AppCompatActivity implements ListFragment.List
     private List<Item> listOfItems = new ArrayList<>();
     private ItemAdapter adapter;
 
+    private CartItemAdapter CartAdapter;
+
     final ListFragment listFragment = new ListFragment();
     final FavouritesFragment favouritesFragment = new FavouritesFragment();
     final CartFragment cartFragment = new CartFragment();
@@ -48,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements ListFragment.List
                 case R.id.navigation_cart:
                     fm.beginTransaction().hide(active).show(cartFragment).commit();
                     active = cartFragment;
+                    CartAdapter.notifyDataSetChanged();
                     return true;
                 case R.id.navigation_orders:
                     fm.beginTransaction().hide(active).show(ordersFragment).commit();
@@ -76,6 +79,8 @@ public class MainActivity extends AppCompatActivity implements ListFragment.List
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
+
+
     }
     protected void CheckInfo()
     {
@@ -93,7 +98,6 @@ public class MainActivity extends AppCompatActivity implements ListFragment.List
         switch (link.getScheme())
         {
             case "data":
-                //TODO: logic for list fragment
                 listOfItems = WebAPI.GetItems();
                 adapter = new ItemAdapter(this, R.layout.list_item, listOfItems);
                 listFragment.addAdapter(adapter);
@@ -123,6 +127,20 @@ public class MainActivity extends AppCompatActivity implements ListFragment.List
     }
     public void CartFragmentInteraction(Uri link)
     {
-
+        switch (link.getScheme())
+        {
+            case "data":
+                CartAdapter = new CartItemAdapter(this,R.layout.cart_item,ListCartItem.list);
+                cartFragment.AddAdapter(CartAdapter);
+                break;
+            case "itemLongClick":
+                int number = Integer.parseInt(link.getSchemeSpecificPart());
+                Intent product_info = new Intent(this, InformationActivity.class);
+                product_info.putExtra(Item.class.getSimpleName(), ListCartItem.list.get(number).getItem());
+                startActivity(product_info);
+                break;
+            default:
+                //default
+        }
     }
 }

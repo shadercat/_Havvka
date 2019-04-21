@@ -11,6 +11,7 @@ public class WebAPI {
         {
             Item item = new Item("Name of Food " + i, "Small descrition","Big Description", R.drawable.food_test);
             item.SetID(i);
+            item.SetPrice(2.30);
             item.SetIngridients("Ingridients");
             list.add(item);
         }

@@ -5,10 +5,13 @@
     android:layout_height="match_parent"
     tools:context=".CartFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="This is cart fragment." />
+        android:orientation="horizontal">
+        <ListView android:id="@+id/cartItemsList"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent" />
+    </LinearLayout>
 
 </FrameLayout>

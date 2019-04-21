@@ -24,4 +24,11 @@
     <string name="cancel">Скасувати</string>
     <string name="add">Додати</string>
     <string name="chooseQuantity">Оберіть кількість</string>
+    <string name="chooseQuantity2">Змінити кількість</string>
+    <string name="quantity">кількість:</string>
+    <string name="price">ціна:</string>
+    <string name="changeQuantity">Змінити</string>
+    <string name="deleteItem">Видалити товар</string>
+    <string name="addedToCart">Товар було додано до кошику</string>
+    <string name="removedFromCart">Товар видалено з кошика</string>
 </resources>

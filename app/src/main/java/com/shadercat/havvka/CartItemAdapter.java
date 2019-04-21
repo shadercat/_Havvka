@@ -8,21 +8,22 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.List;
-// Adapter for ListView (schema: picture, big text, small text)
-public class ItemAdapter extends ArrayAdapter<Item> {
+import java.util.Locale;
+
+public class CartItemAdapter extends ArrayAdapter<CartItem> {
 
     private LayoutInflater inflater;
     private int layout;
-    private List<Item> food;
+    private List<CartItem> cartItems;
 
-    public ItemAdapter(Context context, int resource, List<Item> food)
+    public CartItemAdapter(Context context, int resource, List<CartItem> cartItems)
     {
-        super(context, resource, food);
-        this.food = food;
+        super(context, resource, cartItems);
         this.layout = resource;
+        this.cartItems = cartItems;
         this.inflater = LayoutInflater.from(context);
     }
-    //optimized getView
+
     public View getView(int position, View convertView, ViewGroup parent)
     {
         ViewHolder viewHolder;
@@ -37,25 +38,28 @@ public class ItemAdapter extends ArrayAdapter<Item> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        Item itemList = food.get(position);
+        CartItem itemList = cartItems.get(position);
 
-        viewHolder.imageView.setImageResource(itemList.GetImage());
-        viewHolder.nameView.setText(itemList.GetName());
-        viewHolder.smallDescrView.setText(itemList.GetSmallDescr());
+        viewHolder.imageView.setImageResource(itemList.getItem().GetImage());
+        viewHolder.nameView.setText(itemList.getItem().GetName());
+        viewHolder.quantityView.setText(String.valueOf(itemList.getQuantity()));
+        viewHolder.priceView.setText(String.format(Locale.getDefault() ,"%.2f", itemList.getPrice()));
 
         return  convertView;
     }
     private class ViewHolder
     {
         final ImageView imageView;
-        final TextView nameView, smallDescrView;
+        final TextView nameView, quantityView, priceView;
 
         public ViewHolder(View view)
         {
-            imageView = (ImageView) view.findViewById(R.id.image);
-            nameView = (TextView) view.findViewById(R.id.name);
-            smallDescrView = (TextView) view.findViewById(R.id.smallDescription);
+            imageView = (ImageView) view.findViewById(R.id.image_cartItem);
+            nameView = (TextView) view.findViewById(R.id.name_cartItem);
+            quantityView = (TextView) view.findViewById(R.id.quantity_cartItem);
+            priceView =  (TextView) view.findViewById(R.id.price_cartItem);
         }
 
     }
+
 }
