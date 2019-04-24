@@ -31,4 +31,6 @@
     <string name="deleteItem">Видалити товар</string>
     <string name="addedToCart">Товар було додано до кошику</string>
     <string name="removedFromCart">Товар видалено з кошика</string>
+    <string name="summ">Сума кошику:</string>
+    <string name="buy">Придбати</string>
 </resources>

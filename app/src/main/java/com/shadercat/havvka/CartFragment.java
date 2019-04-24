@@ -11,10 +11,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.GridLayout;
 import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.Locale;
 
 public class CartFragment extends Fragment {
 
@@ -22,6 +25,8 @@ public class CartFragment extends Fragment {
     private CartFragmentInteractionListener mListener;
     CartItemAdapter adapter;
     ListView list;
+    TextView textSum;
+    GridLayout sum_container;
 
     public CartFragment() {
         // Required empty public constructor
@@ -46,6 +51,8 @@ public class CartFragment extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_cart, container, false);
         list = (ListView) view.findViewById(R.id.cartItemsList);
+        textSum = (TextView) view.findViewById(R.id.sum_CartFragment);
+        sum_container = (GridLayout) view.findViewById(R.id.sum_container_CartFragment);
         return view;
     }
 
@@ -70,6 +77,13 @@ public class CartFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        UpdateInformation();
     }
 
     public void AddAdapter(final CartItemAdapter adapter)
@@ -113,7 +127,7 @@ public class CartFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         item.setQuantity(picker.getValue());
-                        adapter.notifyDataSetChanged();
+                        UpdateInformation();
                         dialog.cancel();
                     }
                 })
@@ -122,7 +136,7 @@ public class CartFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int id) {
                         ListCartItem.RemoveCartItem(index);
                         SnackbarShow();
-                        adapter.notifyDataSetChanged();
+                        UpdateInformation();
                         dialog.cancel();
                     }
                 });
@@ -144,8 +158,23 @@ public class CartFragment extends Fragment {
         @Override
         public void onClick(View view) {
             ListCartItem.RemoveAction();
-            adapter.notifyDataSetChanged();
+            UpdateInformation();
         }
     };
-
+    public void UpdateInformation()
+    {
+        if(adapter != null && textSum != null)
+        {
+            adapter.notifyDataSetChanged();
+            textSum.setText(String.format(Locale.getDefault(),"%.2f", ListCartItem.GetSumPrice()));
+            if(ListCartItem.GetSumPrice() == 0d)
+            {
+                sum_container.setVisibility(View.GONE);
+            }
+            else
+            {
+                sum_container.setVisibility(View.VISIBLE);
+            }
+        }
+    }
 }

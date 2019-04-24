@@ -50,7 +50,6 @@ public class MainActivity extends AppCompatActivity implements ListFragment.List
                 case R.id.navigation_cart:
                     fm.beginTransaction().hide(active).show(cartFragment).commit();
                     active = cartFragment;
-                    CartAdapter.notifyDataSetChanged();
                     return true;
                 case R.id.navigation_orders:
                     fm.beginTransaction().hide(active).show(ordersFragment).commit();
