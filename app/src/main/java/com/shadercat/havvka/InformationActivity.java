@@ -39,8 +39,7 @@ public class InformationActivity extends AppCompatActivity {
         addFavourites = (Button) findViewById(R.id.btn_addFavourites_InformationActivity);
 
         Bundle arguments = getIntent().getExtras();
-        if(arguments != null)
-        {
+        if (arguments != null) {
             item = (Item) arguments.getSerializable(Item.class.getSimpleName());
 
             image.setImageResource(item.GetImage());
@@ -48,10 +47,10 @@ public class InformationActivity extends AppCompatActivity {
             smallDscr.setText(item.GetSmallDescr());
             bigDescr.setText(item.GetBigDescr());
             ingridients.setText(item.GetIngridients());
-            price.setText(String.format(Locale.getDefault(),"%.2f",item.GetPrice()));
+            price.setText(String.format(Locale.getDefault(), "%.2f", item.GetPrice()));
 
         }
-        
+
 
         buy.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,8 +67,7 @@ public class InformationActivity extends AppCompatActivity {
         });
     }
 
-    private void Dialog()
-    {
+    private void Dialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         // Get the layout inflater
         View inflater = this.getLayoutInflater().inflate(R.layout.dialog_quantity, null);
@@ -98,8 +96,8 @@ public class InformationActivity extends AppCompatActivity {
         AlertDialog alert = builder.create();
         alert.show();
     }
-    private void SnackbarShow()
-    {
+
+    private void SnackbarShow() {
         Snackbar mSnackbar = Snackbar.make(buy, getString(R.string.addedToCart), Snackbar.LENGTH_LONG)
                 .setAction(R.string.cancel, snackbarOnClickListener)
                 .setActionTextColor(getResources().getColor(R.color.colorBlue));
@@ -109,6 +107,7 @@ public class InformationActivity extends AppCompatActivity {
         snackTextView.setTextColor(getResources().getColor(R.color.colorWhite));
         mSnackbar.show();
     }
+
     private View.OnClickListener snackbarOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {

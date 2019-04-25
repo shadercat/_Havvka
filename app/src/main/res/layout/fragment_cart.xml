@@ -9,41 +9,46 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <ListView android:id="@+id/cartItemsList"
-            android:layout_height="0dp"
+
+        <ListView
+            android:id="@+id/cartItemsList"
             android:layout_width="match_parent"
-            android:layout_weight="1"/>
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
         <GridLayout
+            android:id="@+id/sum_container_CartFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/sum_container_CartFragment"
             android:background="@color/colorPrimaryDark"
+            android:columnCount="3"
             android:padding="5dp"
-            android:rowCount="1"
-            android:columnCount="3">
+            android:rowCount="1">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/summ"
-                android:textSize="18sp"
-                android:gravity="start"
                 android:layout_marginStart="4dp"
                 android:layout_marginEnd="4dp"
-                android:textColor="@color/colorWhite"/>
+                android:gravity="start"
+                android:text="@string/summ"
+                android:textColor="@color/colorWhite"
+                android:textSize="18sp" />
+
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/sum_CartFragment"
-                android:textSize="18sp"
-                android:layout_gravity="center"
-                android:textColor="@color/colorLightGreen"/>
-            <Button
-                android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:layout_gravity="end"
-                android:text="@string/buy"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/colorLightGreen"
+                android:textSize="18sp" />
+
+            <Button
                 style="@style/Widget.AppCompat.Button.Colored"
-                />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="@string/buy" />
         </GridLayout>
     </LinearLayout>
 

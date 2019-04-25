@@ -49,7 +49,7 @@ public class CartFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_cart, container, false);
+        View view = inflater.inflate(R.layout.fragment_cart, container, false);
         list = (ListView) view.findViewById(R.id.cartItemsList);
         textSum = (TextView) view.findViewById(R.id.sum_CartFragment);
         sum_container = (GridLayout) view.findViewById(R.id.sum_container_CartFragment);
@@ -80,14 +80,12 @@ public class CartFragment extends Fragment {
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
         UpdateInformation();
     }
 
-    public void AddAdapter(final CartItemAdapter adapter)
-    {
+    public void AddAdapter(final CartItemAdapter adapter) {
         this.adapter = adapter;
         list.setAdapter(adapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -109,8 +107,7 @@ public class CartFragment extends Fragment {
         void CartFragmentInteraction(Uri link);
     }
 
-    private void Dialog(final int index)
-    {
+    private void Dialog(final int index) {
         final CartItem item = ListCartItem.list.get(index);
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         // Get the layout inflater
@@ -143,8 +140,8 @@ public class CartFragment extends Fragment {
         AlertDialog alert = builder.create();
         alert.show();
     }
-    private void SnackbarShow()
-    {
+
+    private void SnackbarShow() {
         Snackbar mSnackbar = Snackbar.make(list, getString(R.string.removedFromCart), Snackbar.LENGTH_LONG)
                 .setAction(R.string.cancel, snackbarOnClickListener)
                 .setActionTextColor(getResources().getColor(R.color.colorBlue));
@@ -154,6 +151,7 @@ public class CartFragment extends Fragment {
         snackTextView.setTextColor(getResources().getColor(R.color.colorWhite));
         mSnackbar.show();
     }
+
     private View.OnClickListener snackbarOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -161,18 +159,14 @@ public class CartFragment extends Fragment {
             UpdateInformation();
         }
     };
-    public void UpdateInformation()
-    {
-        if(adapter != null && textSum != null)
-        {
+
+    public void UpdateInformation() {
+        if (adapter != null && textSum != null) {
             adapter.notifyDataSetChanged();
-            textSum.setText(String.format(Locale.getDefault(),"%.2f", ListCartItem.GetSumPrice()));
-            if(ListCartItem.GetSumPrice() == 0d)
-            {
+            textSum.setText(String.format(Locale.getDefault(), "%.2f", ListCartItem.GetSumPrice()));
+            if (ListCartItem.GetSumPrice() == 0d) {
                 sum_container.setVisibility(View.GONE);
-            }
-            else
-            {
+            } else {
                 sum_container.setVisibility(View.VISIBLE);
             }
         }

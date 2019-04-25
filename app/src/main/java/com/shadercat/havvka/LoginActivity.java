@@ -28,6 +28,7 @@ public class LoginActivity extends AppCompatActivity {
 
     Animation logo_anim1;
     Animation logo_anim2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
         loginGuest = (TextView) findViewById(R.id.link_guest);
 
         logo_anim1 = AnimationUtils.loadAnimation(this, R.anim.rotate_logo);
-        logo_anim2 = AnimationUtils.loadAnimation(this,R.anim.shake_logo);
+        logo_anim2 = AnimationUtils.loadAnimation(this, R.anim.shake_logo);
 
 
         login_btn.setOnClickListener(new View.OnClickListener() {
@@ -55,17 +56,14 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void action() {
                         logo.clearAnimation();
-                        if(!UserInfo.IsCheckedAccount)
-                        {
+                        if (!UserInfo.IsCheckedAccount) {
                             logo.startAnimation(logo_anim2);
-                        }
-                        else
-                        {
+                        } else {
                             onBackPressed();
                         }
                     }
                 });
-                mTimer.schedule(mMyTimerTask,5000);
+                mTimer.schedule(mMyTimerTask, 5000);
 
 
             }
@@ -89,12 +87,11 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    protected void LoginCheckout()
-    {
+    protected void LoginCheckout() {
         // implement check out logic there
 
         //this is simulation of checking information
-        if(email != null && password != null) {
+        if (email != null && password != null) {
             if (email.getText().toString().trim().equals("hola@nure.ua") && password.getText().toString().trim().equals("12345")) {
                 UserInfo.IsCheckedAccount = true;
                 UserInfo.UserEmail = email.getText().toString().trim();
@@ -105,21 +102,19 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(UserInfo.IsCheckedAccount)
-        {
+        if (UserInfo.IsCheckedAccount) {
             super.onBackPressed();
         }
     }
 
 
-
-
     class MyTimerTask extends TimerTask {
         Action action;
-        MyTimerTask(Action act)
-        {
+
+        MyTimerTask(Action act) {
             action = act;
         }
+
         @Override
         public void run() {
             runOnUiThread(new Runnable() {
@@ -131,8 +126,8 @@ public class LoginActivity extends AppCompatActivity {
             });
         }
     }
-    interface Action
-    {
+
+    interface Action {
         void action();
     }
 }

@@ -15,9 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements ListFragment.ListFragmentInteractionListener, FavouritesFragment.FavouriteFragmentInteractionListener,
-        OrdersFragment.OrdersFragmentInteractionListener, SettingFragment.SettingFragmentInteractionListener, CartFragment.CartFragmentInteractionListener
-{
-
+        OrdersFragment.OrdersFragmentInteractionListener, SettingFragment.SettingFragmentInteractionListener, CartFragment.CartFragmentInteractionListener {
 
 
     private List<Item> listOfItems = new ArrayList<>();
@@ -79,23 +77,19 @@ public class MainActivity extends AppCompatActivity implements ListFragment.List
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
 
-
     }
-    protected void CheckInfo()
-    {
+
+    protected void CheckInfo() {
         //TODO: implement information check there
-        if(!UserInfo.IsCheckedAccount)
-        {
+        if (!UserInfo.IsCheckedAccount) {
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(intent);
         }
     }
 
     @Override
-    public void ListFragmentInteraction(Uri link)
-    {
-        switch (link.getScheme())
-        {
+    public void ListFragmentInteraction(Uri link) {
+        switch (link.getScheme()) {
             case "data":
                 listOfItems = WebAPI.GetItems();
                 adapter = new ItemAdapter(this, R.layout.list_item, listOfItems);
@@ -112,24 +106,23 @@ public class MainActivity extends AppCompatActivity implements ListFragment.List
                 //default
         }
     }
-    public void FavouriteFragmentInteraction(Uri link)
-    {
+
+    public void FavouriteFragmentInteraction(Uri link) {
 
     }
-    public void OrdersFragmentInteraction(Uri link)
-    {
+
+    public void OrdersFragmentInteraction(Uri link) {
 
     }
-    public void SettingFragmentInteraction(Uri link)
-    {
+
+    public void SettingFragmentInteraction(Uri link) {
 
     }
-    public void CartFragmentInteraction(Uri link)
-    {
-        switch (link.getScheme())
-        {
+
+    public void CartFragmentInteraction(Uri link) {
+        switch (link.getScheme()) {
             case "data":
-                CartAdapter = new CartItemAdapter(this,R.layout.cart_item,ListCartItem.list);
+                CartAdapter = new CartItemAdapter(this, R.layout.cart_item, ListCartItem.list);
                 cartFragment.AddAdapter(CartAdapter);
                 break;
             case "itemLongClick":

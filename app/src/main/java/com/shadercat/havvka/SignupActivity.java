@@ -27,7 +27,7 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-        logo_anim2 = AnimationUtils.loadAnimation(this,R.anim.rotate_logo);
+        logo_anim2 = AnimationUtils.loadAnimation(this, R.anim.rotate_logo);
         logo_anim1 = AnimationUtils.loadAnimation(this, R.anim.shake_logo);
 
         email = (EditText) findViewById(R.id.input_email_reg);
@@ -38,34 +38,27 @@ public class SignupActivity extends AppCompatActivity {
         logo = (ImageView) findViewById(R.id.logo_SignupActivity);
 
 
-
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 logo.startAnimation(logo_anim2);
                 boolean checked = true;
-                if(!password.getText().toString().equals(repeatPassword.getText().toString()))
-                {
+                if (!password.getText().toString().equals(repeatPassword.getText().toString())) {
                     repeatPassword.setError(getApplicationContext().getString(R.string.passwordError));
                     checked = false;
                 }
-                if(!email.getText().toString().trim().contains("@nure.ua"))
-                {
+                if (!email.getText().toString().trim().contains("@nure.ua")) {
                     email.setError(getApplicationContext().getString(R.string.emailError));
                     checked = false;
                 }
-                if(password.getText().toString().length() <= 4)
-                {
+                if (password.getText().toString().length() <= 4) {
                     password.setError(getApplicationContext().getString(R.string.smallPassword));
                     checked = false;
                 }
-                if(checked)
-                {
+                if (checked) {
                     //implement success registration logic there
-                }
-                else
-                {
+                } else {
                     logo.clearAnimation();
                     logo.startAnimation(logo_anim1);
                 }

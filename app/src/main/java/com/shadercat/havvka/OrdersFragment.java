@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 public class OrdersFragment extends Fragment {
 
 
-
     private OrdersFragmentInteractionListener mListener;
 
     public OrdersFragment() {

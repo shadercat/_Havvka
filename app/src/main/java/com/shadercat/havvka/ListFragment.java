@@ -66,8 +66,7 @@ public class ListFragment extends Fragment {
         mListener.ListFragmentInteraction(Uri.parse("data:1"));
     }
 
-    public void addAdapter(ItemAdapter adapter)
-    {
+    public void addAdapter(ItemAdapter adapter) {
         itemAdapter = adapter;
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

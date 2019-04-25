@@ -16,7 +16,9 @@ public class FavouritesFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static FavouritesFragment newInstance() { return new FavouritesFragment(); }
+    public static FavouritesFragment newInstance() {
+        return new FavouritesFragment();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
