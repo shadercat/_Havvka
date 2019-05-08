@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,9 +17,8 @@ public class MainActivity extends AppCompatActivity implements ListFragment.List
         OrdersFragment.OrdersFragmentInteractionListener, SettingFragment.SettingFragmentInteractionListener, CartFragment.CartFragmentInteractionListener {
 
 
-    private List<Item> listOfItems = new ArrayList<>();
+    private ArrayList<Item> listOfItems = new ArrayList<>();
     private ItemAdapter adapter;
-
     private CartItemAdapter CartAdapter;
 
     final ListFragment listFragment = new ListFragment();
@@ -81,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements ListFragment.List
 
     protected void CheckInfo() {
         //TODO: implement information check there
+        DataAdapter.SetUserInfo();
         if (!UserInfo.IsCheckedAccount) {
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(intent);
@@ -91,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements ListFragment.List
     public void ListFragmentInteraction(Uri link) {
         switch (link.getScheme()) {
             case "data":
-                listOfItems = WebAPI.GetItems();
+                listOfItems = DataAdapter.GetProductList();
                 adapter = new ItemAdapter(this, R.layout.list_item, listOfItems);
                 listFragment.addAdapter(adapter);
                 break;

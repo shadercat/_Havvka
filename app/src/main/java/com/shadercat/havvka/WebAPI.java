@@ -4,8 +4,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WebAPI {
-    public static List<Item> GetItems() {
-        List<Item> list = new ArrayList<>();
+    public static boolean IsProductDataUpdated() {
+        return true;
+    }
+
+    public static boolean IsFavouriteSetDataUpdated() {
+        return true;
+    }
+
+    public static boolean CheckUserInfo(String email, String password) {
+        if (email != null && password != null) {
+            if (email.trim().equals("hola@nure.ua") && password.equals("12345")) {
+                UserInfo.IsCheckedAccount = true;
+                UserInfo.UserEmail = email.trim();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static ArrayList<Item> GetProductData() {
+        ArrayList<Item> list = new ArrayList<>();
         for (int i = 0; i < 101; i++) {
             Item item = new Item("Name of Food " + i, "Small descrition", "Big Description", R.drawable.food_test);
             item.SetID(i);
@@ -13,6 +32,11 @@ public class WebAPI {
             item.SetIngridients("Ingridients");
             list.add(item);
         }
+        return list;
+    }
+
+    public static ArrayList<FavouriteSet> GetFavouriteSetData() {
+        ArrayList<FavouriteSet> list = new ArrayList<>();
         return list;
     }
 }

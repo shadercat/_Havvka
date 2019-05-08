@@ -1,6 +1,7 @@
 package com.shadercat.havvka;
 
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -16,15 +17,19 @@ import java.util.TimerTask;
 
 public class LoginActivity extends AppCompatActivity {
 
+    //TODO update function for checking info
     Button login_btn;
     ImageView logo;
     EditText email;
     EditText password;
     TextView createAccount;
     TextView loginGuest;
+    private int clickCounter = 0;
 
     private Timer mTimer;
     private MyTimerTask mMyTimerTask;
+    private Timer clickTimer;
+    private MyTimerTask clickTimerTask;
 
     Animation logo_anim1;
     Animation logo_anim2;
@@ -49,6 +54,14 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 logo.startAnimation(logo_anim1);
                 LoginCheckout();
+// when api is working
+/*
+                if (WebAPI.CheckUserInfo(email.getText().toString(), password.getText().toString())) {
+                    finish();
+                } else {
+                    logo.startAnimation(logo_anim2);
+                }
+*/
 
                 //simulate authentication
                 mTimer = new Timer();
@@ -56,10 +69,10 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void action() {
                         logo.clearAnimation();
-                        if (!UserInfo.IsCheckedAccount) {
-                            logo.startAnimation(logo_anim2);
+                        if (UserInfo.IsCheckedAccount) {
+                            finish();
                         } else {
-                            onBackPressed();
+                            logo.startAnimation(logo_anim2);
                         }
                     }
                 });
@@ -73,8 +86,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 UserInfo.GuestMode = true;
-                UserInfo.IsCheckedAccount = true;
-                onBackPressed();
+                UserInfo.IsCheckedAccount = false;
+                finish();
             }
         });
 
@@ -88,22 +101,24 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     protected void LoginCheckout() {
-        // implement check out logic there
-
-        //this is simulation of checking information
-        if (email != null && password != null) {
-            if (email.getText().toString().trim().equals("hola@nure.ua") && password.getText().toString().trim().equals("12345")) {
-                UserInfo.IsCheckedAccount = true;
-                UserInfo.UserEmail = email.getText().toString().trim();
-                //onBackPressed();
-            }
-        }
+        WebAPI.CheckUserInfo(email.getText().toString(), password.getText().toString());
     }
 
     @Override
     public void onBackPressed() {
-        if (UserInfo.IsCheckedAccount) {
-            super.onBackPressed();
+        if (clickCounter >= 1) {
+            finishAffinity();
+        } else {
+            SnackbarShow();
+            clickCounter++;
+            clickTimer = new Timer();
+            clickTimerTask = new MyTimerTask(new Action() {
+                @Override
+                public void action() {
+                    clickCounter = 0;
+                }
+            });
+            clickTimer.schedule(clickTimerTask, 3000);
         }
     }
 
@@ -125,6 +140,16 @@ public class LoginActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    private void SnackbarShow() {
+        Snackbar mSnackbar = Snackbar.make(email, getString(R.string.clickToExit), Snackbar.LENGTH_SHORT)
+                .setActionTextColor(getResources().getColor(R.color.colorBlue));
+        View snackbarView = mSnackbar.getView();
+        snackbarView.setBackgroundResource(R.color.colorPrimaryDark);
+        TextView snackTextView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+        snackTextView.setTextColor(getResources().getColor(R.color.colorWhite));
+        mSnackbar.show();
     }
 
     interface Action {
