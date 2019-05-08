@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements ListFragment.ListFragmentInteractionListener, FavouritesFragment.FavouriteFragmentInteractionListener,
         OrdersFragment.OrdersFragmentInteractionListener, SettingFragment.SettingFragmentInteractionListener, CartFragment.CartFragmentInteractionListener {
@@ -79,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements ListFragment.List
 
     protected void CheckInfo() {
         //TODO: implement information check there
-        DataAdapter.SetUserInfo();
+        DataAdapter.InitializeUserInfo();
         if (!UserInfo.IsCheckedAccount) {
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(intent);

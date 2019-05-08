@@ -21,6 +21,7 @@ public class WebAPI {
             }
         }
         return false;
+        //use DataAdapter.SaveUserInfo(...);
     }
 
     public static ArrayList<Item> GetProductData() {

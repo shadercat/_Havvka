@@ -32,8 +32,10 @@ public class DataAdapter {
         }
         return list;
     }
-
-    public static void SetUserInfo() {
+    public static void SaveUserInfo(String email, String password, int userId){
+        //TODO function for save user data in locale storage;
+    }
+    public static void InitializeUserInfo() {
         //TODO get user info from locale storage; check info from server;
         UserInfo.GuestMode = false;
         UserInfo.IsCheckedAccount = false;
