@@ -1,6 +1,8 @@
 package com.shadercat.havvka;
 
 import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.SystemClock;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,8 +28,6 @@ public class LoginActivity extends AppCompatActivity {
     TextView loginGuest;
     private int clickCounter = 0;
 
-    private Timer mTimer;
-    private MyTimerTask mMyTimerTask;
     private Timer clickTimer;
     private MyTimerTask clickTimerTask;
 
@@ -52,33 +52,7 @@ public class LoginActivity extends AppCompatActivity {
         login_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                logo.startAnimation(logo_anim1);
-                LoginCheckout();
-// when api is working
-/*
-                if (WebAPI.CheckUserInfo(email.getText().toString(), password.getText().toString())) {
-                    finish();
-                } else {
-                    logo.startAnimation(logo_anim2);
-                }
-*/
-
-                //simulate authentication
-                mTimer = new Timer();
-                mMyTimerTask = new MyTimerTask(new Action() {
-                    @Override
-                    public void action() {
-                        logo.clearAnimation();
-                        if (UserInfo.IsCheckedAccount) {
-                            finish();
-                        } else {
-                            logo.startAnimation(logo_anim2);
-                        }
-                    }
-                });
-                mTimer.schedule(mMyTimerTask, 5000);
-
-
+                new CheckingTask().execute();
             }
         });
 
@@ -100,16 +74,12 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    protected void LoginCheckout() {
-        WebAPI.CheckUserInfo(email.getText().toString(), password.getText().toString());
-    }
-
     @Override
     public void onBackPressed() {
         if (clickCounter >= 1) {
             finishAffinity();
         } else {
-            SnackbarShow();
+            SnackbarShow(getString(R.string.clickToExit));
             clickCounter++;
             clickTimer = new Timer();
             clickTimerTask = new MyTimerTask(new Action() {
@@ -142,8 +112,8 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void SnackbarShow() {
-        Snackbar mSnackbar = Snackbar.make(email, getString(R.string.clickToExit), Snackbar.LENGTH_SHORT)
+    private void SnackbarShow(String mes) {
+        Snackbar mSnackbar = Snackbar.make(email, mes, Snackbar.LENGTH_SHORT)
                 .setActionTextColor(getResources().getColor(R.color.colorBlue));
         View snackbarView = mSnackbar.getView();
         snackbarView.setBackgroundResource(R.color.colorPrimaryDark);
@@ -154,5 +124,27 @@ public class LoginActivity extends AppCompatActivity {
 
     interface Action {
         void action();
+    }
+
+    class CheckingTask extends AsyncTask<Void,Integer,Void>{
+        @Override
+        protected void onPreExecute() {
+            logo.startAnimation(logo_anim1);
+        }
+        @Override
+        protected Void doInBackground(Void... voids) {
+            if (WebAPI.CheckUserInfo(email.getText().toString(), password.getText().toString())) {
+                SystemClock.sleep(3000);
+                finish();
+            }else
+            {
+                SnackbarShow(getString(R.string.wrongLogData));
+            }
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            logo.startAnimation(logo_anim2);
+        }
     }
 }
