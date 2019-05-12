@@ -15,7 +15,6 @@ import android.widget.GridLayout;
 import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.Locale;
 
@@ -33,9 +32,8 @@ public class CartFragment extends Fragment {
     }
 
 
-    public static CartFragment newInstance(String param1, String param2) {
-        CartFragment fragment = new CartFragment();
-        return fragment;
+    public static CartFragment newInstance() {
+        return new CartFragment();
     }
 
     @Override

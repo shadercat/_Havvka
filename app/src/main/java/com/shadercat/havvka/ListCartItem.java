@@ -1,7 +1,5 @@
 package com.shadercat.havvka;
 
-import android.content.Context;
-
 import java.util.ArrayList;
 import java.util.List;
 

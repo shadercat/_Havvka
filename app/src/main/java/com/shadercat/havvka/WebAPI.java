@@ -1,7 +1,6 @@
 package com.shadercat.havvka;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class WebAPI {
     public static boolean IsProductDataUpdated() {

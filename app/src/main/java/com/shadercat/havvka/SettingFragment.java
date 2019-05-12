@@ -22,18 +22,13 @@ public class SettingFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static SettingFragment newInstance(String param1, String param2) {
-        SettingFragment fragment = new SettingFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
+    public static SettingFragment newInstance() {
+        return new SettingFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
     }
 
     @Override
@@ -86,7 +81,6 @@ public class SettingFragment extends Fragment {
     }
 
     public interface SettingFragmentInteractionListener {
-        // TODO: Update argument type and name
         void SettingFragmentInteraction(Uri link);
     }
 }
