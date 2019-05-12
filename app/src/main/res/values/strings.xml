@@ -35,4 +35,5 @@
     <string name="buy">Придбати</string>
     <string name="clickToExit">Для виходу нажміть Назад ще раз</string>
     <string name="wrongLogData">Неправильний пароль або пошта</string>
+    <string name="exit">Вийти</string>
 </resources>

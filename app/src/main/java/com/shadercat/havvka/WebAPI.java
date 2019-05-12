@@ -17,6 +17,7 @@ public class WebAPI {
             if (email.trim().equals("hola@nure.ua") && password.equals("12345")) {
                 UserInfo.IsCheckedAccount = true;
                 UserInfo.UserEmail = email.trim();
+                UserInfo.UserID = 2;
                 return true;
             }
         }

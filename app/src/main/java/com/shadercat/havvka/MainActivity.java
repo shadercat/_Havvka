@@ -1,6 +1,7 @@
 package com.shadercat.havvka;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -78,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements ListFragment.List
 
     protected void CheckInfo() {
         //TODO: implement information check there
-        DataAdapter.InitializeUserInfo();
+        DataAdapter.InitializeUserInfo(this);
         if (!UserInfo.IsCheckedAccount) {
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(intent);

@@ -1,6 +1,8 @@
 package com.shadercat.havvka;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.SystemClock;
 import android.support.design.widget.Snackbar;
@@ -16,6 +18,7 @@ import android.widget.TextView;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.prefs.PreferenceChangeEvent;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -134,6 +137,7 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... voids) {
             if (WebAPI.CheckUserInfo(email.getText().toString(), password.getText().toString())) {
+                DataAdapter.SaveUserInfo(email.getText().toString(),password.getText().toString(), UserInfo.UserID, getApplicationContext());
                 SystemClock.sleep(3000);
                 finish();
             }else

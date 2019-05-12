@@ -1,5 +1,8 @@
 package com.shadercat.havvka;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import java.util.ArrayList;
 
 //use this class for getting data
@@ -32,14 +35,44 @@ public class DataAdapter {
         }
         return list;
     }
-    public static void SaveUserInfo(String email, String password, int userId){
+    public static void SaveUserInfo(String email, String password, int userId, Context context){
         //TODO function for save user data in locale storage;
+        SharedPreferences preferences = context.getSharedPreferences("Preferences", Context.MODE_PRIVATE);
+        SharedPreferences.Editor ed = preferences.edit();
+        if(!preferences.contains("IsCheckedAccount")){
+            ed.putBoolean("IsCheckedAccount", false);
+            ed.putString("useremail", "guest");
+            ed.putInt("userid", 0);
+            ed.putString("password", "");
+            ed.putBoolean("IsCheckedAccount", true);
+            ed.apply();
+        }
+        ed.putString("useremail", email);
+        ed.putString("password", password);
+        ed.putInt("userid", userId);
+        ed.apply();
     }
-    public static void InitializeUserInfo() {
+    public static void InitializeUserInfo(Context context) {
         //TODO get user info from locale storage; check info from server;
+        SharedPreferences preferences = context.getSharedPreferences("Preferences", Context.MODE_PRIVATE);
         UserInfo.GuestMode = false;
-        UserInfo.IsCheckedAccount = false;
-        UserInfo.UserEmail = "";
-        UserInfo.UserID = 0;
+        UserInfo.IsCheckedAccount = preferences.getBoolean("IsCheckedAccount", false);
+        UserInfo.UserEmail = preferences.getString("useremail", "guest");
+        UserInfo.UserID = preferences.getInt("userid",0);
+        if(!preferences.contains("IsCheckedAccount")){
+            SharedPreferences.Editor ed = preferences.edit();
+            ed.putBoolean("IsCheckedAccount", false);
+            ed.putString("useremail", "guest");
+            ed.putInt("userid", 0);
+            ed.putString("password", "");
+            ed.apply();
+        }
+    }
+    public static void UserExit(Context context){
+        SharedPreferences preferences = context.getSharedPreferences("Preferences", Context.MODE_PRIVATE);
+        SharedPreferences.Editor ed = preferences.edit();
+        ed.clear();
+        ed.commit();
+        InitializeUserInfo(context);
     }
 }
