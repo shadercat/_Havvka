@@ -11,12 +11,21 @@ public class Item implements Serializable {
     private String ingridients;
     private double price;
     private int image;
+    private int rating;
 
     public Item(String name, String smallDescr, String bigDescr, int image) {
+        this(name,smallDescr,bigDescr,image,1," ",0f,1);
+    }
+
+    public Item(String name, String smallDescr, String bigDescr, int image, int id, String ingridients, double price, int rating){
         this.name = name;
         this.smallDescr = smallDescr;
         this.bigDescr = bigDescr;
         this.image = image;
+        this.ID = id;
+        this.ingridients = ingridients;
+        this.price = price;
+        this.rating = rating;
     }
 
     public String GetName() {
@@ -73,6 +82,14 @@ public class Item implements Serializable {
 
     public void SetIngridients(String ingridients) {
         this.ingridients = ingridients;
+    }
+
+    public int GetRating() {
+        return rating;
+    }
+
+    public void SetRating(int rating) {
+        this.rating = rating;
     }
 
 }

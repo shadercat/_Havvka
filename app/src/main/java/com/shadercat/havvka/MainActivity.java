@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements ListFragment.List
     public void ListFragmentInteraction(Uri link) {
         switch (link.getScheme()) {
             case "data":
-                listOfItems = DataAdapter.GetProductList();
+                listOfItems = DataAdapter.GetProductList(this);
                 adapter = new ItemAdapter(this, R.layout.list_item, listOfItems);
                 listFragment.addAdapter(adapter);
                 break;

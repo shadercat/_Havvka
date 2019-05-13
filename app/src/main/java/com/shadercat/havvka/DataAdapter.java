@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 //use this class for getting data
 public class DataAdapter {
-    public static ArrayList<Item> GetProductList() {
+    public static ArrayList<Item> GetProductList(Context context) {
         ArrayList<Item> list = new ArrayList<>();
         if (WebAPI.IsProductDataUpdated()) {
             list = WebAPI.GetProductData();
@@ -25,7 +25,7 @@ public class DataAdapter {
         return list;
     }
 
-    public static ArrayList<FavouriteSet> GetFavouriteData() {
+    public static ArrayList<FavouriteSet> GetFavouriteData(Context context) {
         ArrayList<FavouriteSet> list = new ArrayList<>();
         if (WebAPI.IsFavouriteSetDataUpdated()) {
             list = WebAPI.GetFavouriteSetData();
