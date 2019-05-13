@@ -79,7 +79,7 @@ public class LoginActivity extends AppCompatActivity {
         if (clickCounter >= 1) {
             finishAffinity();
         } else {
-            SnackbarShow(getString(R.string.clickToExit));
+            ThematicSnackbar.SnackbarShow(getString(R.string.clickToExit),email,this);
             clickCounter++;
             clickTimer = new Timer();
             clickTimerTask = new MyTimerTask(new Action() {
@@ -112,16 +112,6 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void SnackbarShow(String mes) {
-        Snackbar mSnackbar = Snackbar.make(email, mes, Snackbar.LENGTH_SHORT)
-                .setActionTextColor(getResources().getColor(R.color.colorBlue));
-        View snackbarView = mSnackbar.getView();
-        snackbarView.setBackgroundResource(R.color.colorPrimaryDark);
-        TextView snackTextView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
-        snackTextView.setTextColor(getResources().getColor(R.color.colorWhite));
-        mSnackbar.show();
-    }
-
     interface Action {
         void action();
     }
@@ -139,7 +129,7 @@ public class LoginActivity extends AppCompatActivity {
                 SystemClock.sleep(3000);
                 finish();
             } else {
-                SnackbarShow(getString(R.string.wrongLogData));
+                ThematicSnackbar.SnackbarShow(getString(R.string.wrongLogData),email,getApplicationContext());
             }
             return null;
         }
