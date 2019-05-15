@@ -1,6 +1,7 @@
 package com.shadercat.havvka;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,9 +35,7 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-
         Item itemList = food.get(position);
-
         viewHolder.imageView.setImageResource(itemList.GetImage());
         viewHolder.nameView.setText(itemList.GetName());
         viewHolder.smallDescrView.setText(itemList.GetSmallDescr());

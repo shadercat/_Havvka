@@ -2,6 +2,8 @@ package com.shadercat.havvka;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import java.util.ArrayList;
 
@@ -14,8 +16,9 @@ public class DataAdapter {
             //TODO function for save product data in locale storage; update info about data
         } else {
             //TODO function for get product data from locale storage;
+            int id = R.drawable.food_test;
             for (int i = 0; i < 101; i++) {
-                Item item = new Item("Name of Food " + i, "Small descrition", "Big Description", R.drawable.food_test);
+                Item item = new Item("Name of Food " + i, "Small descrition", "Big Description", id);
                 item.SetID(i);
                 item.SetPrice(2.30);
                 item.SetIngridients("Ingridients");

@@ -1,5 +1,7 @@
 package com.shadercat.havvka;
 
+import android.graphics.Bitmap;
+
 import java.io.Serializable;
 
 public class Item implements Serializable {

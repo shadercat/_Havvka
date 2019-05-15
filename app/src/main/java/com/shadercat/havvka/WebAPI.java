@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class WebAPI {
     public static boolean IsProductDataUpdated() {
-        return true;
+        return false;
     }
 
     public static boolean IsFavouriteSetDataUpdated() {
