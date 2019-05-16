@@ -21,6 +21,9 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
                 + "price double,"
                 + "image integer,"
                 + "rating integer" + ");");
+        db.execSQL("create table imagedb ("
+                + "id integer primary key,"
+                + "img blob" + ");");
     }
 
     @Override

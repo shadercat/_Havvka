@@ -14,6 +14,15 @@ public class ImageDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("create table imagedb ("
                 + "id integer primary key,"
                 + "img blob" + ");");
+        db.execSQL("create table itemdb ("
+                + "id integer primary key,"
+                + "name text,"
+                + "smallDescr text,"
+                + "bigDescr text,"
+                + "ingridients,"
+                + "price double,"
+                + "image integer,"
+                + "rating integer" + ");");
     }
 
     @Override

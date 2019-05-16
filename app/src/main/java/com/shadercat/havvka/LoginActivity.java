@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.animation.Animation;
@@ -79,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
         if (clickCounter >= 1) {
             finishAffinity();
         } else {
-            ThematicSnackbar.SnackbarShow(getString(R.string.clickToExit),email,this);
+            ThematicSnackbar.SnackbarShow(getString(R.string.clickToExit), email, this);
             clickCounter++;
             clickTimer = new Timer();
             clickTimerTask = new MyTimerTask(new Action() {
@@ -129,7 +128,7 @@ public class LoginActivity extends AppCompatActivity {
                 SystemClock.sleep(3000);
                 finish();
             } else {
-                ThematicSnackbar.SnackbarShow(getString(R.string.wrongLogData),email,getApplicationContext());
+                ThematicSnackbar.SnackbarShow(getString(R.string.wrongLogData), email, getApplicationContext());
             }
             return null;
         }
