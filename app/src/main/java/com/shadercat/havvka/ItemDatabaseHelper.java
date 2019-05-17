@@ -21,9 +21,19 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
                 + "price double,"
                 + "image integer,"
                 + "rating integer" + ");");
-        db.execSQL("create table imagedb ("
-                + "id integer primary key,"
-                + "img blob" + ");");
+        db.execSQL("create table favset (" +
+                "id integer primary key, " +
+                "name text, " +
+                "count integer" + ");");
+        db.execSQL("create table vafitem (" +
+                "id integer," +
+                "itemid integer," +
+                "count integer," +
+                "constraint fk_favset " +
+                "foreign key (id) " +
+                "references favset(id) " +
+                "on update cascade " +
+                "on delete cascade" + ");");
     }
 
     @Override

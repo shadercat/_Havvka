@@ -40,8 +40,7 @@ public class InformationActivity extends AppCompatActivity {
         Bundle arguments = getIntent().getExtras();
         if (arguments != null) {
             item = (Item) arguments.getSerializable(Item.class.getSimpleName());
-            DatabaseAdapter db = new DatabaseAdapter(this);
-            image.setImageBitmap(db.GetImage(item.GetImage()));
+            image.setImageResource(item.GetImage());
             name.setText(item.GetName());
             smallDscr.setText(item.GetSmallDescr());
             bigDescr.setText(item.GetBigDescr());
