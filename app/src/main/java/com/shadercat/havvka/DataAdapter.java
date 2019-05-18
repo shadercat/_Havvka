@@ -83,7 +83,7 @@ public class DataAdapter {
         SharedPreferences preferences = context.getSharedPreferences("Preferences", Context.MODE_PRIVATE);
         SharedPreferences.Editor ed = preferences.edit();
         ed.clear();
-        ed.commit();
+        ed.commit();  //use commit `cause it`s an synchronized method
         InitializeUserInfo(context);
     }
 }

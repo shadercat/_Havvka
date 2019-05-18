@@ -5,11 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
-import java.util.Locale;
 
 public class FavouriteSetAdapter extends ArrayAdapter<FavouriteSet> {
     private LayoutInflater inflater;
@@ -34,8 +32,7 @@ public class FavouriteSetAdapter extends ArrayAdapter<FavouriteSet> {
         }
 
         FavouriteSet itemList = favouriteSets.get(position);
-
-         viewHolder.nameView.setText(itemList.getName());
+        viewHolder.nameView.setText(itemList.getName());
         viewHolder.quantityView.setText(String.valueOf(itemList.getCount()));
 
         return convertView;

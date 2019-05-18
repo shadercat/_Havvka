@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -34,7 +33,6 @@ public class FileAdapter {
                 e.printStackTrace();
             }
         }
-        Toast.makeText(context, directory.getAbsolutePath(), Toast.LENGTH_LONG).show();
         return directory.getAbsolutePath();
     }
 

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -130,24 +129,16 @@ public class CartFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         ListCartItem.RemoveCartItem(index);
-                        SnackbarShow();
+                        ThematicSnackbar.SnackbarWithActionShow(getString(R.string.removedFromCart),
+                                getString(R.string.cancel), snackbarOnClickListener,
+                                list,
+                                getContext());
                         UpdateInformation();
                         dialog.cancel();
                     }
                 });
         AlertDialog alert = builder.create();
         alert.show();
-    }
-
-    private void SnackbarShow() {
-        Snackbar mSnackbar = Snackbar.make(list, getString(R.string.removedFromCart), Snackbar.LENGTH_LONG)
-                .setAction(R.string.cancel, snackbarOnClickListener)
-                .setActionTextColor(getResources().getColor(R.color.colorBlue));
-        View snackbarView = mSnackbar.getView();
-        snackbarView.setBackgroundResource(R.color.colorPrimaryDark);
-        TextView snackTextView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
-        snackTextView.setTextColor(getResources().getColor(R.color.colorWhite));
-        mSnackbar.show();
     }
 
     private View.OnClickListener snackbarOnClickListener = new View.OnClickListener() {

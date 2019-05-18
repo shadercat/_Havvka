@@ -2,7 +2,6 @@ package com.shadercat.havvka;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -81,8 +80,11 @@ public class InformationActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int id) {
                         CartItem ct = new CartItem(item, picker.getValue());
                         ListCartItem.AddCartItem(ct);
-                        //Toast.makeText(getApplicationContext(),getString(R.string.addedToCart), Toast.LENGTH_LONG).show();
-                        SnackbarShow();
+                        ThematicSnackbar.SnackbarWithActionShow(getString(R.string.addedToCart),
+                                getString(R.string.cancel),
+                                snackbarOnClickListener,
+                                buy,
+                                getApplicationContext());
                         dialog.cancel();
                     }
                 })
@@ -93,17 +95,6 @@ public class InformationActivity extends AppCompatActivity {
                 });
         AlertDialog alert = builder.create();
         alert.show();
-    }
-
-    private void SnackbarShow() {
-        Snackbar mSnackbar = Snackbar.make(buy, getString(R.string.addedToCart), Snackbar.LENGTH_LONG)
-                .setAction(R.string.cancel, snackbarOnClickListener)
-                .setActionTextColor(getResources().getColor(R.color.colorBlue));
-        View snackbarView = mSnackbar.getView();
-        snackbarView.setBackgroundResource(R.color.colorPrimaryDark);
-        TextView snackTextView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
-        snackTextView.setTextColor(getResources().getColor(R.color.colorWhite));
-        mSnackbar.show();
     }
 
     private View.OnClickListener snackbarOnClickListener = new View.OnClickListener() {

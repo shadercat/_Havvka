@@ -78,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
         if (clickCounter >= 1) {
             finishAffinity();
         } else {
-            ThematicSnackbar.SnackbarShow(getString(R.string.clickToExit), email, this);
+            ThematicSnackbar.SnackbarTextShow(getString(R.string.clickToExit), email, this);
             clickCounter++;
             clickTimer = new Timer();
             clickTimerTask = new MyTimerTask(new Action() {
@@ -128,7 +128,7 @@ public class LoginActivity extends AppCompatActivity {
                 SystemClock.sleep(3000);
                 finish();
             } else {
-                ThematicSnackbar.SnackbarShow(getString(R.string.wrongLogData), email, getApplicationContext());
+                ThematicSnackbar.SnackbarTextShow(getString(R.string.wrongLogData), email, getApplicationContext());
             }
             return null;
         }
