@@ -13,12 +13,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class FileAdapter {
-    public static String saveImageToInternalStorage(Bitmap bitmapImage, String name, Context context){
+    public static String saveImageToInternalStorage(Bitmap bitmapImage, String name, Context context) {
         ContextWrapper cw = new ContextWrapper(context.getApplicationContext());
         // path to /data/data/yourapp/app_data/imageDir
         File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
         // Create imageDir
-        File mypath=new File(directory,name);
+        File mypath = new File(directory, name);
 
         FileOutputStream fos = null;
         try {
@@ -34,18 +34,16 @@ public class FileAdapter {
                 e.printStackTrace();
             }
         }
-        Toast.makeText(context,directory.getAbsolutePath(), Toast.LENGTH_LONG).show();
+        Toast.makeText(context, directory.getAbsolutePath(), Toast.LENGTH_LONG).show();
         return directory.getAbsolutePath();
     }
-    public static Bitmap loadImageFromStorage(String path)
-    {
+
+    public static Bitmap loadImageFromStorage(String path) {
         Bitmap b = null;
         try {
-            File f=new File(path);
+            File f = new File(path);
             b = BitmapFactory.decodeStream(new FileInputStream(f));
-        }
-        catch (FileNotFoundException e)
-        {
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         return b;

@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-import java.io.File;
 import java.util.ArrayList;
 
 //use this class for getting data
@@ -18,11 +17,15 @@ public class DataAdapter {
         } else {
             //TODO function for get product data from locale storage;
             int id = R.drawable.food_test;
+            Bitmap bm = BitmapFactory.decodeResource(context.getResources(), id);
+            String f = FileAdapter.saveImageToInternalStorage(bm, "foodtest.png", context);
+
             for (int i = 0; i < 101; i++) {
                 Item item = new Item("Name of Food " + i, "Small descrition", "Big Description", id);
                 item.SetID(i);
                 item.SetPrice(2.30);
                 item.SetIngridients("Ingridients");
+                item.setPath(f + "/foodtest.png");
                 list.add(item);
             }
         }

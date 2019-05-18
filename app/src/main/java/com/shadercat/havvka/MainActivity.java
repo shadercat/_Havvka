@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity implements ListFragment.List
 
 
     private ArrayList<Item> listOfItems = new ArrayList<>();
-    private ItemAdapter adapter;
+    private ItemListAdapter adapter;
     private CartItemAdapter CartAdapter;
 
     final ListFragment listFragment = new ListFragment();
@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements ListFragment.List
         switch (link.getScheme()) {
             case "data":
                 listOfItems = DataAdapter.GetProductList(this);
-                adapter = new ItemAdapter(this, R.layout.list_item, listOfItems);
+                adapter = new ItemListAdapter(this, listOfItems);
                 listFragment.addAdapter(adapter);
                 break;
             case "itemClick":
