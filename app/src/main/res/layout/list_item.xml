@@ -3,7 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="16dp"
-    android:id="@+id/listItem">
+    android:id="@+id/listItem"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="@drawable/ripple">
 
     <ImageView
         android:id="@+id/image"

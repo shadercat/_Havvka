@@ -47,8 +47,6 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
 
     interface ClickListeners {
         void OnClick(int position);
-
-        void OnClick2(int position);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -67,14 +65,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
         @Override
         public void onClick(View v) {
             if (mListener != null) {
-                switch (v.getId()) {
-                    case R.id.listItem:
-                        mListener.OnClick(getLayoutPosition());
-                        break;
-                    case R.id.image:
-                        mListener.OnClick2(getLayoutPosition());
-                        break;
-                }
+                mListener.OnClick(getLayoutPosition());
             }
         }
     }

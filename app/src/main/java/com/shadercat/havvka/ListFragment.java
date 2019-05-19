@@ -74,11 +74,6 @@ public class ListFragment extends Fragment {
             public void OnClick(int position) {
                 mListener.ListFragmentInteraction(Uri.parse("itemClick:" + position));
             }
-
-            @Override
-            public void OnClick2(int position) {
-                Toast.makeText(context, "Click on image", Toast.LENGTH_LONG).show();
-            }
         });
     }
 
