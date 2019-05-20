@@ -34,6 +34,14 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
                 "references favset(id) " +
                 "on update cascade " +
                 "on delete cascade" + ");");
+        db.execSQL("create table pictures(" +
+                "id integer primary key," +
+                "img blob," +
+                "constraint fk_itemdb " +
+                "foreign key (id) " +
+                "references itemdb(id) " +
+                "on update cascade " +
+                "on delete cascade);");
     }
 
     @Override

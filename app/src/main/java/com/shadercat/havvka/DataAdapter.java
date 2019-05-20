@@ -53,6 +53,7 @@ public class DataAdapter {
             ed.putInt("userid", 0);
             ed.putString("password", "");
             ed.putBoolean("IsCheckedAccount", true);
+            ed.putInt("dataver", 0);
             ed.apply();
         }
         ed.putString("useremail", email);
@@ -69,12 +70,31 @@ public class DataAdapter {
         UserInfo.IsCheckedAccount = preferences.getBoolean("IsCheckedAccount", false);
         UserInfo.UserEmail = preferences.getString("useremail", "guest");
         UserInfo.UserID = preferences.getInt("userid", 0);
+        UserInfo.DataVersion = preferences.getInt("dataver", 0);
         if (!preferences.contains("IsCheckedAccount")) {
             SharedPreferences.Editor ed = preferences.edit();
             ed.putBoolean("IsCheckedAccount", false);
             ed.putString("useremail", "guest");
             ed.putInt("userid", 0);
             ed.putString("password", "");
+            ed.putInt("dataver", 0);
+            ed.apply();
+        }
+    }
+
+    public static void SaveDataVersion(int ver, Context context){
+        SharedPreferences preferences = context.getSharedPreferences("Preferences", Context.MODE_PRIVATE);
+        SharedPreferences.Editor ed = preferences.edit();
+        if (!preferences.contains("IsCheckedAccount")) {
+            ed.putBoolean("IsCheckedAccount", false);
+            ed.putString("useremail", "guest");
+            ed.putInt("userid", 0);
+            ed.putString("password", "");
+            ed.putInt("dataver", 0);
+            ed.apply();
+        }
+        else {
+            ed.putInt("dataver", ver);
             ed.apply();
         }
     }

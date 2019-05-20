@@ -45,6 +45,11 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
         mListener = listeners;
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        return super.getItemViewType(position);
+    }
+
     interface ClickListeners {
         void OnClick(int position);
     }
