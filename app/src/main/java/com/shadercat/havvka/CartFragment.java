@@ -25,6 +25,7 @@ public class CartFragment extends Fragment {
     ListView list;
     TextView textSum;
     GridLayout sum_container;
+    Context context;
 
     public CartFragment() {
         // Required empty public constructor
@@ -59,6 +60,7 @@ public class CartFragment extends Fragment {
         super.onAttach(context);
         if (context instanceof CartFragmentInteractionListener) {
             mListener = (CartFragmentInteractionListener) context;
+            this.context = context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement ListFragmentInteractionListener");

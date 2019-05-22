@@ -89,12 +89,8 @@ public class MainActivity extends AppCompatActivity implements ListFragment.List
     public void ListFragmentInteraction(Uri link) {
         switch (link.getScheme()) {
             case "data":
-                listOfItems = DataAdapter.GetProductList(this);
-                adapter = new ItemListAdapter(this, listOfItems);
-                listFragment.addAdapter(adapter);
                 break;
             case "itemClick":
-                //Toast.makeText(getApplicationContext(),"Click on " + Integer.parseInt(link.getSchemeSpecificPart()) + " item", Toast.LENGTH_LONG).show();
                 int number = Integer.parseInt(link.getSchemeSpecificPart());
                 Intent product_info = new Intent(this, InformationActivity.class);
                 product_info.putExtra(Item.class.getSimpleName(), listOfItems.get(number));

@@ -1,5 +1,7 @@
 package com.shadercat.havvka;
 
+import android.graphics.Bitmap;
+
 import java.io.Serializable;
 
 public class Item implements Serializable {
@@ -12,7 +14,7 @@ public class Item implements Serializable {
     private double price;
     private int image;
     private int rating;
-    private String path;
+    private Bitmap img;
 
     public Item(String name, String smallDescr, String bigDescr, int image) {
         this(name, smallDescr, bigDescr, image, 1, " ", 0f, 1);
@@ -93,11 +95,11 @@ public class Item implements Serializable {
         this.rating = rating;
     }
 
-    public String getPath() {
-        return path;
+    public Bitmap getImg() {
+        return img;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public void setImg(Bitmap img) {
+        this.img = img;
     }
 }
