@@ -83,7 +83,7 @@ public class ListFragment extends Fragment {
             @Override
             public void OnClick(int position) {
                 Intent product_info = new Intent(context, InformationActivity.class);
-                product_info.putExtra(Item.class.getSimpleName(), items.get(position));
+                product_info.putExtra(Item.class.getSimpleName(), items.get(position).GetID());
                 startActivity(product_info);
             }
 

@@ -37,4 +37,6 @@
     <string name="wrongLogData">Неправильний пароль або пошта</string>
     <string name="exit">Вийти</string>
     <string name="next">Далі</string>
+    <string name="addNew">Додати новий</string>
+    <string name="addName">Введіть назву</string>
 </resources>

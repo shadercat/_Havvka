@@ -38,14 +38,17 @@ public class InformationActivity extends AppCompatActivity {
         addFavourites = (Button) findViewById(R.id.btn_addFavourites_InformationActivity);
         Bundle arguments = getIntent().getExtras();
         if (arguments != null) {
-            item = (Item) arguments.getSerializable(Item.class.getSimpleName());
-            image.setImageResource(item.GetImage());
-            name.setText(item.GetName());
-            smallDscr.setText(item.GetSmallDescr());
-            bigDescr.setText(item.GetBigDescr());
-            ingridients.setText(item.GetIngridients());
-            price.setText(String.format(Locale.getDefault(), "%.2f", item.GetPrice()));
-
+            int id = (int) arguments.getSerializable(Item.class.getSimpleName());
+            DatabaseAdapter db = new DatabaseAdapter(this);
+            item = db.GetItem(id);
+            if(item != null){
+                image.setImageBitmap(item.getImg());
+                name.setText(item.GetName());
+                smallDscr.setText(item.GetSmallDescr());
+                bigDescr.setText(item.GetBigDescr());
+                ingridients.setText(item.GetIngridients());
+                price.setText(String.format(Locale.getDefault(), "%.2f", item.GetPrice()));
+            }
         }
 
 

@@ -49,7 +49,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         } else {
             Item item = items.get(position);
             ViewHolder vh = (ViewHolder) holder;
-            vh.imageView.setImageResource(item.GetImage());
+            vh.imageView.setImageBitmap(item.getImg());
             vh.nameView.setText(item.GetName());
             vh.smallDescrView.setText(item.GetSmallDescr());
         }
@@ -117,6 +117,9 @@ public class ItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             view.setOnClickListener(this);
             imageView = (ImageView) view.findViewById(R.id.imageLoad);
             lastCircle = imageView;
+            if(mListener != null) {
+                mListener.StartAnim(imageView);
+            }
         }
 
         @Override

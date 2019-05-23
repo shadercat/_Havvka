@@ -36,7 +36,7 @@ public class CartItemAdapter extends ArrayAdapter<CartItem> {
 
         CartItem itemList = cartItems.get(position);
 
-        viewHolder.imageView.setImageResource(itemList.getItem().GetImage());
+        viewHolder.imageView.setImageBitmap(itemList.getItem().getImg());
         viewHolder.nameView.setText(itemList.getItem().GetName());
         viewHolder.quantityView.setText(String.valueOf(itemList.getQuantity()));
         viewHolder.priceView.setText(String.format(Locale.getDefault(), "%.2f", itemList.getPrice()));

@@ -17,7 +17,6 @@ public class MainActivity extends AppCompatActivity implements ListFragment.List
 
 
     private ArrayList<Item> listOfItems = new ArrayList<>();
-    private ItemListAdapter adapter;
     private CartItemAdapter CartAdapter;
 
     final ListFragment listFragment = new ListFragment();
@@ -87,18 +86,7 @@ public class MainActivity extends AppCompatActivity implements ListFragment.List
 
     @Override
     public void ListFragmentInteraction(Uri link) {
-        switch (link.getScheme()) {
-            case "data":
-                break;
-            case "itemClick":
-                int number = Integer.parseInt(link.getSchemeSpecificPart());
-                Intent product_info = new Intent(this, InformationActivity.class);
-                product_info.putExtra(Item.class.getSimpleName(), listOfItems.get(number));
-                startActivity(product_info);
-                break;
-            default:
-                //default
-        }
+
     }
 
     public void FavouriteFragmentInteraction(Uri link) {
@@ -122,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements ListFragment.List
             case "itemLongClick":
                 int number = Integer.parseInt(link.getSchemeSpecificPart());
                 Intent product_info = new Intent(this, InformationActivity.class);
-                product_info.putExtra(Item.class.getSimpleName(), ListCartItem.list.get(number).getItem());
+                product_info.putExtra(Item.class.getSimpleName(), ListCartItem.list.get(number).getItem().GetID());
                 startActivity(product_info);
                 break;
             default:

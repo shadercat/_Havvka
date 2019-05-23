@@ -16,13 +16,16 @@ public class DataAdapter {
             //TODO function for save product data in locale storage; update info about data
         } else {
             //TODO function for get product data from locale storage;
+            DatabaseAdapter db = new DatabaseAdapter(context);
             int id = R.drawable.food_test;
-            for (int i = 0; i < 101; i++) {
+            for (int i = 1; i < 21; i++) {
                 Item item = new Item("Name of Food " + i, "Small descrition", "Big Description", id);
                 item.SetID(i);
                 item.SetPrice(2.30);
                 item.SetIngridients("Ingridients");
+                item.setImg(BitmapFactory.decodeResource(context.getResources(),id));
                 list.add(item);
+                db.PutItem(item);
             }
         }
         return list;
@@ -34,7 +37,8 @@ public class DataAdapter {
             list = WebAPI.GetFavouriteSetData();
             //TODO function for save favourite set data in locale storage; update info about data
         } else {
-            //TODO function for get favourite set data from locale storage;
+            DatabaseAdapter db = new DatabaseAdapter(context);
+            ArrayList<FavouriteSet> sets = db.GetFavourites();
         }
         return list;
     }

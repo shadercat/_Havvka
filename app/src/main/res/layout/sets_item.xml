@@ -1,25 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="horizontal"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="16dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="@drawable/ripple">
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
-
-    <TextView
-            android:id="@+id/name_setsItem"
-            android:layout_width="82dp"
-            android:layout_height="73dp"
-            android:text="@string/infoAcivity_sample" />
-
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:visibility="invisible" />
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/count_setsItem"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/quantity" />
+            android:id="@+id/set_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Название"
+            android:textAlignment="center"
+            android:textSize="23sp" />
+
+        <TextView
+            android:id="@+id/set_quantity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Столица"
+            android:textAlignment="center" />
     </LinearLayout>
+</LinearLayout>

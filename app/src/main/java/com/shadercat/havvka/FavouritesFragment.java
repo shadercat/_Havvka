@@ -1,16 +1,30 @@
 package com.shadercat.havvka;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FavouritesFragment extends Fragment {
 
     private FavouriteFragmentInteractionListener mListener;
+    List<FavouriteSet> sets = new ArrayList<>();
+    FavouriteListAdapter adapter;
+    RecyclerView recyclerView;
+    Context context;
+
 
     public FavouritesFragment() {
         // Required empty public constructor
@@ -32,6 +46,7 @@ public class FavouritesFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_favourites, container, false);
+        recyclerView = (RecyclerView) view.findViewById(R.id.favouritesList);
         return view;
     }
 
@@ -41,6 +56,7 @@ public class FavouritesFragment extends Fragment {
         super.onAttach(context);
         if (context instanceof FavouriteFragmentInteractionListener) {
             mListener = (FavouriteFragmentInteractionListener) context;
+            this.context = context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement ListFragmentInteractionListener");
@@ -50,6 +66,20 @@ public class FavouritesFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        adapter = new FavouriteListAdapter(context, sets);
+        recyclerView.setAdapter(adapter);
+        adapter.setOnClickListeners(new FavouriteListAdapter.ClickListeners() {
+            @Override
+            public void onClick(int position) {
+
+            }
+
+            @Override
+            public void onClickAdd() {
+                AddDialog();
+            }
+        });
+        new DataDownload().execute();
     }
 
 
@@ -59,7 +89,41 @@ public class FavouritesFragment extends Fragment {
         mListener = null;
     }
 
+    private void AddDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        View inflater = this.getLayoutInflater().inflate(R.layout.dialog_add_favourite_set, null);
+        final EditText text = (EditText) inflater.findViewById(R.id.getNameDialog);
+        builder.setView(inflater)
+                .setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getContext(),text.getText(),Toast.LENGTH_SHORT).show();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
     public interface FavouriteFragmentInteractionListener {
         void FavouriteFragmentInteraction(Uri link);
+    }
+    class DataDownload extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... aVoid) {
+            sets = DataAdapter.GetFavouriteData(context);
+            adapter.setItems(sets);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            adapter.notifyDataSetChanged();
+            super.onPostExecute(aVoid);
+        }
     }
 }

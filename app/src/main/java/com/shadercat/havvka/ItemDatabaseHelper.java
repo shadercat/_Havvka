@@ -22,8 +22,9 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
                 + "image integer,"
                 + "rating integer" + ");");
         db.execSQL("create table favset (" +
-                "id integer primary key, " +
-                "name text, " +
+                "id integer primary key autoincrement," +
+                "name text," +
+                "serverid integer," +
                 "count integer" + ");");
         db.execSQL("create table vafitem (" +
                 "id integer," +
