@@ -1,6 +1,7 @@
 package com.shadercat.havvka;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -62,7 +63,9 @@ public class InformationActivity extends AppCompatActivity {
         addFavourites.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent addToFavSet = new Intent(getApplicationContext(),AddFavouriteSetActivity.class);
+                addToFavSet.putExtra(AddFavouriteSetActivity.ITEM_ID,item.GetID());
+                startActivity(addToFavSet);
             }
         });
     }

@@ -20,7 +20,7 @@
     <string name="title_settings">Параметри</string>
     <string name="infoAcivity_sample">Sample name</string>
     <string name="addToCart">Додати у кошик</string>
-    <string name="addToFavourites">Додати у улюблене</string>
+    <string name="addToFavourites">Додати у сет</string>
     <string name="cancel">Скасувати</string>
     <string name="add">Додати</string>
     <string name="chooseQuantity">Оберіть кількість</string>
@@ -39,4 +39,11 @@
     <string name="next">Далі</string>
     <string name="addNew">Додати новий</string>
     <string name="addName">Введіть назву</string>
+    <string name="chooseFavSet">Оберіть сет</string>
+    <string name="notEmptyName">Назва не може бути пустою</string>
+    <string name="addedNewFavSet">Нічого собі! Ви створили новий сет!</string>
+    <string name="addedNewFavItem">Бачу, Ви, додали продукт до сету</string>
+    <string name="description">Опис</string>
+    <string name="anotherDescription">Ще один опис</string>
+    <string name="ingridients">Інгрідієнти</string>
 </resources>

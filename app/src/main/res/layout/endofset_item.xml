@@ -20,5 +20,5 @@
         android:textColor="@color/colorAccent"
         android:text="@string/addNew"
         android:textAlignment="center"
-        android:textSize="23sp" />
+        android:textSize="20sp" />
 </LinearLayout>

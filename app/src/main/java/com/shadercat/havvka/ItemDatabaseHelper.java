@@ -26,7 +26,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
                 "name text," +
                 "serverid integer," +
                 "count integer" + ");");
-        db.execSQL("create table vafitem (" +
+        db.execSQL("create table favitem (" +
                 "id integer," +
                 "itemid integer," +
                 "count integer," +

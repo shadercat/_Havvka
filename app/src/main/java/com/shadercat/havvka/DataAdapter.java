@@ -2,7 +2,6 @@ package com.shadercat.havvka;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import java.util.ArrayList;
@@ -38,9 +37,25 @@ public class DataAdapter {
             //TODO function for save favourite set data in locale storage; update info about data
         } else {
             DatabaseAdapter db = new DatabaseAdapter(context);
-            ArrayList<FavouriteSet> sets = db.GetFavourites();
+            list = db.GetFavourites();
         }
         return list;
+    }
+
+    public static void SaveFavSet(Context context, FavouriteSet set, boolean isNew){
+        DatabaseAdapter db = new DatabaseAdapter(context);
+        if(isNew){
+            db.PutNewFavouriteSet(set);
+        }else {
+            db.PutFavouriteSet(set);
+        }
+    }
+
+    public static void AddItemToFavSet(Context context, int setId, int itemId, int count){
+        if(setId >= 0 && itemId >= 0){
+            DatabaseAdapter db = new DatabaseAdapter(context);
+            db.PutFavouriteItem(setId,itemId,count);
+        }
     }
 
     public static void SaveUserInfo(String email, String password, int userId, Context context) {

@@ -8,7 +8,7 @@ public class WebAPI {
     }
 
     public static boolean IsFavouriteSetDataUpdated() {
-        return true;
+        return false;
     }
 
     public static boolean CheckUserInfo(String email, String password) {

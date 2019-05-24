@@ -21,6 +21,6 @@
         android:textAlignment="center"
         android:layout_gravity="center_vertical"
         android:textColor="@color/colorAccent"
-        android:textSize="25sp"
+        android:textSize="20sp"
         android:text="@string/next" />
 </LinearLayout>

@@ -23,7 +23,6 @@ public class FavouritesFragment extends Fragment {
     List<FavouriteSet> sets = new ArrayList<>();
     FavouriteListAdapter adapter;
     RecyclerView recyclerView;
-    Context context;
 
 
     public FavouritesFragment() {
@@ -56,7 +55,6 @@ public class FavouritesFragment extends Fragment {
         super.onAttach(context);
         if (context instanceof FavouriteFragmentInteractionListener) {
             mListener = (FavouriteFragmentInteractionListener) context;
-            this.context = context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement ListFragmentInteractionListener");
@@ -66,7 +64,7 @@ public class FavouritesFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        adapter = new FavouriteListAdapter(context, sets);
+        adapter = new FavouriteListAdapter(getContext(), sets);
         recyclerView.setAdapter(adapter);
         adapter.setOnClickListeners(new FavouriteListAdapter.ClickListeners() {
             @Override
@@ -82,6 +80,11 @@ public class FavouritesFragment extends Fragment {
         new DataDownload().execute();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        new DataDownload().execute();
+    }
 
     @Override
     public void onDetach() {
@@ -97,7 +100,15 @@ public class FavouritesFragment extends Fragment {
                 .setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getContext(),text.getText(),Toast.LENGTH_SHORT).show();
+                        String name = text.getText().toString();
+                        if(!name.isEmpty()){
+                            FavouriteSet fs = new FavouriteSet(name,0);
+                            DataAdapter.SaveFavSet(getContext(),fs,true);
+                            Toast.makeText(getContext(),getString(R.string.addedNewFavSet),Toast.LENGTH_SHORT).show();
+                            new DataDownload().execute();
+                        } else {
+                            Toast.makeText(getContext(),getString(R.string.notEmptyName),Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
         AlertDialog alert = builder.create();
@@ -115,7 +126,7 @@ public class FavouritesFragment extends Fragment {
 
         @Override
         protected Void doInBackground(Void... aVoid) {
-            sets = DataAdapter.GetFavouriteData(context);
+            sets = DataAdapter.GetFavouriteData(getContext());
             adapter.setItems(sets);
             return null;
         }

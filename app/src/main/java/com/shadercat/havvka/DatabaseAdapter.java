@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -86,9 +87,21 @@ public class DatabaseAdapter {
         return item;
     }
 
+    public void PutNewFavouriteSet(FavouriteSet set){
+        ItemDatabaseHelper dbHelper = new ItemDatabaseHelper(context);
+        ContentValues cv = new ContentValues();
+        cv.put("name", set.getName());
+        cv.put("count", set.getCount());
+        cv.put("serverid", set.getServerId());
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.insertWithOnConflict("favset", null, cv, SQLiteDatabase.CONFLICT_REPLACE);
+        dbHelper.close();
+    }
+
     public void PutFavouriteSet(FavouriteSet set){
         ItemDatabaseHelper dbHelper = new ItemDatabaseHelper(context);
         ContentValues cv = new ContentValues();
+        cv.put("id", set.getId());
         cv.put("name", set.getName());
         cv.put("count", set.getCount());
         cv.put("serverid", set.getServerId());
@@ -101,6 +114,13 @@ public class DatabaseAdapter {
         ItemDatabaseHelper dbHelper = new ItemDatabaseHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.delete("favset", null, null);
+        dbHelper.close();
+    }
+    public void DeleteFavouriteSetById(int id){
+        ItemDatabaseHelper dbHelper = new ItemDatabaseHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String[] arg = {Integer.toString(id)};
+        db.delete("favset", "id = ?", arg);
         dbHelper.close();
     }
 

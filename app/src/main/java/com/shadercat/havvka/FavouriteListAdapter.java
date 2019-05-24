@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.Locale;
 
 public class FavouriteListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -50,7 +51,7 @@ public class FavouriteListAdapter extends RecyclerView.Adapter<RecyclerView.View
             FavouriteSet set = sets.get(position);
             ViewHolder vh = (ViewHolder) holder;
             vh.name.setText(set.getName());
-            vh.count.setText(set.getCount());
+            vh.count.setText(String.format(Locale.getDefault(),"%d",set.getCount()));
         }
     }
 
@@ -83,8 +84,8 @@ public class FavouriteListAdapter extends RecyclerView.Adapter<RecyclerView.View
         public ViewHolder(View view){
             super(view);
             view.setOnClickListener(this);
-            name = (TextView) view.findViewById(R.id.set_name);
-            count = (TextView) view.findViewById(R.id.set_quantity);
+            name = (TextView) view.findViewById(R.id.set_name_item);
+            count = (TextView) view.findViewById(R.id.set_quantity_item);
         }
 
         @Override

@@ -25,14 +25,26 @@
                 android:paddingLeft="24dp"
                 android:paddingRight="24dp">
 
-                <ImageView
-                    android:id="@+id/picture_InformationActivity"
+                <FrameLayout
                     android:layout_width="290dp"
                     android:layout_height="290dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="50dp"
-                    android:layout_marginBottom="24dp"
-                    android:src="@drawable/food_test" />
+                    android:layout_marginBottom="24dp">
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:cardCornerRadius="8dp">
+
+                        <ImageView
+                            android:id="@+id/picture_InformationActivity"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/ic_photo_size_select_large_black_24dp" />
+                    </android.support.v7.widget.CardView>
+                </FrameLayout>
 
                 <TextView
                     android:id="@+id/name_InformationActivity"
@@ -56,19 +68,20 @@
                     android:textColor="@color/colorGreen"
                     android:textSize="19sp" />
 
-                <LinearLayout
+                <GridLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="14dp">
+                    android:columnCount="2"
+                    android:minHeight="60dp"
+                    android:rowCount="1">
 
                     <Button
                         android:id="@+id/btn_addFavourites_InformationActivity"
                         style="@style/Widget.AppCompat.Button.Colored"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_columnWeight="1"
+                        android:layout_gravity="fill"
                         android:layout_margin="5dp"
-                        android:layout_weight="1"
                         android:padding="12dp"
                         android:text="@string/addToFavourites" />
 
@@ -76,45 +89,74 @@
                         android:id="@+id/btn_buy_InformationActivity"
                         style="@style/Widget.AppCompat.Button.Colored"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_columnWeight="1"
+                        android:layout_gravity="fill"
                         android:layout_margin="5dp"
-                        android:layout_weight="1"
                         android:padding="12dp"
                         android:text="@string/addToCart" />
-                </LinearLayout>
+                </GridLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="@string/description"
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/smallDescr_InformationActivity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="24dp"
+                    android:layout_marginBottom="10dp"
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
                     android:text="@string/infoAcivity_sample"
                     android:textColor="@color/colorBlack"
-                    android:textSize="19sp" />
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="@string/anotherDescription"
+                    android:textSize="16sp" />
+
 
                 <TextView
                     android:id="@+id/bigDescr_InformationActivity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="24dp"
+                    android:layout_marginBottom="10dp"
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
                     android:text="@string/infoAcivity_sample"
                     android:textColor="@color/colorBlack"
-                    android:textSize="19sp" />
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="@string/ingridients"
+                    android:textSize="16sp" />
+
 
                 <TextView
                     android:id="@+id/ingridients_InformationActivity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="24dp"
+                    android:layout_marginBottom="10dp"
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
                     android:text="@string/infoAcivity_sample"
                     android:textColor="@color/colorBlack"
-                    android:textSize="19sp" />
+                    android:textSize="18sp" />
 
 
             </LinearLayout>
