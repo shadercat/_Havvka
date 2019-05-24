@@ -44,10 +44,7 @@ public class FavouriteListAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if(position == sets.size()){
-            ViewHolder2 vh2 = (ViewHolder2) holder;
-            vh2.image.setImageResource(R.drawable.ic_add_circle_outline_black_24dp);
-        } else {
+        if(position != sets.size()){
             FavouriteSet set = sets.get(position);
             ViewHolder vh = (ViewHolder) holder;
             vh.name.setText(set.getName());

@@ -43,10 +43,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if(position == items.size()){
-            ViewHolder2 vh2 = (ViewHolder2) holder;
-            vh2.imageView.setImageResource(R.drawable.ic_autorenew_black_24dp);
-        } else {
+        if(position != items.size()){
             Item item = items.get(position);
             ViewHolder vh = (ViewHolder) holder;
             vh.imageView.setImageBitmap(item.getImg());
