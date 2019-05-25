@@ -29,7 +29,6 @@ public class AddFavouriteSetActivity extends AppCompatActivity implements View.O
         setContentView(R.layout.activity_add_favourite_set);
         list = findViewById(R.id.favouritesToChooseList);
         arrow = findViewById(R.id.back_arrow_favouriteAdd);
-        arrow.setImageResource(R.drawable.ic_arrow_back_black_24dp);
         arrow.setOnClickListener(this);
         sets = DataAdapter.GetFavouriteData(this);
         adapter = new FavouriteListAdapter(this, sets);

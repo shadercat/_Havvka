@@ -10,14 +10,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements ListFragment.ListFragmentInteractionListener, FavouritesFragment.FavouriteFragmentInteractionListener,
         OrdersFragment.OrdersFragmentInteractionListener, SettingFragment.SettingFragmentInteractionListener, CartFragment.CartFragmentInteractionListener {
 
-
-    private ArrayList<Item> listOfItems = new ArrayList<>();
-    private CartItemAdapter CartAdapter;
 
     final ListFragment listFragment = new ListFragment();
     final FavouritesFragment favouritesFragment = new FavouritesFragment();
@@ -102,19 +98,6 @@ public class MainActivity extends AppCompatActivity implements ListFragment.List
     }
 
     public void CartFragmentInteraction(Uri link) {
-        switch (link.getScheme()) {
-            case "data":
-                CartAdapter = new CartItemAdapter(this, R.layout.cart_item, ListCartItem.list);
-                cartFragment.AddAdapter(CartAdapter);
-                break;
-            case "itemLongClick":
-                int number = Integer.parseInt(link.getSchemeSpecificPart());
-                Intent product_info = new Intent(this, InformationActivity.class);
-                product_info.putExtra(Item.class.getSimpleName(), ListCartItem.list.get(number).getItem().GetID());
-                startActivity(product_info);
-                break;
-            default:
-                //default
-        }
+
     }
 }

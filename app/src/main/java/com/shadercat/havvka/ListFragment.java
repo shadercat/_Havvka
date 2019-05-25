@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -78,6 +79,8 @@ public class ListFragment extends Fragment {
         rotateAnim = AnimationUtils.loadAnimation(context, R.anim.rotate_logo);
         stop = AnimationUtils.loadAnimation(context, R.anim.shake_logo);
         adapter = new ItemListAdapter(context, items);
+        DividerItemDecoration itemDecor = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
+        listView.addItemDecoration(itemDecor);
         listView.setAdapter(adapter);
         adapter.setOnClickListeners(new ItemListAdapter.ClickListeners() {
             @Override

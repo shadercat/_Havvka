@@ -42,9 +42,9 @@ public class ItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if(position != items.size()){
-            Item item = items.get(position);
+            Item item = items.get(holder.getAdapterPosition());
             ViewHolder vh = (ViewHolder) holder;
             vh.imageView.setImageBitmap(item.getImg());
             vh.nameView.setText(item.GetName());

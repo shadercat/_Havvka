@@ -43,9 +43,9 @@ public class FavouriteListAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if(position != sets.size()){
-            FavouriteSet set = sets.get(position);
+            FavouriteSet set = sets.get(holder.getAdapterPosition());
             ViewHolder vh = (ViewHolder) holder;
             vh.name.setText(set.getName());
             vh.count.setText(String.format(Locale.getDefault(),"%d",set.getCount()));

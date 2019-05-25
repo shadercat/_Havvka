@@ -2,15 +2,16 @@ package com.shadercat.havvka;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.GridLayout;
 import android.widget.ListView;
 import android.widget.NumberPicker;
@@ -22,11 +23,11 @@ public class CartFragment extends Fragment {
 
 
     private CartFragmentInteractionListener mListener;
-    CartItemAdapter adapter;
-    ListView list;
     TextView textSum;
     GridLayout sum_container;
     Context context;
+    CartListAdapter adapter;
+    RecyclerView recyclerView;
 
     public CartFragment() {
         // Required empty public constructor
@@ -49,7 +50,7 @@ public class CartFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
-        list = (ListView) view.findViewById(R.id.cartItemsList);
+        recyclerView = (RecyclerView) view.findViewById(R.id.cartItemsList);
         textSum = (TextView) view.findViewById(R.id.sum_CartFragment);
         sum_container = (GridLayout) view.findViewById(R.id.sum_container_CartFragment);
         return view;
@@ -68,9 +69,27 @@ public class CartFragment extends Fragment {
         }
     }
 
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mListener.CartFragmentInteraction(Uri.parse("data:1"));
+        adapter = new CartListAdapter(getContext(),ListCartItem.list);
+        adapter.setOnClickListeners(new CartListAdapter.OnClickListeners() {
+            @Override
+            public void itemClick(int position) {
+                Intent product_info = new Intent(getContext(), InformationActivity.class);
+                product_info.putExtra(Item.class.getSimpleName(), ListCartItem.list.get(position).getItem().GetID());
+                startActivity(product_info);
+            }
+
+            @Override
+            public void moreClick(int position) {
+                Dialog(position);
+            }
+        });
+        DividerItemDecoration itemDecor = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
+        recyclerView.addItemDecoration(itemDecor);
+        recyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -83,24 +102,6 @@ public class CartFragment extends Fragment {
     public void onResume() {
         super.onResume();
         UpdateInformation();
-    }
-
-    public void AddAdapter(final CartItemAdapter adapter) {
-        this.adapter = adapter;
-        list.setAdapter(adapter);
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Dialog(position);
-            }
-        });
-        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                mListener.CartFragmentInteraction(Uri.parse("itemLongClick:" + String.valueOf(position)));
-                return false;
-            }
-        });
     }
 
     public interface CartFragmentInteractionListener {
@@ -134,7 +135,7 @@ public class CartFragment extends Fragment {
                         ListCartItem.RemoveCartItem(index);
                         ThematicSnackbar.SnackbarWithActionShow(getString(R.string.removedFromCart),
                                 getString(R.string.cancel), snackbarOnClickListener,
-                                list,
+                                recyclerView,
                                 getContext());
                         UpdateInformation();
                         dialog.cancel();
@@ -154,6 +155,7 @@ public class CartFragment extends Fragment {
 
     public void UpdateInformation() {
         if (adapter != null && textSum != null) {
+            adapter.setItems(ListCartItem.list);
             adapter.notifyDataSetChanged();
             textSum.setText(String.format(Locale.getDefault(), "%.2f", ListCartItem.GetSumPrice()));
             if (ListCartItem.GetSumPrice() == 0d) {

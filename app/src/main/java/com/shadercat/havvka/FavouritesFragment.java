@@ -5,8 +5,10 @@ import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +25,7 @@ public class FavouritesFragment extends Fragment {
     List<FavouriteSet> sets = new ArrayList<>();
     FavouriteListAdapter adapter;
     RecyclerView recyclerView;
+    Context context;
 
 
     public FavouritesFragment() {
@@ -55,6 +58,7 @@ public class FavouritesFragment extends Fragment {
         super.onAttach(context);
         if (context instanceof FavouriteFragmentInteractionListener) {
             mListener = (FavouriteFragmentInteractionListener) context;
+            this.context = context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement ListFragmentInteractionListener");
@@ -65,6 +69,8 @@ public class FavouritesFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         adapter = new FavouriteListAdapter(getContext(), sets);
+        DividerItemDecoration itemDecor = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
+        recyclerView.addItemDecoration(itemDecor);
         recyclerView.setAdapter(adapter);
         adapter.setOnClickListeners(new FavouriteListAdapter.ClickListeners() {
             @Override

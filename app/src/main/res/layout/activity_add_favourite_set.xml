@@ -8,18 +8,6 @@
     android:orientation="vertical"
     tools:context=".AddFavouriteSetActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="horizontal"
-        android:layout_weight="1">
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/favouritesToChooseList"
-            app:layoutManager="LinearLayoutManager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </LinearLayout>
-
     <GridLayout
         android:id="@+id/bottom_container_favouriteAdd"
         android:layout_width="match_parent"
@@ -32,7 +20,8 @@
             android:id="@+id/back_arrow_favouriteAdd"
             android:layout_margin="5dp"
             android:layout_height="35dp"
-            android:layout_width="35dp"/>
+            android:layout_width="35dp"
+            android:src="@drawable/ic_arrow_back_black_24dp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -42,4 +31,18 @@
             android:textAlignment="center"
             android:textSize="18sp" />
     </GridLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:layout_weight="1">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/favouritesToChooseList"
+            app:layoutManager="LinearLayoutManager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+
 </LinearLayout>
