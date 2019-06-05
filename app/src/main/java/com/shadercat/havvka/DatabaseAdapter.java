@@ -6,10 +6,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class DatabaseAdapter {
     private Context context;
@@ -37,7 +39,7 @@ public class DatabaseAdapter {
         cv2.put("img", byteArray);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.insertWithOnConflict("itemdb", null, cv, SQLiteDatabase.CONFLICT_REPLACE);
-        db.insertWithOnConflict("pictures", null, cv2,SQLiteDatabase.CONFLICT_REPLACE);
+        db.insertWithOnConflict("pictures", null, cv2, SQLiteDatabase.CONFLICT_REPLACE);
         dbHelper.close();
     }
 
@@ -48,13 +50,13 @@ public class DatabaseAdapter {
         dbHelper.close();
     }
 
-    public Item GetItem(int id){
+    public Item GetItem(int id) {
         ItemDatabaseHelper dbHelper = new ItemDatabaseHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         String[] arg = {Integer.toString(id)};
         Item item = null;
         Cursor c = db.query("itemdb", null, "id = ?", arg, null, null, null);
-        if (c.moveToFirst()){
+        if (c.moveToFirst()) {
             int idColIndex = c.getColumnIndex("id");
             int nameColIndex = c.getColumnIndex("name");
             int smallDescrColIndex = c.getColumnIndex("smallDescr");
@@ -73,11 +75,11 @@ public class DatabaseAdapter {
                     c.getInt(ratingColIndex));
         }
         c.close();
-        if(item == null){
+        if (item == null) {
             return null;
         }
         Cursor c2 = db.query("pictures", null, "id = ?", arg, null, null, null);
-        if(c2.moveToFirst()){
+        if (c2.moveToFirst()) {
             int imgColIndex = c2.getColumnIndex("img");
             byte[] bt = c2.getBlob(imgColIndex);
             item.setImg(BitmapFactory.decodeByteArray(bt, 0, bt.length));
@@ -87,7 +89,7 @@ public class DatabaseAdapter {
         return item;
     }
 
-    public void PutNewFavouriteSet(FavouriteSet set){
+    public void PutNewFavouriteSet(FavouriteSet set) {
         ItemDatabaseHelper dbHelper = new ItemDatabaseHelper(context);
         ContentValues cv = new ContentValues();
         cv.put("name", set.getName());
@@ -98,7 +100,7 @@ public class DatabaseAdapter {
         dbHelper.close();
     }
 
-    public void PutFavouriteSet(FavouriteSet set){
+    public void PutFavouriteSet(FavouriteSet set) {
         ItemDatabaseHelper dbHelper = new ItemDatabaseHelper(context);
         ContentValues cv = new ContentValues();
         cv.put("id", set.getId());
@@ -110,13 +112,14 @@ public class DatabaseAdapter {
         dbHelper.close();
     }
 
-    public void DeleteFavouriteSets(){
+    public void DeleteFavouriteSets() {
         ItemDatabaseHelper dbHelper = new ItemDatabaseHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.delete("favset", null, null);
         dbHelper.close();
     }
-    public void DeleteFavouriteSetById(int id){
+
+    public void DeleteFavouriteSetById(int id) {
         ItemDatabaseHelper dbHelper = new ItemDatabaseHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         String[] arg = {Integer.toString(id)};
@@ -124,17 +127,17 @@ public class DatabaseAdapter {
         dbHelper.close();
     }
 
-    public void UpdateFavouriteSetServerId(int setId, int serverId){
+    public void UpdateFavouriteSetServerId(int setId, int serverId) {
         ItemDatabaseHelper dbHelper = new ItemDatabaseHelper(context);
         ContentValues cv = new ContentValues();
-        cv.put("serverid",serverId);
+        cv.put("serverid", serverId);
         String[] arg = {Integer.toString(setId)};
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        db.update("favset",cv,"id = ?",arg);
+        db.update("favset", cv, "id = ?", arg);
     }
 
 
-    public void PutFavouriteItem(int setId, int itemId, int countItem){
+    public void PutFavouriteItem(int setId, int itemId, int countItem) {
         ItemDatabaseHelper dbHelper = new ItemDatabaseHelper(context);
         ContentValues cv = new ContentValues();
         cv.put("id", setId);
@@ -145,12 +148,12 @@ public class DatabaseAdapter {
         dbHelper.close();
     }
 
-    public ArrayList<FavouriteSet> GetFavourites(){
+    public ArrayList<FavouriteSet> GetFavourites() {
         ItemDatabaseHelper dbHelper = new ItemDatabaseHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         Cursor c = db.query("favset", null, null, null, null, null, null);
         ArrayList<FavouriteSet> res = new ArrayList<>();
-        if(c.moveToFirst()){
+        if (c.moveToFirst()) {
             int idColIndex = c.getColumnIndex("id");
             int nameColIndex = c.getColumnIndex("name");
             int serverIdColIndex = c.getColumnIndex("serverid");
@@ -165,6 +168,27 @@ public class DatabaseAdapter {
         c.close();
         dbHelper.close();
         return res;
+    }
+    public ArrayList<CartItem> GetFavouritesItems(int setId){
+        ItemDatabaseHelper dbHelper = new ItemDatabaseHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String[] args = {Integer.toString(setId)};
+        Cursor c = db.query("favitem", null, "id = ?", args, null, null, null);
+        HashMap<Integer,Integer> map = new HashMap<>();
+        if(c.moveToFirst()){
+            int countColIndex = c.getColumnIndex("count");
+            int itemIdColIndex = c.getColumnIndex("itemid");
+            do{
+                map.put(c.getInt(itemIdColIndex),c.getInt(countColIndex));
+            } while (c.moveToNext());
+        }
+        c.close();
+        ArrayList<CartItem> items = new ArrayList<>();
+        for (Map.Entry<Integer,Integer> item : map.entrySet()){
+            items.add(new CartItem(GetItem(item.getKey()),item.getValue()));
+        }
+        dbHelper.close();
+        return items;
     }
 
     public ArrayList<Item> GetItems() {

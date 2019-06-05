@@ -46,4 +46,5 @@
     <string name="description">Опис</string>
     <string name="anotherDescription">Ще один опис</string>
     <string name="ingridients">Інгрідієнти</string>
+    <string name="itemInfo">Інформація про продукт</string>
 </resources>

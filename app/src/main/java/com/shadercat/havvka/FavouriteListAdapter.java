@@ -22,7 +22,7 @@ public class FavouriteListAdapter extends RecyclerView.Adapter<RecyclerView.View
     private List<FavouriteSet> sets;
 
 
-    FavouriteListAdapter(Context context, List<FavouriteSet> sets){
+    FavouriteListAdapter(Context context, List<FavouriteSet> sets) {
         this.sets = sets;
         inflater = LayoutInflater.from(context);
     }
@@ -31,7 +31,7 @@ public class FavouriteListAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view;
-        switch (i){
+        switch (i) {
             case STANDARD_LAYOUT:
                 view = inflater.inflate(R.layout.sets_item, viewGroup, false);
                 return new ViewHolder(view);
@@ -44,11 +44,11 @@ public class FavouriteListAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        if(position != sets.size()){
+        if (position != sets.size()) {
             FavouriteSet set = sets.get(holder.getAdapterPosition());
             ViewHolder vh = (ViewHolder) holder;
             vh.name.setText(set.getName());
-            vh.count.setText(String.format(Locale.getDefault(),"%d",set.getCount()));
+            vh.count.setText(String.format(Locale.getDefault(), "%d", set.getCount()));
         }
     }
 
@@ -59,26 +59,28 @@ public class FavouriteListAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     @Override
     public int getItemViewType(int position) {
-        return (position != sets.size())? STANDARD_LAYOUT : ADD_NEW_LAYOUT;
+        return (position != sets.size()) ? STANDARD_LAYOUT : ADD_NEW_LAYOUT;
     }
 
-    public void setItems(List<FavouriteSet> list){
+    public void setItems(List<FavouriteSet> list) {
         this.sets = list;
     }
 
-    public void setOnClickListeners(ClickListeners listeners){
+    public void setOnClickListeners(ClickListeners listeners) {
         mListener = listeners;
     }
 
-    interface ClickListeners{
+    interface ClickListeners {
         void onClick(int position);
+
         void onClickAdd();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView name;
         TextView count;
-        public ViewHolder(View view){
+
+        public ViewHolder(View view) {
             super(view);
             view.setOnClickListener(this);
             name = (TextView) view.findViewById(R.id.set_name_item);
@@ -87,16 +89,17 @@ public class FavouriteListAdapter extends RecyclerView.Adapter<RecyclerView.View
 
         @Override
         public void onClick(View v) {
-            if(mListener != null){
+            if (mListener != null) {
                 mListener.onClick(getLayoutPosition());
             }
         }
     }
-    class ViewHolder2 extends RecyclerView.ViewHolder implements View.OnClickListener{
+
+    class ViewHolder2 extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView image;
 
-        public ViewHolder2(View view){
+        public ViewHolder2(View view) {
             super(view);
             view.setOnClickListener(this);
             image = (ImageView) view.findViewById(R.id.image_sets);
@@ -104,7 +107,7 @@ public class FavouriteListAdapter extends RecyclerView.Adapter<RecyclerView.View
 
         @Override
         public void onClick(View v) {
-            if(mListener != null){
+            if (mListener != null) {
                 mListener.onClickAdd();
             }
         }

@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
-import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
@@ -73,7 +72,7 @@ public class CartFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mListener.CartFragmentInteraction(Uri.parse("data:1"));
-        adapter = new CartListAdapter(getContext(),ListCartItem.list);
+        adapter = new CartListAdapter(getContext(), ListCartItem.list);
         adapter.setOnClickListeners(new CartListAdapter.OnClickListeners() {
             @Override
             public void itemClick(int position) {

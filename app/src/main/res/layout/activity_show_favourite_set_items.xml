@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ShowFavouriteSetItems">
+    <GridLayout
+        android:id="@+id/top_container_favouriteItems"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="2"
+        android:padding="5dp"
+        android:rowCount="1">
+
+        <ImageView
+            android:id="@+id/back_arrow_favouriteItems"
+            android:layout_margin="5dp"
+            android:layout_height="35dp"
+            android:layout_width="35dp"
+            android:src="@drawable/ic_arrow_back_black_24dp"/>
+
+    </GridLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:layout_below="@+id/top_container_favouriteItems"
+        android:layout_above="@+id/sum_container_FavouriteItems"
+        >
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/favouritesItems"
+            app:layoutManager="LinearLayoutManager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <GridLayout
+        android:layout_alignParentBottom="true"
+        android:id="@+id/sum_container_FavouriteItems"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="3"
+        android:padding="5dp"
+        android:rowCount="1">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:gravity="start"
+            android:text="@string/summ"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/sum_FavouriteItems"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/colorLightGreen"
+            android:textSize="18sp" />
+
+        <Button
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:id="@+id/add_btn_FavouriteItems"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:text="@string/addToCart" />
+    </GridLayout>
+</RelativeLayout>

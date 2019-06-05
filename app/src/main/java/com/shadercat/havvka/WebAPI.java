@@ -1,6 +1,11 @@
 package com.shadercat.havvka;
 
+import android.content.Context;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class WebAPI {
     public static boolean IsProductDataUpdated() {
@@ -34,6 +39,7 @@ public class WebAPI {
             list.add(item);
         }
         return list;
+
     }
 
     public static ArrayList<FavouriteSet> GetFavouriteSetData() {

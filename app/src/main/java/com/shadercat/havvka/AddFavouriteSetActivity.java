@@ -1,9 +1,9 @@
 package com.shadercat.havvka;
 
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.EditText;
@@ -34,7 +34,7 @@ public class AddFavouriteSetActivity extends AppCompatActivity implements View.O
         adapter = new FavouriteListAdapter(this, sets);
         list.setAdapter(adapter);
         Bundle arguments = getIntent().getExtras();
-        if(arguments != null){
+        if (arguments != null) {
             itemId = (int) arguments.getSerializable(ITEM_ID);
         }
         adapter.setOnClickListeners(new FavouriteListAdapter.ClickListeners() {
@@ -42,6 +42,7 @@ public class AddFavouriteSetActivity extends AppCompatActivity implements View.O
             public void onClick(int position) {
                 NumberPickerDialog(position);
             }
+
             @Override
             public void onClickAdd() {
                 AddDialog();
@@ -54,12 +55,13 @@ public class AddFavouriteSetActivity extends AppCompatActivity implements View.O
         onBackPressed();
     }
 
-    private void redownloadSets(){
+    private void redownloadSets() {
         sets = DataAdapter.GetFavouriteData(this);
         adapter.setItems(sets);
         adapter.notifyDataSetChanged();
     }
-    private void AddDialog(){
+
+    private void AddDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View inflater = this.getLayoutInflater().inflate(R.layout.dialog_add_favourite_set, null);
         final EditText text = (EditText) inflater.findViewById(R.id.getNameDialog);
@@ -68,18 +70,19 @@ public class AddFavouriteSetActivity extends AppCompatActivity implements View.O
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String name = text.getText().toString();
-                        if(!name.isEmpty()){
-                            FavouriteSet fs = new FavouriteSet(name,0);
-                            DataAdapter.SaveFavSet(getApplicationContext(),fs,true);
+                        if (!name.isEmpty()) {
+                            FavouriteSet fs = new FavouriteSet(name, 0);
+                            DataAdapter.SaveFavSet(getApplicationContext(), fs, true);
                             redownloadSets();
                         } else {
-                            Toast.makeText(getApplicationContext(),getString(R.string.notEmptyName),Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), getString(R.string.notEmptyName), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
         AlertDialog alert = builder.create();
         alert.show();
     }
+
     private void NumberPickerDialog(int pos) {
         final int position = pos;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -96,7 +99,7 @@ public class AddFavouriteSetActivity extends AppCompatActivity implements View.O
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         DataAdapter.AddItemToFavSet(getApplicationContext(), sets.get(position).getId(), itemId, picker.getValue());
-                        Toast.makeText(getApplicationContext(), getString(R.string.addedNewFavItem),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.addedNewFavItem), Toast.LENGTH_SHORT).show();
                         onBackPressed();
                     }
                 })

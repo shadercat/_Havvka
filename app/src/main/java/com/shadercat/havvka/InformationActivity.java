@@ -15,6 +15,7 @@ import java.util.Locale;
 
 public class InformationActivity extends AppCompatActivity {
 
+
     ImageView image;
     TextView name;
     TextView smallDscr;
@@ -37,12 +38,18 @@ public class InformationActivity extends AppCompatActivity {
         price = (TextView) findViewById(R.id.price_InformationActivity);
         buy = (Button) findViewById(R.id.btn_buy_InformationActivity);
         addFavourites = (Button) findViewById(R.id.btn_addFavourites_InformationActivity);
+        findViewById(R.id.back_arrow_info).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         Bundle arguments = getIntent().getExtras();
         if (arguments != null) {
             int id = (int) arguments.getSerializable(Item.class.getSimpleName());
             DatabaseAdapter db = new DatabaseAdapter(this);
             item = db.GetItem(id);
-            if(item != null){
+            if (item != null) {
                 image.setImageBitmap(item.getImg());
                 name.setText(item.GetName());
                 smallDscr.setText(item.GetSmallDescr());
@@ -63,8 +70,8 @@ public class InformationActivity extends AppCompatActivity {
         addFavourites.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent addToFavSet = new Intent(getApplicationContext(),AddFavouriteSetActivity.class);
-                addToFavSet.putExtra(AddFavouriteSetActivity.ITEM_ID,item.GetID());
+                Intent addToFavSet = new Intent(getApplicationContext(), AddFavouriteSetActivity.class);
+                addToFavSet.putExtra(AddFavouriteSetActivity.ITEM_ID, item.GetID());
                 startActivity(addToFavSet);
             }
         });

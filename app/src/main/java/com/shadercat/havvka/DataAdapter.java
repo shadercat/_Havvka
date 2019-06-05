@@ -22,7 +22,7 @@ public class DataAdapter {
                 item.SetID(i);
                 item.SetPrice(2.30);
                 item.SetIngridients("Ingridients");
-                item.setImg(BitmapFactory.decodeResource(context.getResources(),id));
+                item.setImg(BitmapFactory.decodeResource(context.getResources(), id));
                 list.add(item);
                 db.PutItem(item);
             }
@@ -42,20 +42,26 @@ public class DataAdapter {
         return list;
     }
 
-    public static void SaveFavSet(Context context, FavouriteSet set, boolean isNew){
+    public static void SaveFavSet(Context context, FavouriteSet set, boolean isNew) {
         DatabaseAdapter db = new DatabaseAdapter(context);
-        if(isNew){
+        if (isNew) {
             db.PutNewFavouriteSet(set);
-        }else {
+        } else {
             db.PutFavouriteSet(set);
         }
     }
 
-    public static void AddItemToFavSet(Context context, int setId, int itemId, int count){
-        if(setId >= 0 && itemId >= 0){
+    public static void AddItemToFavSet(Context context, int setId, int itemId, int count) {
+        if (setId >= 0 && itemId >= 0) {
             DatabaseAdapter db = new DatabaseAdapter(context);
-            db.PutFavouriteItem(setId,itemId,count);
+            db.PutFavouriteItem(setId, itemId, count);
         }
+    }
+    public static ArrayList<CartItem> GetFavItems(Context context, int id){
+        ArrayList<CartItem> arrayList;
+        DatabaseAdapter db = new DatabaseAdapter(context);
+        arrayList = db.GetFavouritesItems(id);
+        return arrayList;
     }
 
     public static void SaveUserInfo(String email, String password, int userId, Context context) {
@@ -97,7 +103,7 @@ public class DataAdapter {
         }
     }
 
-    public static void SaveDataVersion(int ver, Context context){
+    public static void SaveDataVersion(int ver, Context context) {
         SharedPreferences preferences = context.getSharedPreferences("Preferences", Context.MODE_PRIVATE);
         SharedPreferences.Editor ed = preferences.edit();
         if (!preferences.contains("IsCheckedAccount")) {
@@ -107,8 +113,7 @@ public class DataAdapter {
             ed.putString("password", "");
             ed.putInt("dataver", 0);
             ed.apply();
-        }
-        else {
+        } else {
             ed.putInt("dataver", ver);
             ed.apply();
         }

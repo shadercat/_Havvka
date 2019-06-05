@@ -7,29 +7,54 @@
     android:fitsSystemWindows="true"
     tools:context=".InformationActivity">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
-        android:scrollbars="none">
+        android:orientation="vertical">
 
-        <RelativeLayout
+        <GridLayout
+            android:id="@+id/bottom_container_favouriteAdd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="top">
+            android:columnCount="2"
+            android:padding="5dp"
+            android:rowCount="1">
+
+            <ImageView
+                android:id="@+id/back_arrow_info"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_margin="5dp"
+                android:src="@drawable/ic_arrow_back_black_24dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:text="@string/itemInfo"
+                android:textAlignment="center"
+                android:textSize="18sp" />
+        </GridLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingLeft="24dp"
-                android:paddingRight="24dp">
+                android:paddingRight="24dp"
+                android:paddingBottom="40dp">
 
                 <FrameLayout
                     android:layout_width="290dp"
                     android:layout_height="290dp"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="50dp"
+                    android:layout_marginTop="20dp"
+
                     android:layout_marginBottom="24dp">
 
                     <android.support.v7.widget.CardView
@@ -160,6 +185,7 @@
 
 
             </LinearLayout>
-        </RelativeLayout>
-    </ScrollView>
+        </ScrollView>
+    </LinearLayout>
+
 </android.support.design.widget.CoordinatorLayout>

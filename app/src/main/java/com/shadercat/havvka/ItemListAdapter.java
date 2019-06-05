@@ -28,7 +28,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view;
-        switch (i){
+        switch (i) {
             case STANDARD_LAYOUT:
                 view = inflater.inflate(R.layout.list_item, viewGroup, false);
                 ViewHolder vh = new ViewHolder(view);
@@ -43,7 +43,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        if(position != items.size()){
+        if (position != items.size()) {
             Item item = items.get(holder.getAdapterPosition());
             ViewHolder vh = (ViewHolder) holder;
             vh.imageView.setImageBitmap(item.getImg());
@@ -66,24 +66,27 @@ public class ItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return (position == items.size()) ? BORDER_LAYOUT : STANDARD_LAYOUT;
     }
 
-    public void StopAnim(){
-        if(mListener != null && lastCircle != null) {
+    public void StopAnim() {
+        if (mListener != null && lastCircle != null) {
             mListener.StopAnim(lastCircle);
         }
     }
 
-    public void StartAnim(){
-        if(mListener != null && lastCircle != null) {
+    public void StartAnim() {
+        if (mListener != null && lastCircle != null) {
             mListener.StartAnim(lastCircle);
         }
     }
-    public void setItems(List<Item> items){
+
+    public void setItems(List<Item> items) {
         this.items = items;
     }
 
     interface ClickListeners {
         void OnClick(int position);
+
         void StartAnim(View view);
+
         void StopAnim(View view);
     }
 
@@ -109,19 +112,20 @@ public class ItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public class ViewHolder2 extends RecyclerView.ViewHolder implements View.OnClickListener {
         final ImageView imageView;
+
         public ViewHolder2(View view) {
             super(view);
             view.setOnClickListener(this);
             imageView = (ImageView) view.findViewById(R.id.imageLoad);
             lastCircle = imageView;
-            if(mListener != null) {
+            if (mListener != null) {
                 mListener.StartAnim(imageView);
             }
         }
 
         @Override
         public void onClick(View v) {
-            if(mListener != null) {
+            if (mListener != null) {
                 mListener.StartAnim(imageView);
             }
         }

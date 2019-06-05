@@ -12,13 +12,13 @@ import android.widget.TextView;
 import java.util.List;
 import java.util.Locale;
 
-public class CartListAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class CartListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private OnClickListeners mListener;
     private List<CartItem> items;
     private LayoutInflater inflater;
 
-    CartListAdapter(Context context, List<CartItem> list){
+    CartListAdapter(Context context, List<CartItem> list) {
         this.items = list;
         inflater = LayoutInflater.from(context);
     }
@@ -45,25 +45,26 @@ public class CartListAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHold
         return items.size();
     }
 
-    public void setOnClickListeners(OnClickListeners listeners){
+    public void setOnClickListeners(OnClickListeners listeners) {
         mListener = listeners;
     }
 
-    public void setItems(List<CartItem> items){
+    public void setItems(List<CartItem> items) {
         this.items = items;
     }
 
-    interface OnClickListeners{
+    interface OnClickListeners {
         void itemClick(int position);
+
         void moreClick(int position);
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         final ImageView imageView, ic_more;
         final TextView nameView, quantityView, priceView;
 
-        ViewHolder(View view){
+        ViewHolder(View view) {
             super(view);
             imageView = (ImageView) view.findViewById(R.id.image_cartItem);
             nameView = (TextView) view.findViewById(R.id.name_cartItem);
@@ -76,8 +77,8 @@ public class CartListAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         @Override
         public void onClick(View v) {
-            if(mListener != null){
-                switch (v.getId()){
+            if (mListener != null) {
+                switch (v.getId()) {
                     case R.id.setting_cartItem:
                         mListener.moreClick(getLayoutPosition());
                         break;

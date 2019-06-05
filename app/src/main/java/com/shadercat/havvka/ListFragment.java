@@ -15,6 +15,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -92,14 +93,14 @@ public class ListFragment extends Fragment {
 
             @Override
             public void StartAnim(View view) {
-                if(rotateAnim != null){
+                if (rotateAnim != null) {
                     ((ImageView) view).startAnimation(rotateAnim);
                 }
             }
 
             @Override
             public void StopAnim(View view) {
-                if(stop != null){
+                if (stop != null) {
                     ((ImageView) view).startAnimation(stop);
                 }
             }
@@ -111,7 +112,7 @@ public class ListFragment extends Fragment {
         void ListFragmentInteraction(Uri link);
     }
 
-    class DataDownload extends AsyncTask<Void, Void, Void>{
+    class DataDownload extends AsyncTask<Void, Void, Void> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();

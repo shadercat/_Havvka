@@ -2,10 +2,10 @@ package com.shadercat.havvka;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DividerItemDecoration;
@@ -75,7 +75,9 @@ public class FavouritesFragment extends Fragment {
         adapter.setOnClickListeners(new FavouriteListAdapter.ClickListeners() {
             @Override
             public void onClick(int position) {
-
+                Intent info = new Intent(getContext(),ShowFavouriteSetItems.class);
+                info.putExtra(ShowFavouriteSetItems.FAVSET_ID, sets.get(position).getId());
+                startActivity(info);
             }
 
             @Override
@@ -98,7 +100,7 @@ public class FavouritesFragment extends Fragment {
         mListener = null;
     }
 
-    private void AddDialog(){
+    private void AddDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         View inflater = this.getLayoutInflater().inflate(R.layout.dialog_add_favourite_set, null);
         final EditText text = (EditText) inflater.findViewById(R.id.getNameDialog);
@@ -107,13 +109,13 @@ public class FavouritesFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String name = text.getText().toString();
-                        if(!name.isEmpty()){
-                            FavouriteSet fs = new FavouriteSet(name,0);
-                            DataAdapter.SaveFavSet(getContext(),fs,true);
-                            Toast.makeText(getContext(),getString(R.string.addedNewFavSet),Toast.LENGTH_SHORT).show();
+                        if (!name.isEmpty()) {
+                            FavouriteSet fs = new FavouriteSet(name, 0);
+                            DataAdapter.SaveFavSet(getContext(), fs, true);
+                            Toast.makeText(getContext(), getString(R.string.addedNewFavSet), Toast.LENGTH_SHORT).show();
                             new DataDownload().execute();
                         } else {
-                            Toast.makeText(getContext(),getString(R.string.notEmptyName),Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), getString(R.string.notEmptyName), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -124,6 +126,7 @@ public class FavouritesFragment extends Fragment {
     public interface FavouriteFragmentInteractionListener {
         void FavouriteFragmentInteraction(Uri link);
     }
+
     class DataDownload extends AsyncTask<Void, Void, Void> {
         @Override
         protected void onPreExecute() {
