@@ -1,6 +1,7 @@
 package com.shadercat.havvka;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -46,7 +48,18 @@ public class ItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if (position != items.size()) {
             Item item = items.get(holder.getAdapterPosition());
             ViewHolder vh = (ViewHolder) holder;
-            vh.imageView.setImageBitmap(item.getImg());
+            if(DataAdapter.imgCache.containsKey(item.GetID())){
+                Bitmap bm = DataAdapter.imgCache.get(item.GetID());
+                vh.imageView.setImageBitmap(bm);
+            }
+            else {
+                DataAdapter.imgCache.put(item.GetID(),Bitmap.createBitmap(100, 100,
+                        Bitmap.Config.ARGB_8888));
+                if(mListener != null){
+                    mListener.LoadingImage(vh.imageView, holder.getAdapterPosition());
+                }
+                vh.imageView.setImageResource(R.drawable.food_test);
+            }
             vh.nameView.setText(item.GetName());
             vh.smallDescrView.setText(item.GetSmallDescr());
         }
@@ -88,6 +101,8 @@ public class ItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         void StartAnim(View view);
 
         void StopAnim(View view);
+
+        void LoadingImage(View view, int pos);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

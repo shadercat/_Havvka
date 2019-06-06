@@ -2,12 +2,19 @@ package com.shadercat.havvka;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
 //use this class for getting data
 public class DataAdapter {
+    public static Map<Integer, Bitmap> imgCache = new HashMap<>();
     public static ArrayList<Item> GetProductList(Context context) {
         ArrayList<Item> list = new ArrayList<>();
         if (WebAPI.IsProductDataUpdated()) {
@@ -16,13 +23,27 @@ public class DataAdapter {
         } else {
             //TODO function for get product data from locale storage;
             DatabaseAdapter db = new DatabaseAdapter(context);
+            int min = 100000;
+            int max = 999999;
+            int diff = max - min;
+            Random random = new Random();
+            int i = random.nextInt(diff + 1) + min;
+            URL url;
+
             int id = R.drawable.food_test;
-            for (int i = 1; i < 21; i++) {
+            for (int j = 1; j < 21; j++) {
                 Item item = new Item("Name of Food " + i, "Small descrition", "Big Description", id);
-                item.SetID(i);
+                item.SetID(j);
                 item.SetPrice(2.30);
                 item.SetIngridients("Ingridients");
                 item.setImg(BitmapFactory.decodeResource(context.getResources(), id));
+                try{
+                    url = new URL("http://placehold.it/250/" + i + "?text=" + i);
+                } catch (MalformedURLException e){
+                    url = null;
+                }
+                item.setUrl(url);
+                i = random.nextInt(diff + 1) + min;
                 list.add(item);
                 db.PutItem(item);
             }

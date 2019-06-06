@@ -3,6 +3,9 @@ package com.shadercat.havvka;
 import android.graphics.Bitmap;
 
 import java.io.Serializable;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Random;
 
 public class Item implements Serializable {
 
@@ -14,6 +17,7 @@ public class Item implements Serializable {
     private double price;
     private int image;
     private int rating;
+    private URL url;
     private Bitmap img;
 
     public Item(String name, String smallDescr, String bigDescr, int image) {
@@ -101,5 +105,13 @@ public class Item implements Serializable {
 
     public void setImg(Bitmap img) {
         this.img = img;
+    }
+
+    public void setUrl(URL url) {
+        this.url = url;
+    }
+
+    public URL getUrl(){
+        return url;
     }
 }
