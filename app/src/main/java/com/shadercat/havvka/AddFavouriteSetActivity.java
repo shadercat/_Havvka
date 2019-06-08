@@ -80,7 +80,9 @@ public class AddFavouriteSetActivity extends AppCompatActivity implements View.O
 
     @Override
     protected void onDestroy() {
-        parallelThread.quit();
+        if(parallelThread != null){
+            parallelThread.quit();
+        }
         super.onDestroy();
     }
 
@@ -133,9 +135,20 @@ public class AddFavouriteSetActivity extends AppCompatActivity implements View.O
                 .setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        DataAdapter.AddItemToFavSet(getApplicationContext(), sets.get(position).getId(), itemId, picker.getValue());
-                        Toast.makeText(getApplicationContext(), getString(R.string.addedNewFavItem), Toast.LENGTH_SHORT).show();
-                        onBackPressed();
+                        Runnable taskAddItem = new Runnable() {
+                            @Override
+                            public void run() {
+                                DataAdapter.AddItemToFavSet(getApplicationContext(), sets.get(position).getId(), itemId, picker.getValue());
+                                mUIHandler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(getApplicationContext(), getString(R.string.addedNewFavItem), Toast.LENGTH_SHORT).show();
+                                        onBackPressed();
+                                    }
+                                });
+                            }
+                        };
+                        parallelThread.postTask(taskAddItem);
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

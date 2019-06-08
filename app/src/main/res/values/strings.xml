@@ -47,4 +47,15 @@
     <string name="anotherDescription">Ще один опис</string>
     <string name="ingridients">Інгрідієнти</string>
     <string name="itemInfo">Інформація про продукт</string>
+    <string name="summOfSet">Сума сету</string>
+    <string name="itemsAddedToCart">Товари додані до кошику</string>
+    <string name="propositions">Місця де це є</string>
+    <string name="rating">Рейтинг</string>
+    <string name="setRating">Оцінити</string>
+    <string name="send">Відправити</string>
+    <string name="sendRating">Дякуємо за вашу думку!</string>
+    <string name="howIsIt">Наскількі це круто?</string>
+    <string name="date">Дата</string>
+    <string name="status">Статус</string>
+    <string name="summ_single">Сума</string>
 </resources>

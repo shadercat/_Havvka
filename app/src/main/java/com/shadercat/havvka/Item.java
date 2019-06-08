@@ -14,10 +14,10 @@ public class Item implements Serializable {
     private String bigDescr;
     private String ingridients;
     private double price;
-    private int rating;
+    private double rating;
     private URL url;
 
-    public Item(int id, String name, String smallDescr, String bigDescr, String ingridients, double price, int rating, String url) {
+    public Item(int id, String name, String smallDescr, String bigDescr, String ingridients, double price, double rating, String url) {
         this.ID = id;
         this.name = name;
         this.smallDescr = smallDescr;
@@ -80,11 +80,11 @@ public class Item implements Serializable {
         this.ingridients = ingridients;
     }
 
-    public int getRating() {
+    public double getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(double rating) {
         this.rating = rating;
     }
 

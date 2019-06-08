@@ -3,7 +3,7 @@ package com.shadercat.havvka;
 import android.os.Handler;
 import android.os.HandlerThread;
 
-public class mWorkingThread  extends HandlerThread {
+public class mWorkingThread extends HandlerThread {
 
     private Handler mWorkerHandler;
 
@@ -11,11 +11,11 @@ public class mWorkingThread  extends HandlerThread {
         super(name);
     }
 
-    public void postTask(Runnable task){
+    public void postTask(Runnable task) {
         mWorkerHandler.post(task);
     }
 
-    public void prepareHandler(){
+    public void prepareHandler() {
         mWorkerHandler = new Handler(getLooper());
     }
 }

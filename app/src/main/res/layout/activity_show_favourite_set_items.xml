@@ -52,7 +52,7 @@
             android:layout_marginStart="4dp"
             android:layout_marginEnd="4dp"
             android:gravity="start"
-            android:text="@string/summ"
+            android:text="@string/summOfSet"
             android:textSize="18sp" />
 
         <TextView

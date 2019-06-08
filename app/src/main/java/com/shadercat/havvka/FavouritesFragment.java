@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -109,7 +108,7 @@ public class FavouritesFragment extends Fragment {
 
     @Override
     public void onResume() {
-        if(parallelThread.isAlive() && datadownloadTask != null){
+        if (parallelThread.isAlive() && datadownloadTask != null) {
             parallelThread.postTask(datadownloadTask);
         }
         super.onResume();
@@ -150,7 +149,7 @@ public class FavouritesFragment extends Fragment {
                                     });
                                 }
                             };
-                            if(parallelThread.isAlive() && datadownloadTask != null){
+                            if (parallelThread.isAlive() && datadownloadTask != null) {
                                 parallelThread.postTask(taskAdd);
                                 parallelThread.postTask(datadownloadTask);
                             }

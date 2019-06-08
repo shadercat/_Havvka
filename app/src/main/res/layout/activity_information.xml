@@ -122,6 +122,66 @@
                 </GridLayout>
 
                 <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/propositions"
+                    android:textAlignment="center" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/propositionlist"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:background="@drawable/list_background"
+                    android:padding="2dp"
+                    android:scrollbarAlwaysDrawVerticalTrack="true"
+                    android:scrollbars="vertical"
+                    app:layoutManager="LinearLayoutManager" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginEnd="4dp"
+                        android:id="@+id/rating_text"
+                        android:text="@string/rating"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@id/rating_text"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="15dp"
+                        android:textColor="@color/colorGreen"
+                        android:layout_marginBottom="5dp"
+                        android:id="@+id/ratingInformationActivity"
+                        android:text="5"
+                        android:textSize="16sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginBottom="5dp"
+                        android:id="@+id/setRating"
+                        android:layout_marginEnd="4dp"
+                        android:layout_toEndOf="@+id/ratingInformationActivity"
+                        android:text="@string/setRating"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="16sp"
+                        android:layout_gravity="right"/>
+                </RelativeLayout>
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"

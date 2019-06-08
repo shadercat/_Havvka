@@ -2,10 +2,8 @@ package com.shadercat.havvka;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.SystemClock;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
@@ -20,6 +18,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class ShowFavouriteSetItems extends AppCompatActivity {
 
@@ -44,10 +43,21 @@ public class ShowFavouriteSetItems extends AppCompatActivity {
         add_to_cart = findViewById(R.id.add_btn_FavouriteItems);
         recyclerView = findViewById(R.id.favouritesItems);
         back_arrow = findViewById(R.id.back_arrow_favouriteItems);
+
+
         back_arrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
+            }
+        });
+        add_to_cart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (CartItem it : items) {
+                    CartHelper.AddCartItem(it);
+                }
+                Toast.makeText(getApplicationContext(), getString(R.string.itemsAddedToCart), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -81,19 +91,23 @@ public class ShowFavouriteSetItems extends AppCompatActivity {
         });
 
 
-
         parallelThread = new mWorkingThread("showfavsetitems");
         parallelThread.start();
         parallelThread.prepareHandler();
         getDataTask = new Runnable() {
             @Override
             public void run() {
-                items = DataAdapter.GetFavItems(getApplicationContext(),setId);
+                items = DataAdapter.GetFavItems(getApplicationContext(), setId);
                 mUiHandler.post(new Runnable() {
                     @Override
                     public void run() {
                         adapter.setItems(items);
                         adapter.notifyDataSetChanged();
+                        double price = 0d;
+                        for (CartItem it : items) {
+                            price += it.getPrice();
+                        }
+                        sum.setText(String.format(Locale.getDefault(), "%.2f", price));
                     }
                 });
             }
@@ -126,7 +140,7 @@ public class ShowFavouriteSetItems extends AppCompatActivity {
                         Runnable setItemData = new Runnable() {
                             @Override
                             public void run() {
-                                DataAdapter.SetFavItemData(getApplicationContext(),setId,item.getItem().getID(),DataAdapter.SET_MODE_CHANGE,picker.getValue());
+                                DataAdapter.SetFavItemData(getApplicationContext(), setId, item.getItem().getID(), DataAdapter.SET_MODE_CHANGE, picker.getValue());
                             }
                         };
                         parallelThread.postTask(setItemData);
@@ -140,7 +154,7 @@ public class ShowFavouriteSetItems extends AppCompatActivity {
                         Runnable deleteItemTask = new Runnable() {
                             @Override
                             public void run() {
-                                DataAdapter.SetFavItemData(getApplicationContext(),setId,item.getItem().getID(),DataAdapter.SET_MODE_DELETE,0);
+                                DataAdapter.SetFavItemData(getApplicationContext(), setId, item.getItem().getID(), DataAdapter.SET_MODE_DELETE, 0);
                             }
                         };
                         parallelThread.postTask(deleteItemTask);
@@ -154,7 +168,7 @@ public class ShowFavouriteSetItems extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        if(parallelThread != null){
+        if (parallelThread != null) {
             parallelThread.quit();
         }
         super.onDestroy();

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/proposition_root"
+    android:orientation="horizontal"
+    android:padding="10dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="@drawable/ripple">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/proposition_name_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Название"
+            android:textAlignment="center"
+            android:textSize="15sp" />
+    </LinearLayout>
+</LinearLayout>
