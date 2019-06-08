@@ -48,7 +48,7 @@ public class FavouriteListAdapter extends RecyclerView.Adapter<RecyclerView.View
             FavouriteSet set = sets.get(holder.getAdapterPosition());
             ViewHolder vh = (ViewHolder) holder;
             vh.name.setText(set.getName());
-            vh.count.setText(String.format(Locale.getDefault(), "%d", set.getCount()));
+            vh.count.setText(String.format(Locale.getDefault(), "%.2f", set.getPrice()));
         }
     }
 

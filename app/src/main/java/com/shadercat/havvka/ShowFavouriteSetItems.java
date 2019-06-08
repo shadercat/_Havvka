@@ -1,13 +1,20 @@
 package com.shadercat.havvka;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +31,11 @@ public class ShowFavouriteSetItems extends AppCompatActivity {
     RecyclerView recyclerView;
     CartListAdapter adapter;
     List<CartItem> items = new ArrayList<>();
+    mWorkingThread parallelThread;
+    Handler mUiHandler = new Handler();
+    Runnable getDataTask;
+    int setId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,45 +50,120 @@ public class ShowFavouriteSetItems extends AppCompatActivity {
                 onBackPressed();
             }
         });
-        Bundle bundle = getIntent().getExtras();
-        if(bundle != null){
-            int favid = (int) bundle.getSerializable(FAVSET_ID);
-            new DownloadData().execute(favid);
-        }
-        adapter = new CartListAdapter(this,items);
+
+
+        adapter = new CartListAdapter(this, items);
         DividerItemDecoration itemDecor = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(itemDecor);
         recyclerView.setAdapter(adapter);
         adapter.setOnClickListeners(new CartListAdapter.OnClickListeners() {
             @Override
             public void itemClick(int position) {
-
+                Intent product_info = new Intent(getApplicationContext(), InformationActivity.class);
+                product_info.putExtra(Item.class.getSimpleName(), items.get(position).getItem().getID());
+                startActivity(product_info);
             }
 
             @Override
             public void moreClick(int position) {
+                Dialog(items.get(position));
+            }
 
+            @Override
+            public void LoadingImage(View view, final int pos) {
+                new LoadImage((ImageView) view, new IPermissionForSet() {
+                    @Override
+                    public boolean isInView() {
+                        return isVisibleItem(pos);
+                    }
+                }).execute(items.get(pos).getItem());
             }
         });
+
+
+
+        parallelThread = new mWorkingThread("showfavsetitems");
+        parallelThread.start();
+        parallelThread.prepareHandler();
+        getDataTask = new Runnable() {
+            @Override
+            public void run() {
+                items = DataAdapter.GetFavItems(getApplicationContext(),setId);
+                mUiHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.setItems(items);
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+            }
+        };
+
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            setId = (int) bundle.getSerializable(FAVSET_ID);
+            parallelThread.postTask(getDataTask);
+        }
+
     }
-    class DownloadData extends AsyncTask<Integer,Void,Void>{
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
 
-        @Override
-        protected Void doInBackground(Integer... integers) {
-            items = DataAdapter.GetFavItems(getApplicationContext(),integers[0]);
-            return null;
-        }
 
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            Toast.makeText(getApplicationContext(),"That`s all",Toast.LENGTH_SHORT).show();
-            adapter.setItems(items);
-            adapter.notifyDataSetChanged();
-            super.onPostExecute(aVoid);
+    private void Dialog(final CartItem item) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        // Get the layout inflater
+        View inflater = this.getLayoutInflater().inflate(R.layout.dialog_cart_item_edit, null);
+        final NumberPicker picker = (NumberPicker) inflater.findViewById(R.id.numberPicker2);
+        picker.setMaxValue(10);
+        picker.setMinValue(1);
+        picker.setValue(item.getQuantity());
+        // Inflate and set the layout for the dialog
+        // Pass null as the parent view because its going in the dialog layout
+        builder.setView(inflater)
+                // Add action buttons
+                .setPositiveButton(R.string.changeQuantity, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        Runnable setItemData = new Runnable() {
+                            @Override
+                            public void run() {
+                                DataAdapter.SetFavItemData(getApplicationContext(),setId,item.getItem().getID(),DataAdapter.SET_MODE_CHANGE,picker.getValue());
+                            }
+                        };
+                        parallelThread.postTask(setItemData);
+                        parallelThread.postTask(getDataTask);
+                        dialog.cancel();
+                    }
+                })
+                .setNeutralButton(R.string.deleteItem, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        Runnable deleteItemTask = new Runnable() {
+                            @Override
+                            public void run() {
+                                DataAdapter.SetFavItemData(getApplicationContext(),setId,item.getItem().getID(),DataAdapter.SET_MODE_DELETE,0);
+                            }
+                        };
+                        parallelThread.postTask(deleteItemTask);
+                        parallelThread.postTask(getDataTask);
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        if(parallelThread != null){
+            parallelThread.quit();
         }
+        super.onDestroy();
+    }
+
+    private boolean isVisibleItem(int i) {
+        LinearLayoutManager layoutManager = ((LinearLayoutManager) recyclerView.getLayoutManager());
+        int first = layoutManager.findFirstVisibleItemPosition();
+        int last = layoutManager.findLastVisibleItemPosition();
+        return (first <= i && i <= last);
     }
 }

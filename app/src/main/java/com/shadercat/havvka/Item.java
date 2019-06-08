@@ -1,11 +1,10 @@
 package com.shadercat.havvka;
 
-import android.graphics.Bitmap;
+import android.util.Log;
 
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Random;
 
 public class Item implements Serializable {
 
@@ -15,103 +14,85 @@ public class Item implements Serializable {
     private String bigDescr;
     private String ingridients;
     private double price;
-    private int image;
     private int rating;
     private URL url;
-    private Bitmap img;
 
-    public Item(String name, String smallDescr, String bigDescr, int image) {
-        this(name, smallDescr, bigDescr, image, 1, " ", 0f, 1);
-    }
-
-    public Item(String name, String smallDescr, String bigDescr, int image, int id, String ingridients, double price, int rating) {
+    public Item(int id, String name, String smallDescr, String bigDescr, String ingridients, double price, int rating, String url) {
+        this.ID = id;
         this.name = name;
         this.smallDescr = smallDescr;
         this.bigDescr = bigDescr;
-        this.image = image;
-        this.ID = id;
         this.ingridients = ingridients;
         this.price = price;
         this.rating = rating;
+        try {
+            this.url = new URL(url);
+        } catch (MalformedURLException e) {
+            Log.e("initialize", e.getMessage());
+        }
     }
 
-    public String GetName() {
+    public String getName() {
         return name;
     }
 
-    public void SetName(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public String GetSmallDescr() {
+    public String getSmallDescr() {
         return smallDescr;
     }
 
-    public void SetSmallDescr(String smallDescr) {
+    public void setSmallDescr(String smallDescr) {
         this.smallDescr = smallDescr;
     }
 
-    public String GetBigDescr() {
+    public String getBigDescr() {
         return bigDescr;
     }
 
-    public void SetBigDescr(String bigDescr) {
+    public void setBigDescr(String bigDescr) {
         this.bigDescr = bigDescr;
     }
 
-    public int GetImage() {
-        return image;
-    }
-
-    public void SetImage(int image) {
-        this.image = image;
-    }
-
-    public double GetPrice() {
+    public double getPrice() {
         return this.price;
     }
 
-    public void SetPrice(double price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
-    public int GetID() {
+    public int getID() {
         return this.ID;
     }
 
-    public void SetID(int id) {
+    public void setID(int id) {
         this.ID = id;
     }
 
-    public String GetIngridients() {
+    public String getIngridients() {
         return this.ingridients;
     }
 
-    public void SetIngridients(String ingridients) {
+    public void setIngridients(String ingridients) {
         this.ingridients = ingridients;
     }
 
-    public int GetRating() {
+    public int getRating() {
         return rating;
     }
 
-    public void SetRating(int rating) {
+    public void setRating(int rating) {
         this.rating = rating;
-    }
-
-    public Bitmap getImg() {
-        return img;
-    }
-
-    public void setImg(Bitmap img) {
-        this.img = img;
     }
 
     public void setUrl(URL url) {
         this.url = url;
     }
 
-    public URL getUrl(){
+    public URL getUrl() {
         return url;
     }
 }

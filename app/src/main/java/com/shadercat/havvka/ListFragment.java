@@ -5,9 +5,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,7 +88,7 @@ public class ListFragment extends Fragment {
             @Override
             public void OnClick(int position) {
                 Intent product_info = new Intent(context, InformationActivity.class);
-                product_info.putExtra(Item.class.getSimpleName(), items.get(position).GetID());
+                product_info.putExtra(Item.class.getSimpleName(), items.get(position).getID());
                 startActivity(product_info);
             }
 
@@ -119,12 +118,14 @@ public class ListFragment extends Fragment {
         });
         new DataDownload().execute();
     }
-    public boolean isVisibleItem(int i){
-        LinearLayoutManager layoutManager = ((LinearLayoutManager)listView.getLayoutManager());
+
+    public boolean isVisibleItem(int i) {
+        LinearLayoutManager layoutManager = ((LinearLayoutManager) listView.getLayoutManager());
         int first = layoutManager.findFirstVisibleItemPosition();
         int last = layoutManager.findLastVisibleItemPosition();
         return (first <= i && i <= last);
     }
+
     public interface ListFragmentInteractionListener {
         void ListFragmentInteraction(Uri link);
     }
@@ -138,7 +139,9 @@ public class ListFragment extends Fragment {
 
         @Override
         protected Void doInBackground(Void... aVoid) {
-            items = DataAdapter.GetProductList(context);
+            //TODO remove clock!
+            SystemClock.sleep(3000);
+            items = DataAdapter.GetProductList(context, DataAdapter.SORT_MODE_NONE);
             adapter.setItems(items);
             return null;
         }

@@ -8,11 +8,13 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
+import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
@@ -72,12 +74,12 @@ public class CartFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mListener.CartFragmentInteraction(Uri.parse("data:1"));
-        adapter = new CartListAdapter(getContext(), ListCartItem.list);
+        adapter = new CartListAdapter(getContext(), CartHelper.list);
         adapter.setOnClickListeners(new CartListAdapter.OnClickListeners() {
             @Override
             public void itemClick(int position) {
                 Intent product_info = new Intent(getContext(), InformationActivity.class);
-                product_info.putExtra(Item.class.getSimpleName(), ListCartItem.list.get(position).getItem().GetID());
+                product_info.putExtra(Item.class.getSimpleName(), CartHelper.list.get(position).getItem().getID());
                 startActivity(product_info);
             }
 
@@ -85,10 +87,27 @@ public class CartFragment extends Fragment {
             public void moreClick(int position) {
                 Dialog(position);
             }
+
+            @Override
+            public void LoadingImage(View view, final int pos) {
+                new LoadImage((ImageView) view, new IPermissionForSet() {
+                    @Override
+                    public boolean isInView() {
+                        return isVisibleItem(pos);
+                    }
+                }).execute(CartHelper.list.get(pos).getItem());
+            }
         });
         DividerItemDecoration itemDecor = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(itemDecor);
         recyclerView.setAdapter(adapter);
+    }
+
+    private boolean isVisibleItem(int i) {
+        LinearLayoutManager layoutManager = ((LinearLayoutManager) recyclerView.getLayoutManager());
+        int first = layoutManager.findFirstVisibleItemPosition();
+        int last = layoutManager.findLastVisibleItemPosition();
+        return (first <= i && i <= last);
     }
 
     @Override
@@ -108,7 +127,7 @@ public class CartFragment extends Fragment {
     }
 
     private void Dialog(final int index) {
-        final CartItem item = ListCartItem.list.get(index);
+        final CartItem item = CartHelper.list.get(index);
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         // Get the layout inflater
         View inflater = this.getLayoutInflater().inflate(R.layout.dialog_cart_item_edit, null);
@@ -131,7 +150,7 @@ public class CartFragment extends Fragment {
                 .setNeutralButton(R.string.deleteItem, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        ListCartItem.RemoveCartItem(index);
+                        CartHelper.RemoveCartItem(index);
                         ThematicSnackbar.SnackbarWithActionShow(getString(R.string.removedFromCart),
                                 getString(R.string.cancel), snackbarOnClickListener,
                                 recyclerView,
@@ -147,17 +166,17 @@ public class CartFragment extends Fragment {
     private View.OnClickListener snackbarOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            ListCartItem.RemoveAction();
+            CartHelper.RemoveAction();
             UpdateInformation();
         }
     };
 
     public void UpdateInformation() {
         if (adapter != null && textSum != null) {
-            adapter.setItems(ListCartItem.list);
+            adapter.setItems(CartHelper.list);
             adapter.notifyDataSetChanged();
-            textSum.setText(String.format(Locale.getDefault(), "%.2f", ListCartItem.GetSumPrice()));
-            if (ListCartItem.GetSumPrice() == 0d) {
+            textSum.setText(String.format(Locale.getDefault(), "%.2f", CartHelper.GetSumPrice()));
+            if (CartHelper.GetSumPrice() == 0d) {
                 sum_container.setVisibility(View.GONE);
             } else {
                 sum_container.setVisibility(View.VISIBLE);

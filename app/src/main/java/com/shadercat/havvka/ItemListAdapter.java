@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -48,20 +47,19 @@ public class ItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if (position != items.size()) {
             Item item = items.get(holder.getAdapterPosition());
             ViewHolder vh = (ViewHolder) holder;
-            if(DataAdapter.imgCache.containsKey(item.GetID())){
-                Bitmap bm = DataAdapter.imgCache.get(item.GetID());
+            if (DataAdapter.imgCache.containsKey(item.getID())) {
+                Bitmap bm = DataAdapter.imgCache.get(item.getID());
                 vh.imageView.setImageBitmap(bm);
-            }
-            else {
-                DataAdapter.imgCache.put(item.GetID(),Bitmap.createBitmap(100, 100,
+            } else {
+                DataAdapter.imgCache.put(item.getID(), Bitmap.createBitmap(100, 100,
                         Bitmap.Config.ARGB_8888));
-                if(mListener != null){
+                if (mListener != null) {
                     mListener.LoadingImage(vh.imageView, holder.getAdapterPosition());
                 }
                 vh.imageView.setImageResource(R.drawable.food_test);
             }
-            vh.nameView.setText(item.GetName());
-            vh.smallDescrView.setText(item.GetSmallDescr());
+            vh.nameView.setText(item.getName());
+            vh.smallDescrView.setText(item.getSmallDescr());
         }
     }
 

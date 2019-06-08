@@ -24,7 +24,7 @@ class LoadImage extends AsyncTask<Item, Void, Bitmap> {
     @Override
     protected Bitmap doInBackground(Item... params) {
         try {
-            return downloadBitmap(params[0].getUrl(),params[0].GetID());
+            return downloadBitmap(params[0].getUrl(), params[0].getID());
         } catch (Exception e) {
             // log error
         }
@@ -38,7 +38,7 @@ class LoadImage extends AsyncTask<Item, Void, Bitmap> {
         }
 
         ImageView imageView = imageViewReference.get();
-        IPermissionForSet watcher  = watcherReference.get();
+        IPermissionForSet watcher = watcherReference.get();
         if (imageView != null && watcher != null && watcher.isInView()) {
             if (bitmap != null) {
                 imageView.setImageBitmap(bitmap);
@@ -60,8 +60,8 @@ class LoadImage extends AsyncTask<Item, Void, Bitmap> {
             InputStream inputStream = urlConnection.getInputStream();
             if (inputStream != null) {
                 Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                if(bitmap != null){
-                    DataAdapter.imgCache.put(id,bitmap);
+                if (bitmap != null) {
+                    DataAdapter.imgCache.put(id, bitmap);
                 }
                 return bitmap;
             }
@@ -76,6 +76,7 @@ class LoadImage extends AsyncTask<Item, Void, Bitmap> {
         return null;
     }
 }
+
 interface IPermissionForSet {
     boolean isInView();
 }

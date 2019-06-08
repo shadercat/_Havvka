@@ -1,11 +1,6 @@
 package com.shadercat.havvka;
 
-import android.content.Context;
-
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Map;
 
 public class WebAPI {
     public static boolean IsProductDataUpdated() {
@@ -31,15 +26,7 @@ public class WebAPI {
 
     public static ArrayList<Item> GetProductData() {
         ArrayList<Item> list = new ArrayList<>();
-        for (int i = 0; i < 101; i++) {
-            Item item = new Item("Name of Food " + i, "Small descrition", "Big Description", R.drawable.food_test);
-            item.SetID(i);
-            item.SetPrice(2.30);
-            item.SetIngridients("Ingridients");
-            list.add(item);
-        }
         return list;
-
     }
 
     public static ArrayList<FavouriteSet> GetFavouriteSetData() {

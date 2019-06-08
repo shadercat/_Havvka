@@ -1,6 +1,7 @@
 package com.shadercat.havvka;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -34,8 +35,18 @@ public class CartListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int i) {
         CartItem item = items.get(holder.getAdapterPosition());
         ViewHolder vh = (ViewHolder) holder;
-        vh.imageView.setImageBitmap(item.getItem().getImg());
-        vh.nameView.setText(item.getItem().GetName());
+        if (DataAdapter.imgCache.containsKey(item.getItem().getID())) {
+            Bitmap bm = DataAdapter.imgCache.get(item.getItem().getID());
+            vh.imageView.setImageBitmap(bm);
+        } else {
+            DataAdapter.imgCache.put(item.getItem().getID(), Bitmap.createBitmap(100, 100,
+                    Bitmap.Config.ARGB_8888));
+            vh.imageView.setImageResource(R.drawable.food_test);
+            if (mListener != null) {
+                mListener.LoadingImage(vh.imageView, holder.getAdapterPosition());
+            }
+        }
+        vh.nameView.setText(item.getItem().getName());
         vh.quantityView.setText(String.valueOf(item.getQuantity()));
         vh.priceView.setText(String.format(Locale.getDefault(), "%.2f", item.getPrice()));
     }
@@ -57,6 +68,8 @@ public class CartListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         void itemClick(int position);
 
         void moreClick(int position);
+
+        void LoadingImage(View view, int pos);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

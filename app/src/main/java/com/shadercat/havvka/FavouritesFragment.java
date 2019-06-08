@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DividerItemDecoration;
@@ -26,7 +27,9 @@ public class FavouritesFragment extends Fragment {
     FavouriteListAdapter adapter;
     RecyclerView recyclerView;
     Context context;
-
+    mWorkingThread parallelThread;
+    Handler mUIHandler = new Handler();
+    Runnable datadownloadTask;
 
     public FavouritesFragment() {
         // Required empty public constructor
@@ -49,6 +52,7 @@ public class FavouritesFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_favourites, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.favouritesList);
+        parallelThread = new mWorkingThread("favfragment");
         return view;
     }
 
@@ -75,7 +79,7 @@ public class FavouritesFragment extends Fragment {
         adapter.setOnClickListeners(new FavouriteListAdapter.ClickListeners() {
             @Override
             public void onClick(int position) {
-                Intent info = new Intent(getContext(),ShowFavouriteSetItems.class);
+                Intent info = new Intent(getContext(), ShowFavouriteSetItems.class);
                 info.putExtra(ShowFavouriteSetItems.FAVSET_ID, sets.get(position).getId());
                 startActivity(info);
             }
@@ -85,19 +89,42 @@ public class FavouritesFragment extends Fragment {
                 AddDialog();
             }
         });
-        new DataDownload().execute();
+        datadownloadTask = new Runnable() {
+            @Override
+            public void run() {
+                sets = DataAdapter.GetFavouriteData(getContext());
+                mUIHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.setItems(sets);
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+            }
+        };
+        parallelThread.start();
+        parallelThread.prepareHandler();
+        parallelThread.postTask(datadownloadTask);
     }
 
     @Override
     public void onResume() {
+        if(parallelThread.isAlive() && datadownloadTask != null){
+            parallelThread.postTask(datadownloadTask);
+        }
         super.onResume();
-        new DataDownload().execute();
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onDestroy() {
+        parallelThread.quit();
+        super.onDestroy();
     }
 
     private void AddDialog() {
@@ -108,12 +135,25 @@ public class FavouritesFragment extends Fragment {
                 .setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String name = text.getText().toString();
+                        final String name = text.getText().toString();
                         if (!name.isEmpty()) {
-                            FavouriteSet fs = new FavouriteSet(name, 0);
-                            DataAdapter.SaveFavSet(getContext(), fs, true);
-                            Toast.makeText(getContext(), getString(R.string.addedNewFavSet), Toast.LENGTH_SHORT).show();
-                            new DataDownload().execute();
+                            Runnable taskAdd = new Runnable() {
+                                @Override
+                                public void run() {
+                                    FavouriteSet fs = new FavouriteSet(0, name, 0);
+                                    DataAdapter.SaveFavSet(getContext(), fs, true);
+                                    mUIHandler.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(getContext(), getString(R.string.addedNewFavSet), Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }
+                            };
+                            if(parallelThread.isAlive() && datadownloadTask != null){
+                                parallelThread.postTask(taskAdd);
+                                parallelThread.postTask(datadownloadTask);
+                            }
                         } else {
                             Toast.makeText(getContext(), getString(R.string.notEmptyName), Toast.LENGTH_SHORT).show();
                         }
@@ -125,25 +165,5 @@ public class FavouritesFragment extends Fragment {
 
     public interface FavouriteFragmentInteractionListener {
         void FavouriteFragmentInteraction(Uri link);
-    }
-
-    class DataDownload extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Void doInBackground(Void... aVoid) {
-            sets = DataAdapter.GetFavouriteData(getContext());
-            adapter.setItems(sets);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            adapter.notifyDataSetChanged();
-            super.onPostExecute(aVoid);
-        }
     }
 }

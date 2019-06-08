@@ -3,7 +3,7 @@ package com.shadercat.havvka;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListCartItem {
+public class CartHelper {
     public static List<CartItem> list = new ArrayList<>();
     private static CartItem lastItemAction;
     private static boolean isAdded = true;
@@ -16,7 +16,7 @@ public class ListCartItem {
         lastItemAction = new CartItem(item.getItem(), item.getQuantity());
         boolean flag = true;
         for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).getItem().GetID() == item.getItem().GetID()) {
+            if (list.get(i).getItem().getID() == item.getItem().getID()) {
                 list.get(i).AddQuantity(item.getQuantity());
                 flag = false;
             }
@@ -30,7 +30,7 @@ public class ListCartItem {
     public static void RemoveCartItem(CartItem item) {
         lastItemAction = new CartItem(item.getItem(), item.getQuantity());
         for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).getItem().GetID() == item.getItem().GetID()) {
+            if (list.get(i).getItem().getID() == item.getItem().getID()) {
                 list.remove(i);
                 return;
             }
@@ -56,7 +56,7 @@ public class ListCartItem {
         if (lastItemAction != null) {
             if (isAdded) {
                 for (int i = 0; i < list.size(); i++) {
-                    if (list.get(i).getItem().GetID() == lastItemAction.getItem().GetID()) {
+                    if (list.get(i).getItem().getID() == lastItemAction.getItem().getID()) {
                         int q = list.get(i).getQuantity() - lastItemAction.getQuantity();
                         if (q <= 0) {
                             list.remove(i);

@@ -3,10 +3,7 @@ package com.shadercat.havvka;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,77 +11,97 @@ import java.util.Random;
 
 //use this class for getting data
 public class DataAdapter {
+    public static final int SORT_MODE_NONE = 98;
+    public static final int SORT_MODE_RATING = 575;
+    public static final int SORT_MODE_POPULARITY = 4;
+    public static final int SORT_MODE_FIRST = 180;
+    public static final int SORT_MODE_SECOND = 586;
+    public static final int SORT_MODE_DRINKS = 816;
+    public static final int SET_MODE_CHANGE = 989;
+    public static final int SET_MODE_DELETE = 694;
+    //image cache
     public static Map<Integer, Bitmap> imgCache = new HashMap<>();
-    public static ArrayList<Item> GetProductList(Context context) {
-        ArrayList<Item> list = new ArrayList<>();
-        if (WebAPI.IsProductDataUpdated()) {
-            list = WebAPI.GetProductData();
-            //TODO function for save product data in locale storage; update info about data
-        } else {
-            //TODO function for get product data from locale storage;
-            DatabaseAdapter db = new DatabaseAdapter(context);
-            int min = 100000;
-            int max = 999999;
-            int diff = max - min;
-            Random random = new Random();
-            int i = random.nextInt(diff + 1) + min;
-            URL url;
+    //item cache
+    public static Map<Integer, Item> itemCache = new HashMap<>();
 
-            int id = R.drawable.food_test;
-            for (int j = 1; j < 21; j++) {
-                Item item = new Item("Name of Food " + i, "Small descrition", "Big Description", id);
-                item.SetID(j);
-                item.SetPrice(2.30);
-                item.SetIngridients("Ingridients");
-                item.setImg(BitmapFactory.decodeResource(context.getResources(), id));
-                try{
-                    url = new URL("http://placehold.it/250/" + i + "?text=" + i);
-                } catch (MalformedURLException e){
-                    url = null;
-                }
-                item.setUrl(url);
-                i = random.nextInt(diff + 1) + min;
-                list.add(item);
-                db.PutItem(item);
-            }
+    //get list of products
+    public static ArrayList<Item> GetProductList(Context context, int sortMode) {
+        ArrayList<Item> list = new ArrayList<>();
+        int min = 100000;
+        int max = 999999;
+        int diff = max - min;
+        Random random = new Random();
+        for (int j = 1; j < 21; j++) {
+            int i = random.nextInt(diff + 1) + min;
+            Item item = new Item(j, "Sample name " + j, "Sample small description", "Sample big description",
+                    "Sample ingridients", 2.30D, 5, "http://placehold.it/250/" + i + "?text=" + i);
+            itemCache.put(item.getID(), item);
+            list.add(item);
         }
         return list;
     }
 
+    //get item by id
+    public static Item GetItemById(int id) {
+        return new Item(id, "Sample name " + id, "Sample small description", "Sample big description",
+                "Sample ingridients", 2.30D, 5, "http://placehold.it/250/" + 123456 + "?text=" + 123465);
+    }
+
+    //get fav sets
     public static ArrayList<FavouriteSet> GetFavouriteData(Context context) {
         ArrayList<FavouriteSet> list = new ArrayList<>();
-        if (WebAPI.IsFavouriteSetDataUpdated()) {
-            list = WebAPI.GetFavouriteSetData();
-            //TODO function for save favourite set data in locale storage; update info about data
-        } else {
-            DatabaseAdapter db = new DatabaseAdapter(context);
-            list = db.GetFavourites();
-        }
+        list.add(new FavouriteSet(1,"first set",39.5D));
+        list.add(new FavouriteSet(2,"second set",39.5D));
+        list.add(new FavouriteSet(3,"third set",39.5D));
         return list;
     }
 
-    public static void SaveFavSet(Context context, FavouriteSet set, boolean isNew) {
-        DatabaseAdapter db = new DatabaseAdapter(context);
-        if (isNew) {
-            db.PutNewFavouriteSet(set);
-        } else {
-            db.PutFavouriteSet(set);
-        }
-    }
-
-    public static void AddItemToFavSet(Context context, int setId, int itemId, int count) {
-        if (setId >= 0 && itemId >= 0) {
-            DatabaseAdapter db = new DatabaseAdapter(context);
-            db.PutFavouriteItem(setId, itemId, count);
-        }
-    }
-    public static ArrayList<CartItem> GetFavItems(Context context, int id){
-        ArrayList<CartItem> arrayList;
-        DatabaseAdapter db = new DatabaseAdapter(context);
-        arrayList = db.GetFavouritesItems(id);
+    //get fav items from set
+    public static ArrayList<CartItem> GetFavItems(Context context, int id) {
+        ArrayList<CartItem> arrayList = new ArrayList<>();
+        arrayList.add(new CartItem(new Item(1, "Sample name " + 1, "Sample small description", "Sample big description",
+                "Sample ingridients", 2.30D, 5, "http://placehold.it/250/" + 123456 + "?text=" + 123465), 5));
+        arrayList.add(new CartItem(new Item(2, "Sample name " + 2, "Sample small description", "Sample big description",
+                "Sample ingridients", 2.30D, 5, "http://placehold.it/250/" + 123456 + "?text=" + 123465), 5));
+        arrayList.add(new CartItem(new Item(3, "Sample name " + 3, "Sample small description", "Sample big description",
+                "Sample ingridients", 2.30D, 5, "http://placehold.it/250/" + 123456 + "?text=" + 123465), 5));
         return arrayList;
     }
 
+    //save fav set
+    public static void SaveFavSet(Context context, FavouriteSet set, boolean isNew) {
+
+    }
+
+
+    //add item to set
+    public static void AddItemToFavSet(Context context, int setId, int itemId, int count) {
+        if (setId >= 0 && itemId >= 0) {
+
+        }
+    }
+
+    public static void SetFavItemData(Context context, int setId, int itemId, int setMode, int quantity){
+
+    }
+
+    //get list of orders
+    public static void GetOrderList(Context context){
+
+    }
+
+    public static void GetOrderItems(Context context, int id){
+
+    }
+
+    public static void GetProposition(Context context, int itemid){
+
+    }
+
+    public static void SetOrder(Context context){
+
+    }
+    
     public static void SaveUserInfo(String email, String password, int userId, Context context) {
         //TODO function for save user data in locale storage;
         SharedPreferences preferences = context.getSharedPreferences("Preferences", Context.MODE_PRIVATE);
@@ -124,21 +141,6 @@ public class DataAdapter {
         }
     }
 
-    public static void SaveDataVersion(int ver, Context context) {
-        SharedPreferences preferences = context.getSharedPreferences("Preferences", Context.MODE_PRIVATE);
-        SharedPreferences.Editor ed = preferences.edit();
-        if (!preferences.contains("IsCheckedAccount")) {
-            ed.putBoolean("IsCheckedAccount", false);
-            ed.putString("useremail", "guest");
-            ed.putInt("userid", 0);
-            ed.putString("password", "");
-            ed.putInt("dataver", 0);
-            ed.apply();
-        } else {
-            ed.putInt("dataver", ver);
-            ed.apply();
-        }
-    }
 
     public static void UserExit(Context context) {
         SharedPreferences preferences = context.getSharedPreferences("Preferences", Context.MODE_PRIVATE);

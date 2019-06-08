@@ -3,26 +3,12 @@ package com.shadercat.havvka;
 public class FavouriteSet {
     private int id;
     private String name;
-    private int count;
-    private int serverId;
+    private double price;
 
-    public FavouriteSet(int id, String name, int count, int serverId) {
-        this.count = count;
+    public FavouriteSet(int id, String name, double price) {
+        this.price = price;
         this.id = id;
         this.name = name;
-        this.serverId = serverId;
-    }
-
-    public FavouriteSet(int id, String name, int count) {
-        this(id, name, count, 0);
-    }
-
-    public FavouriteSet(String name, int count) {
-        this(0, name, count, 0);
-    }
-
-    public FavouriteSet() {
-        this(0, "", 0, 0);
     }
 
     public String getName() {
@@ -33,12 +19,12 @@ public class FavouriteSet {
         this.name = name;
     }
 
-    public void setCount(int count) {
-        this.count = count;
+    public void setPrice(double price) {
+        this.price = price;
     }
 
-    public int getCount() {
-        return this.count;
+    public double getPrice() {
+        return this.price;
     }
 
     public void setId(int id) {
@@ -47,13 +33,5 @@ public class FavouriteSet {
 
     public int getId() {
         return id;
-    }
-
-    public void setServerId(int serverId) {
-        this.serverId = serverId;
-    }
-
-    public int getServerId() {
-        return serverId;
     }
 }

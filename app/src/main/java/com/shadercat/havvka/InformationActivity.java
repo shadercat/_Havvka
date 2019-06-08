@@ -2,6 +2,8 @@ package com.shadercat.havvka;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -47,16 +49,7 @@ public class InformationActivity extends AppCompatActivity {
         Bundle arguments = getIntent().getExtras();
         if (arguments != null) {
             int id = (int) arguments.getSerializable(Item.class.getSimpleName());
-            DatabaseAdapter db = new DatabaseAdapter(this);
-            item = db.GetItem(id);
-            if (item != null) {
-                image.setImageBitmap(item.getImg());
-                name.setText(item.GetName());
-                smallDscr.setText(item.GetSmallDescr());
-                bigDescr.setText(item.GetBigDescr());
-                ingridients.setText(item.GetIngridients());
-                price.setText(String.format(Locale.getDefault(), "%.2f", item.GetPrice()));
-            }
+            new SetInformation().execute(id);
         }
 
 
@@ -71,11 +64,12 @@ public class InformationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent addToFavSet = new Intent(getApplicationContext(), AddFavouriteSetActivity.class);
-                addToFavSet.putExtra(AddFavouriteSetActivity.ITEM_ID, item.GetID());
+                addToFavSet.putExtra(AddFavouriteSetActivity.ITEM_ID, item.getID());
                 startActivity(addToFavSet);
             }
         });
     }
+
 
     private void Dialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -92,7 +86,7 @@ public class InformationActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         CartItem ct = new CartItem(item, picker.getValue());
-                        ListCartItem.AddCartItem(ct);
+                        CartHelper.AddCartItem(ct);
                         ThematicSnackbar.SnackbarWithActionShow(getString(R.string.addedToCart),
                                 getString(R.string.cancel),
                                 snackbarOnClickListener,
@@ -113,7 +107,47 @@ public class InformationActivity extends AppCompatActivity {
     private View.OnClickListener snackbarOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            ListCartItem.RemoveAction();
+            CartHelper.RemoveAction();
         }
     };
+
+
+    class SetInformation extends AsyncTask<Integer, Integer, Item> {
+
+        @Override
+        protected Item doInBackground(Integer... integers) {
+            Item item1 = DataAdapter.itemCache.get(integers[0]);
+            if (item == null) {
+                DataAdapter.GetItemById(integers[0]);
+            }
+            return item1;
+        }
+
+        @Override
+        protected void onPostExecute(Item aItem) {
+            item = aItem;
+            if (item != null) {
+                if (DataAdapter.imgCache.containsKey(item.getID())) {
+                    Bitmap bm = DataAdapter.imgCache.get(item.getID());
+                    image.setImageBitmap(bm);
+                } else {
+                    DataAdapter.imgCache.put(item.getID(), Bitmap.createBitmap(100, 100,
+                            Bitmap.Config.ARGB_8888));
+                    new LoadImage(image, new IPermissionForSet() {
+                        @Override
+                        public boolean isInView() {
+                            return true;
+                        }
+                    }).execute(item);
+                    image.setImageResource(R.drawable.food_test);
+                }
+                name.setText(item.getName());
+                smallDscr.setText(item.getSmallDescr());
+                bigDescr.setText(item.getBigDescr());
+                ingridients.setText(item.getIngridients());
+                price.setText(String.format(Locale.getDefault(), "%.2f", item.getPrice()));
+            }
+            super.onPostExecute(aItem);
+        }
+    }
 }

@@ -8,16 +8,16 @@ public class CartItem {
     public CartItem(Item item, int quantity) {
         this.item = item;
         this.quantity = quantity;
-        this.price = item.GetPrice() * quantity;
+        this.price = item.getPrice() * quantity;
     }
 
     public boolean Equals(Item item) {
-        return (this.item.GetID() == item.GetID());
+        return (this.item.getID() == item.getID());
     }
 
     public void AddQuantity(int quantity) {
         this.quantity += quantity;
-        this.price = this.item.GetPrice() * this.quantity;
+        this.price = this.item.getPrice() * this.quantity;
     }
 
     public Item getItem() {
@@ -34,7 +34,7 @@ public class CartItem {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
-        this.price = quantity * item.GetPrice();
+        this.price = quantity * item.getPrice();
     }
 
     public double getPrice() {
