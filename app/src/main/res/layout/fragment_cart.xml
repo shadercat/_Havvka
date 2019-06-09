@@ -45,6 +45,7 @@
 
             <Button
                 style="@style/Widget.AppCompat.Button.Colored"
+                android:id="@+id/buy_cart_fragment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"

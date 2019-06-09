@@ -3,7 +3,6 @@ package com.shadercat.havvka;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.animation.Animation;
@@ -125,7 +124,6 @@ public class LoginActivity extends AppCompatActivity {
         protected Void doInBackground(Void... voids) {
             if (WebAPI.CheckUserInfo(email.getText().toString(), password.getText().toString())) {
                 DataAdapter.SaveUserInfo(email.getText().toString(), password.getText().toString(), UserInfo.UserID, getApplicationContext());
-                SystemClock.sleep(3000);
                 finish();
             } else {
                 ThematicSnackbar.SnackbarTextShow(getString(R.string.wrongLogData), email, getApplicationContext());

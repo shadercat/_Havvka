@@ -20,6 +20,7 @@ public class OrderInformationActivity extends AppCompatActivity {
     TextView orderDate;
     TextView orderStatus;
     TextView orderCost;
+    ImageView backArrow;
     RecyclerView itemList;
     CartListAdapter adapter;
     List<CartItem> items = new ArrayList<>();
@@ -37,6 +38,13 @@ public class OrderInformationActivity extends AppCompatActivity {
         orderCost = (TextView) findViewById(R.id.order_cost_info);
         orderStatus = (TextView) findViewById(R.id.order_status_info);
         itemList = (RecyclerView) findViewById(R.id.orderItemsList);
+        backArrow = (ImageView) findViewById(R.id.back_arrow_order_info);
+        backArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         final DividerItemDecoration itemDecor = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         itemList.addItemDecoration(itemDecor);
         adapter = new CartListAdapter(this, items);

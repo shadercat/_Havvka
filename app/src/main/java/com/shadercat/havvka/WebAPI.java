@@ -1,5 +1,7 @@
 package com.shadercat.havvka;
 
+import android.os.SystemClock;
+
 import java.util.ArrayList;
 
 public class WebAPI {
@@ -19,9 +21,14 @@ public class WebAPI {
                 UserInfo.UserID = 2;
                 return true;
             }
+            SystemClock.sleep(3000);
         }
         return false;
         //use DataAdapter.SaveUserInfo(...);
+    }
+
+    public static void CreateAccount(String email, String password) {
+
     }
 
     public static ArrayList<Item> GetProductData() {

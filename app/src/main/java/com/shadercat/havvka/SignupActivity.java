@@ -1,6 +1,7 @@
 package com.shadercat.havvka;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.animation.Animation;
@@ -9,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -21,6 +23,8 @@ public class SignupActivity extends AppCompatActivity {
 
     Animation logo_anim2;
     Animation logo_anim1;
+    mWorkingThread parr;
+    Handler mUIHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +61,21 @@ public class SignupActivity extends AppCompatActivity {
                     checked = false;
                 }
                 if (checked) {
-                    //implement success registration logic there
+                    parr = new mWorkingThread("signup");
+                    parr.start();
+                    parr.prepareHandler();
+                    Runnable task = new Runnable() {
+                        @Override
+                        public void run() {
+                            WebAPI.CreateAccount(email.getText().toString().trim(), password.getText().toString());
+                            mUIHandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(getApplicationContext(), getString(R.string.create_account), Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        }
+                    };
                 } else {
                     logo.clearAnimation();
                     logo.startAnimation(logo_anim1);
@@ -70,5 +88,13 @@ public class SignupActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (parr != null) {
+            parr.quit();
+        }
+        super.onDestroy();
     }
 }

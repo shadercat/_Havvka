@@ -63,4 +63,16 @@
     <string name="order_date">Час замовлення</string>
     <string name="order_status">Статус</string>
     <string name="order_price">Сума</string>
+    <string name="order_submit">Оформлення замовлення</string>
+    <string name="items">Товарів: </string>
+    <string name="date_order">Дата замовлення:</string>
+    <string name="time_order">Час замовлення:</string>
+    <string name="choose_canteen">Оберіть столову</string>
+    <string name="pay_type">Спосіб оплати</string>
+    <string name="cash">Готівкою</string>
+    <string name="cashless">Безготівковий</string>
+    <string name="submit">Оформити</string>
+    <string name="change">Змінити</string>
+    <string name="sendSubmit">Ваше замовлення відправлено на обробку</string>
+    <string name="create_account">Ваш запит відправлено. На вашу пошту прийде лист.</string>
 </resources>

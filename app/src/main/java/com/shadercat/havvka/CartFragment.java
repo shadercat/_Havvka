@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
@@ -29,6 +30,7 @@ public class CartFragment extends Fragment {
     Context context;
     CartListAdapter adapter;
     RecyclerView recyclerView;
+    Button buy;
 
     public CartFragment() {
         // Required empty public constructor
@@ -54,6 +56,7 @@ public class CartFragment extends Fragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.cartItemsList);
         textSum = (TextView) view.findViewById(R.id.sum_CartFragment);
         sum_container = (GridLayout) view.findViewById(R.id.sum_container_CartFragment);
+        buy = (Button) view.findViewById(R.id.buy_cart_fragment);
         return view;
     }
 
@@ -101,6 +104,13 @@ public class CartFragment extends Fragment {
         DividerItemDecoration itemDecor = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(itemDecor);
         recyclerView.setAdapter(adapter);
+        buy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), SubmitOrderActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private boolean isVisibleItem(int i) {
@@ -175,7 +185,7 @@ public class CartFragment extends Fragment {
         if (adapter != null && textSum != null) {
             adapter.setItems(CartHelper.list);
             adapter.notifyDataSetChanged();
-            textSum.setText(String.format(Locale.getDefault(), "%.2f", CartHelper.GetSumPrice()));
+            textSum.setText(String.format(Locale.getDefault(), "%.2f UAH", CartHelper.GetSumPrice()));
             if (CartHelper.GetSumPrice() == 0d) {
                 sum_container.setVisibility(View.GONE);
             } else {

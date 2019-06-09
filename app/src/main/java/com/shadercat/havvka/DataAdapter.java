@@ -3,10 +3,11 @@ package com.shadercat.havvka;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.os.SystemClock;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -20,6 +21,8 @@ public class DataAdapter {
     public static final int SORT_MODE_DRINKS = 816;
     public static final int SET_MODE_CHANGE = 989;
     public static final int SET_MODE_DELETE = 694;
+    public static final int ORDER_CASH_MODE = 951;
+    public static final int ORDER_CASHLESS_MODE = 794;
     //image cache
     public static Map<Integer, Bitmap> imgCache = new HashMap<>();
     //item cache
@@ -91,9 +94,7 @@ public class DataAdapter {
 
     //add item to set
     public static void AddItemToFavSet(Context context, int setId, int itemId, int count) {
-        if (setId >= 0 && itemId >= 0) {
 
-        }
     }
 
     public static void SetFavItemData(Context context, int setId, int itemId, int setMode, int quantity) {
@@ -124,12 +125,19 @@ public class DataAdapter {
         return new Order(id, "ok", "22:30", 240.90);
     }
 
-    public static void GetProposition(Context context, List<Proposition> propositions) {
-
+    public static ArrayList<Proposition> GetProposition(Context context) {
+        HashMap<Integer, Proposition> prop = new HashMap<>();
+        for (CartItem it : CartHelper.list) {
+            ArrayList<Proposition> pr = DataAdapter.GetPropositionsForItem(it.getItem().getID());
+            for (Proposition p : pr) {
+                prop.put(p.getId(), p);
+            }
+        }
+        return new ArrayList<Proposition>(prop.values());
     }
 
-    public static void SetOrder(Context context) {
-
+    public static void SetOrder(Context context, Calendar calendar, int proposition_id, int order_mode) {
+        SystemClock.sleep(3000);
     }
 
     public static void SaveUserInfo(String email, String password, int userId, Context context) {
