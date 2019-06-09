@@ -4,7 +4,8 @@ public class Proposition {
     private String name;
     private int id;
     private String status;
-    public Proposition(String name, int id){
+
+    public Proposition(String name, int id) {
         this.id = id;
         this.name = name;
     }

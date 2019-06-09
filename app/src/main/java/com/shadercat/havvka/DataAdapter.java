@@ -42,11 +42,11 @@ public class DataAdapter {
         return list;
     }
 
-    public static ArrayList<Proposition> GetPropositionsForItem(int itemDd){
+    public static ArrayList<Proposition> GetPropositionsForItem(int itemDd) {
         ArrayList<Proposition> prop = new ArrayList<>();
-        prop.add(new Proposition("canteen1",1));
-        prop.add(new Proposition("canteen2",2));
-        prop.add(new Proposition("canteen3",3));
+        prop.add(new Proposition("canteen1", 1));
+        prop.add(new Proposition("canteen2", 2));
+        prop.add(new Proposition("canteen3", 3));
         return prop;
     }
 
@@ -54,11 +54,11 @@ public class DataAdapter {
     public static Item GetItemById(int id) {
         Item item = new Item(id, "Sample name " + id, "Sample small description", "Sample big description",
                 "Sample ingridients", 2.30D, 5, "http://placehold.it/250/" + 123456 + "?text=" + 123465);
-        itemCache.put(item.getID(),item);
+        itemCache.put(item.getID(), item);
         return item;
     }
 
-    public static void SetRating(int rating, int itemId){
+    public static void SetRating(int rating, int itemId) {
 
     }
 
@@ -103,14 +103,25 @@ public class DataAdapter {
     //get list of orders
     public static ArrayList<Order> GetOrderList(Context context) {
         ArrayList<Order> list = new ArrayList<>();
-        list.add(new Order(1,"ok","26.26.26",23.90));
-        list.add(new Order(2,"ok","26.26.26",23.90));
-        list.add(new Order(3,"ok","26.26.26",23.90));
+        list.add(new Order(1, "ok", "26.26.26", 23.90));
+        list.add(new Order(2, "ok", "26.26.26", 23.90));
+        list.add(new Order(3, "ok", "26.26.26", 23.90));
         return list;
     }
 
-    public static void GetOrderItems(Context context, int id) {
+    public static ArrayList<CartItem> GetOrderItems(Context context, int id) {
+        ArrayList<CartItem> list = new ArrayList<>();
+        list.add(new CartItem(new Item(1, "Sample name " + 1, "Sample small description", "Sample big description",
+                "Sample ingridients", 2.30D, 4.4, "http://placehold.it/250/" + 123456 + "?text=" + 123465), 5));
+        list.add(new CartItem(new Item(2, "Sample name " + 1, "Sample small description", "Sample big description",
+                "Sample ingridients", 2.30D, 4.4, "http://placehold.it/250/" + 123456 + "?text=" + 123465), 5));
+        list.add(new CartItem(new Item(3, "Sample name " + 1, "Sample small description", "Sample big description",
+                "Sample ingridients", 2.30D, 4.4, "http://placehold.it/250/" + 123456 + "?text=" + 123465), 5));
+        return list;
+    }
 
+    public static Order GetOrderById(Context context, int id) {
+        return new Order(id, "ok", "22:30", 240.90);
     }
 
     public static void GetProposition(Context context, List<Proposition> propositions) {

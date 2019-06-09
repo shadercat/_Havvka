@@ -80,7 +80,7 @@ public class AddFavouriteSetActivity extends AppCompatActivity implements View.O
 
     @Override
     protected void onDestroy() {
-        if(parallelThread != null){
+        if (parallelThread != null) {
             parallelThread.quit();
         }
         super.onDestroy();

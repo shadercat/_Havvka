@@ -3,7 +3,6 @@ package com.shadercat.havvka;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
@@ -57,7 +56,7 @@ public class InformationActivity extends AppCompatActivity {
         propositionsView = (RecyclerView) findViewById(R.id.propositionlist);
         rating = (TextView) findViewById(R.id.ratingInformationActivity);
         setRating = (TextView) findViewById(R.id.setRating);
-        adapter = new PropositionListAdapter(this,propositions);
+        adapter = new PropositionListAdapter(this, propositions);
         propositionsView.setAdapter(adapter);
         findViewById(R.id.back_arrow_info).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,7 +102,7 @@ public class InformationActivity extends AppCompatActivity {
                             bigDescr.setText(item.getBigDescr());
                             ingridients.setText(item.getIngridients());
                             price.setText(String.format(Locale.getDefault(), "%.2f", item.getPrice()));
-                            rating.setText(String.format(Locale.getDefault(),"%.2f",item.getRating()));
+                            rating.setText(String.format(Locale.getDefault(), "%.2f", item.getRating()));
                         }
                     }
                 });
@@ -150,7 +149,7 @@ public class InformationActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        if(parallelThread != null){
+        if (parallelThread != null) {
             parallelThread.quit();
         }
         super.onDestroy();
@@ -188,7 +187,8 @@ public class InformationActivity extends AppCompatActivity {
         AlertDialog alert = builder.create();
         alert.show();
     }
-    private void RateDialog(){
+
+    private void RateDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         // Get the layout inflater
         View inflater = this.getLayoutInflater().inflate(R.layout.rating_alert, null);
@@ -204,11 +204,11 @@ public class InformationActivity extends AppCompatActivity {
                         Runnable rateTask = new Runnable() {
                             @Override
                             public void run() {
-                                DataAdapter.SetRating(bar.getNumStars(),itemId);
+                                DataAdapter.SetRating(bar.getNumStars(), itemId);
                                 mUIHandler.post(new Runnable() {
                                     @Override
                                     public void run() {
-                                        Toast.makeText(getApplicationContext(),getText(R.string.sendRating),Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getApplicationContext(), getText(R.string.sendRating), Toast.LENGTH_SHORT).show();
                                     }
                                 });
                             }

@@ -16,7 +16,7 @@ public class PropositionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private ClickListener mListener;
 
 
-    PropositionListAdapter(Context context, List<Proposition> propositions){
+    PropositionListAdapter(Context context, List<Proposition> propositions) {
         inflater = LayoutInflater.from(context);
         this.propositions = propositions;
     }
@@ -39,23 +39,27 @@ public class PropositionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         return propositions.size();
     }
 
-    public void setListener(ClickListener listener){
+    public void setListener(ClickListener listener) {
         mListener = listener;
     }
-    public void setItems(List<Proposition> propositions){
+
+    public void setItems(List<Proposition> propositions) {
         this.propositions = propositions;
     }
-    interface ClickListener{
+
+    interface ClickListener {
         void clickItem(int position);
     }
-    public class ViewHolder extends RecyclerView.ViewHolder{
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
         final TextView textView;
-        public ViewHolder(View view){
+
+        public ViewHolder(View view) {
             super(view);
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(mListener != null){
+                    if (mListener != null) {
                         mListener.clickItem(getLayoutPosition());
                     }
                 }

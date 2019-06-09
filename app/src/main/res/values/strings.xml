@@ -55,7 +55,12 @@
     <string name="send">Відправити</string>
     <string name="sendRating">Дякуємо за вашу думку!</string>
     <string name="howIsIt">Наскількі це круто?</string>
-    <string name="date">Дата</string>
+    <string name="date">Час</string>
     <string name="status">Статус</string>
     <string name="summ_single">Сума</string>
+    <string name="order_info">Інформація про замовлення</string>
+    <string name="order_id">Номер замовлення</string>
+    <string name="order_date">Час замовлення</string>
+    <string name="order_status">Статус</string>
+    <string name="order_price">Сума</string>
 </resources>

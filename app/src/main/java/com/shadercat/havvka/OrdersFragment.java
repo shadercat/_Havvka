@@ -1,6 +1,7 @@
 package com.shadercat.havvka;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,7 +12,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,11 +67,13 @@ public class OrdersFragment extends Fragment {
         parallelThread = new mWorkingThread("orderfragment");
         DividerItemDecoration itemDecor = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(itemDecor);
-        adapter = new OrderListAdapter(getContext(),orders);
+        adapter = new OrderListAdapter(getContext(), orders);
         adapter.setListener(new OrderListAdapter.ClickListener() {
             @Override
             public void itemClick(int position) {
-
+                Intent intent = new Intent(getContext(), OrderInformationActivity.class);
+                intent.putExtra(Order.class.getSimpleName(), orders.get(position).getId());
+                startActivity(intent);
             }
         });
         recyclerView.setAdapter(adapter);
@@ -95,7 +97,7 @@ public class OrdersFragment extends Fragment {
 
     @Override
     public void onDestroy() {
-        if(parallelThread != null){
+        if (parallelThread != null) {
             parallelThread.quit();
         }
         super.onDestroy();
