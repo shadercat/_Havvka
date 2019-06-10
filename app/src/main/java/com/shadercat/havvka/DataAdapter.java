@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.SystemClock;
+import android.util.Log;
+
+import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -15,7 +18,7 @@ import java.util.Random;
 public class DataAdapter {
     public static final int SORT_MODE_NONE = 98;
     public static final int SORT_MODE_RATING = 575;
-    public static final int SORT_MODE_POPULARITY = 4;
+    public static final int SORT_MODE_DESERTS = 4;
     public static final int SORT_MODE_FIRST = 180;
     public static final int SORT_MODE_SECOND = 586;
     public static final int SORT_MODE_DRINKS = 816;
@@ -30,7 +33,31 @@ public class DataAdapter {
 
     //get list of products
     public static ArrayList<Item> GetProductList(Context context, int sortMode) {
-        ArrayList<Item> list = new ArrayList<>();
+        /*String json;
+        switch (sortMode){
+            case SORT_MODE_NONE:
+                json = WebAPI.getJson(WebAPI.ADRESS + "/dishes/all-dishes");
+                break;
+            case SORT_MODE_DRINKS:
+                json = WebAPI.getJson(WebAPI.ADRESS + "/dishes/category-menu?dish_type=4");
+                break;
+            case  SORT_MODE_FIRST:
+                json = WebAPI.getJson(WebAPI.ADRESS + "/dishes/category-menu?dish_type=1");
+                break;
+            case SORT_MODE_DESERTS:
+                json = WebAPI.getJson(WebAPI.ADRESS + "/dishes/category-menu?dish_type=3");
+                break;
+            case SORT_MODE_RATING:
+                json = WebAPI.getJson(WebAPI.ADRESS + "/dishes/all-dishes");
+                break;
+            case SORT_MODE_SECOND:
+                json = WebAPI.getJson(WebAPI.ADRESS + "/dishes/category-menu?dish_type=2");
+                break;
+                default:
+                    json = WebAPI.getJson(WebAPI.ADRESS + "/dishes/all-dishes");
+        }*/
+
+        /*ArrayList<Item> list = new ArrayList<>();
         int min = 100000;
         int max = 999999;
         int diff = max - min;
@@ -42,15 +69,32 @@ public class DataAdapter {
             itemCache.put(item.getID(), item);
             list.add(item);
         }
-        return list;
+        return list;*/
+        ArrayList<Item> items = new ArrayList<>();
+        try {
+            items = Converter.parseItems(WebAPI.getJson("https://havvka-server-vlad-f96.c9users.io/api/dishes/all-dishes"));
+        } catch (JSONException e){
+            Log.e("error",e.getMessage());
+        }
+        for (Item it : items){
+            itemCache.put(it.getID(),it);
+        }
+        return items;
     }
 
     public static ArrayList<Proposition> GetPropositionsForItem(int itemDd) {
-        ArrayList<Proposition> prop = new ArrayList<>();
+        /*ArrayList<Proposition> prop = new ArrayList<>();
         prop.add(new Proposition("canteen1", 1));
         prop.add(new Proposition("canteen2", 2));
         prop.add(new Proposition("canteen3", 3));
-        return prop;
+        return prop;*/
+        ArrayList<Proposition> propositions = new ArrayList<>();
+        try {
+            propositions = Converter.parsePropositions(WebAPI.getJson("https://havvka-server-vlad-f96.c9users.io/api/organizations/dish-av-org" + itemDd));
+        } catch (JSONException e){
+            Log.e("error",e.getMessage());
+        }
+        return propositions;
     }
 
     //get item by id
@@ -67,6 +111,7 @@ public class DataAdapter {
 
     //get fav sets
     public static ArrayList<FavouriteSet> GetFavouriteData(Context context) {
+        //String json = WebAPI.getJson(WebAPI.ADRESS + "/sets/" + UserInfo.UserID);
         ArrayList<FavouriteSet> list = new ArrayList<>();
         list.add(new FavouriteSet(1, "first set", 39.5D));
         list.add(new FavouriteSet(2, "second set", 39.5D));
@@ -158,6 +203,11 @@ public class DataAdapter {
         ed.putInt("userid", userId);
         ed.putBoolean("IsCheckedAccount", true);
         ed.apply();
+        UserInfo.GuestMode = false;
+        UserInfo.IsCheckedAccount = preferences.getBoolean("IsCheckedAccount", false);
+        UserInfo.UserEmail = preferences.getString("useremail", "guest");
+        UserInfo.UserID = preferences.getInt("userid", 0);
+        UserInfo.DataVersion = preferences.getInt("dataver", 0);
     }
 
     public static void InitializeUserInfo(Context context) {

@@ -75,4 +75,5 @@
     <string name="change">Змінити</string>
     <string name="sendSubmit">Ваше замовлення відправлено на обробку</string>
     <string name="create_account">Ваш запит відправлено. На вашу пошту прийде лист.</string>
+    <string name="errorCreate">Сталася якась помилка. Перевірте введені дані</string>
 </resources>

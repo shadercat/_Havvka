@@ -101,7 +101,7 @@ public class InformationActivity extends AppCompatActivity {
                             smallDscr.setText(item.getSmallDescr());
                             bigDescr.setText(item.getBigDescr());
                             ingridients.setText(item.getIngridients());
-                            price.setText(String.format(Locale.getDefault(), "%.2f", item.getPrice()));
+                            price.setText(String.format(Locale.getDefault(), "%.2f UAH", item.getPrice()));
                             rating.setText(String.format(Locale.getDefault(), "%.2f", item.getRating()));
                         }
                     }

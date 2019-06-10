@@ -65,7 +65,11 @@ public class ItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public int getItemCount() {
-        return items.size() + 1;
+        if(items.size() != 0){
+            return items.size();
+        } else {
+            return 1;
+        }
     }
 
     public void setOnClickListeners(ClickListeners listeners) {

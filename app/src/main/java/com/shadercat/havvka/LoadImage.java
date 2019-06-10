@@ -39,7 +39,7 @@ class LoadImage extends AsyncTask<Item, Void, Bitmap> {
 
         ImageView imageView = imageViewReference.get();
         IPermissionForSet watcher = watcherReference.get();
-        if (imageView != null && watcher != null && watcher.isInView()) {
+        if (imageView != null) {
             if (bitmap != null) {
                 imageView.setImageBitmap(bitmap);
             } else {

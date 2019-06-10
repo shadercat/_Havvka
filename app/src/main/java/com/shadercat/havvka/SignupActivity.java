@@ -67,15 +67,22 @@ public class SignupActivity extends AppCompatActivity {
                     Runnable task = new Runnable() {
                         @Override
                         public void run() {
-                            WebAPI.CreateAccount(email.getText().toString().trim(), password.getText().toString());
+                            final boolean flag = WebAPI.CreateAccount(email.getText().toString().trim(), password.getText().toString());
                             mUIHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Toast.makeText(getApplicationContext(), getString(R.string.create_account), Toast.LENGTH_LONG).show();
+                                    if(flag){
+                                        Toast.makeText(getApplicationContext(), getString(R.string.create_account), Toast.LENGTH_LONG).show();
+                                    }
+                                    else {
+                                        Toast.makeText(getApplicationContext(),getString(R.string.errorCreate),Toast.LENGTH_LONG).show();
+                                    }
+                                    logo.clearAnimation();
                                 }
                             });
                         }
                     };
+                    parr.postTask(task);
                 } else {
                     logo.clearAnimation();
                     logo.startAnimation(logo_anim1);
