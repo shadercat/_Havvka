@@ -76,4 +76,11 @@
     <string name="sendSubmit">Ваше замовлення відправлено на обробку</string>
     <string name="create_account">Ваш запит відправлено. На вашу пошту прийде лист.</string>
     <string name="errorCreate">Сталася якась помилка. Перевірте введені дані</string>
+    <string name="sort_first">Перше</string>
+    <string name="sort_second">Друге</string>
+    <string name="sort_desert">Десерт</string>
+    <string name="sort_rating">Рейтинг</string>
+    <string name="sort_drinks">Напої</string>
+    <string name="choose_sort">Обираємо сортування</string>
+    <string name="add_error">Сталася якась помилка. Ми не змогли це додати</string>
 </resources>

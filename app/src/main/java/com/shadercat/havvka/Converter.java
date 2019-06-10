@@ -11,7 +11,7 @@ public class Converter {
         ArrayList<Item> items = new ArrayList<>();
 
         JSONArray array = new JSONArray(json);
-        for (int i = 0; i < array.length(); i++){
+        for (int i = 0; i < array.length(); i++) {
             JSONObject object = array.getJSONObject(i);
             int id = object.getInt("dish_id");
             String name = object.getString("dish_name");
@@ -20,24 +20,43 @@ public class Converter {
             double price = object.getDouble("dish_price");
             String img = object.getString("dish_img");
             //double rating = object.getDouble("dish_rating");
-            items.add(new Item(id,name,smallDescr,bigDescr,"Наша любов та піклування... Ну ще інші інгрідієнти",price,5,img));
+            items.add(new Item(id, name, smallDescr, bigDescr, "Наша любов та піклування... Ну ще інші інгрідієнти", price, 5, img));
         }
         return items;
     }
+
     public static ArrayList<Proposition> parsePropositions(String json) throws JSONException {
         ArrayList<Proposition> propositions = new ArrayList<>();
 
         JSONArray array = new JSONArray(json);
-        for (int i = 0; i < array.length(); i++){
+        for (int i = 0; i < array.length(); i++) {
             JSONObject object = array.getJSONObject(i);
             int id = object.getInt("organization_id");
             String name = object.getString("organization_name");
-            propositions.add(new Proposition(name,id));
+            propositions.add(new Proposition(name, id));
         }
         return propositions;
     }
+
     public static boolean parseResponse(String json) throws JSONException {
         JSONObject object = new JSONObject(json);
         return object.getBoolean("checked");
+    }
+    public static boolean parseResponse2(String json) throws JSONException {
+        JSONObject object = new JSONObject(json);
+        return object.getBoolean("status");
+    }
+
+    public static ArrayList<FavouriteSet> parseSets(String json) throws JSONException {
+        ArrayList<FavouriteSet> favouriteSets = new ArrayList<>();
+        JSONArray array = new JSONArray(json);
+        for (int i = 0; i < array.length(); i++) {
+            JSONObject object = array.getJSONObject(i);
+            int id = object.getInt("set_id");
+            String name = object.getString("set_name");
+            double price = object.getDouble("set_total_price");
+            favouriteSets.add(new FavouriteSet(id, name, price));
+        }
+        return favouriteSets;
     }
 }

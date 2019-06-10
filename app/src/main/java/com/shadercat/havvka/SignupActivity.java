@@ -71,11 +71,10 @@ public class SignupActivity extends AppCompatActivity {
                             mUIHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    if(flag){
+                                    if (flag) {
                                         Toast.makeText(getApplicationContext(), getString(R.string.create_account), Toast.LENGTH_LONG).show();
-                                    }
-                                    else {
-                                        Toast.makeText(getApplicationContext(),getString(R.string.errorCreate),Toast.LENGTH_LONG).show();
+                                    } else {
+                                        Toast.makeText(getApplicationContext(), getString(R.string.errorCreate), Toast.LENGTH_LONG).show();
                                     }
                                     logo.clearAnimation();
                                 }

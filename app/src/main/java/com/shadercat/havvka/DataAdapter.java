@@ -12,16 +12,15 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 //use this class for getting data
 public class DataAdapter {
-    public static final int SORT_MODE_NONE = 98;
-    public static final int SORT_MODE_RATING = 575;
-    public static final int SORT_MODE_DESERTS = 4;
-    public static final int SORT_MODE_FIRST = 180;
-    public static final int SORT_MODE_SECOND = 586;
-    public static final int SORT_MODE_DRINKS = 816;
+    public static final int SORT_MODE_DEFAULT = 0;
+    public static final int SORT_MODE_DESERTS = 3;
+    public static final int SORT_MODE_FIRST = 1;
+    public static final int SORT_MODE_SECOND = 2;
+    public static final int SORT_MODE_DRINKS = 4;
+
     public static final int SET_MODE_CHANGE = 989;
     public static final int SET_MODE_DELETE = 694;
     public static final int ORDER_CASH_MODE = 951;
@@ -33,66 +32,44 @@ public class DataAdapter {
 
     //get list of products
     public static ArrayList<Item> GetProductList(Context context, int sortMode) {
-        /*String json;
-        switch (sortMode){
-            case SORT_MODE_NONE:
-                json = WebAPI.getJson(WebAPI.ADRESS + "/dishes/all-dishes");
+        String json;
+        switch (sortMode) {
+            case SORT_MODE_DEFAULT:
+                json = WebAPI.getJson(WebAPI.API + "/api/dishes/all-dishes");
                 break;
             case SORT_MODE_DRINKS:
-                json = WebAPI.getJson(WebAPI.ADRESS + "/dishes/category-menu?dish_type=4");
+                json = WebAPI.getJson(WebAPI.API + "/api/dishes/category-menu?dish_type=4");
                 break;
-            case  SORT_MODE_FIRST:
-                json = WebAPI.getJson(WebAPI.ADRESS + "/dishes/category-menu?dish_type=1");
+            case SORT_MODE_FIRST:
+                json = WebAPI.getJson(WebAPI.API + "/api/dishes/category-menu?dish_type=1");
                 break;
             case SORT_MODE_DESERTS:
-                json = WebAPI.getJson(WebAPI.ADRESS + "/dishes/category-menu?dish_type=3");
-                break;
-            case SORT_MODE_RATING:
-                json = WebAPI.getJson(WebAPI.ADRESS + "/dishes/all-dishes");
+                json = WebAPI.getJson(WebAPI.API + "/api/dishes/category-menu?dish_type=3");
                 break;
             case SORT_MODE_SECOND:
-                json = WebAPI.getJson(WebAPI.ADRESS + "/dishes/category-menu?dish_type=2");
+                json = WebAPI.getJson(WebAPI.API + "/api/dishes/category-menu?dish_type=2");
                 break;
-                default:
-                    json = WebAPI.getJson(WebAPI.ADRESS + "/dishes/all-dishes");
-        }*/
-
-        /*ArrayList<Item> list = new ArrayList<>();
-        int min = 100000;
-        int max = 999999;
-        int diff = max - min;
-        Random random = new Random();
-        for (int j = 1; j < 21; j++) {
-            int i = random.nextInt(diff + 1) + min;
-            Item item = new Item(j, "Sample name " + j, "Sample small description", "Sample big description",
-                    "Sample ingridients", 2.30D, 4.6, "http://placehold.it/250/" + i + "?text=" + i);
-            itemCache.put(item.getID(), item);
-            list.add(item);
+            default:
+                json = WebAPI.getJson(WebAPI.API + "/api/dishes/all-dishes");
         }
-        return list;*/
         ArrayList<Item> items = new ArrayList<>();
         try {
-            items = Converter.parseItems(WebAPI.getJson("https://havvka-server-vlad-f96.c9users.io/api/dishes/all-dishes"));
-        } catch (JSONException e){
-            Log.e("error",e.getMessage());
+            items = Converter.parseItems(json);
+        } catch (JSONException e) {
+            Log.e("error", e.getMessage());
         }
-        for (Item it : items){
-            itemCache.put(it.getID(),it);
+        for (Item it : items) {
+            itemCache.put(it.getID(), it);
         }
         return items;
     }
 
     public static ArrayList<Proposition> GetPropositionsForItem(int itemDd) {
-        /*ArrayList<Proposition> prop = new ArrayList<>();
-        prop.add(new Proposition("canteen1", 1));
-        prop.add(new Proposition("canteen2", 2));
-        prop.add(new Proposition("canteen3", 3));
-        return prop;*/
         ArrayList<Proposition> propositions = new ArrayList<>();
         try {
             propositions = Converter.parsePropositions(WebAPI.getJson("https://havvka-server-vlad-f96.c9users.io/api/organizations/dish-av-org" + itemDd));
-        } catch (JSONException e){
-            Log.e("error",e.getMessage());
+        } catch (JSONException e) {
+            Log.e("error", e.getMessage());
         }
         return propositions;
     }
@@ -111,12 +88,15 @@ public class DataAdapter {
 
     //get fav sets
     public static ArrayList<FavouriteSet> GetFavouriteData(Context context) {
-        //String json = WebAPI.getJson(WebAPI.ADRESS + "/sets/" + UserInfo.UserID);
-        ArrayList<FavouriteSet> list = new ArrayList<>();
-        list.add(new FavouriteSet(1, "first set", 39.5D));
-        list.add(new FavouriteSet(2, "second set", 39.5D));
-        list.add(new FavouriteSet(3, "third set", 39.5D));
-        return list;
+        ArrayList<FavouriteSet> sets = new ArrayList<>();
+        if (UserInfo.IsCheckedAccount) {
+            try {
+                sets = Converter.parseSets(WebAPI.getJson(WebAPI.API + "/api/sets/set-get?user_email=" + UserInfo.UserEmail));
+            } catch (JSONException e) {
+                Log.e("JSONException", e.getMessage());
+            }
+        }
+        return sets;
     }
 
     //get fav items from set
@@ -138,12 +118,37 @@ public class DataAdapter {
 
 
     //add item to set
-    public static void AddItemToFavSet(Context context, int setId, int itemId, int count) {
-
+    public static boolean AddItemToFavSet(Context context, int setId, int itemId, int count) {
+        boolean isAdded = false;
+        if (UserInfo.IsCheckedAccount) {
+            try {
+                isAdded = Converter.parseResponse2(WebAPI.getJson(WebAPI.API + "/api/sets/sets-add-elem?set_id="
+                        + setId + "&user_email=" + UserInfo.UserEmail + "&dish_id=" + itemId + "&set_item_amount=" + count));
+            } catch (JSONException e) {
+                Log.e("JSONException", e.getMessage());
+            }
+        }
+        return isAdded;
     }
 
-    public static void SetFavItemData(Context context, int setId, int itemId, int setMode, int quantity) {
-
+    public static boolean SetFavItemData(Context context, int setId, int itemId, int setMode, int quantity) {
+        boolean isSet = false;
+        try {
+            switch (setMode) {
+                case SET_MODE_DELETE:
+                    isSet = Converter.parseResponse2(WebAPI.performPostCall(WebAPI.API + "/api/sets/sets-delete-elem?" +
+                            "set_id=" + setId + "&user_email=" + UserInfo.UserEmail + "&dish_id=" + itemId, null));
+                    break;
+                case SET_MODE_CHANGE:
+                    isSet = Converter.parseResponse2((WebAPI.performPostCall(WebAPI.API + "/api/sets/update-set-items-quentity?set_id=" +
+                            setId + "&item_id=" + itemId + "&amount=" + quantity, null)));
+                    break;
+                default:
+            }
+        } catch (JSONException e){
+            Log.e("JSONException", e.getMessage());
+        }
+        return isSet;
     }
 
     //get list of orders

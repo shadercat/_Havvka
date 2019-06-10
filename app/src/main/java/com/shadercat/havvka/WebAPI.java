@@ -1,10 +1,6 @@
 package com.shadercat.havvka;
 
-import android.net.Uri;
-import android.os.SystemClock;
-import android.provider.Settings;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.json.JSONException;
 
@@ -21,26 +17,24 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
 public class WebAPI {
     public static final String API = "https://havvka-server-vlad-f96.c9users.io";
+
     public static boolean CheckUserInfo(String email, String password) {
         if (email != null && password != null) {
-            HashMap<String,String> values = new HashMap<>();
+            HashMap<String, String> values = new HashMap<>();
             values.put("user_email", email.trim());
-            values.put("user_password",password);
-            String response = performPostCall(API + "/users/" + email.trim() + "&" + password,values);
+            values.put("user_password", password);
+            String response = performPostCall(API + "/users/" + email.trim() + "&" + password, values);
             boolean flag = false;
             try {
                 flag = Converter.parseResponse(response);
-            } catch (JSONException e){
+            } catch (JSONException e) {
                 Log.e("JSONException", e.getMessage());
             }
             return flag;
@@ -49,21 +43,21 @@ public class WebAPI {
     }
 
     public static boolean CreateAccount(String email, String password) {
-        String call = performPostCall(API + "/users/register/" + email + "&" + password,null);
+        String call = performPostCall(API + "/users/register/" + email + "&" + password, null);
         boolean isSend = false;
         try {
             isSend = Converter.parseResponse(call);
-        } catch (JSONException e){
-            Log.e("JSONException",e.getMessage());
+        } catch (JSONException e) {
+            Log.e("JSONException", e.getMessage());
         }
         return isSend;
     }
 
-    public static String getJson(String adress){
+    public static String getJson(String adress) {
         HttpURLConnection connection = null;
         String responseFromServer = "";
         BufferedReader reader = null;
-        try{
+        try {
             URL url = new URL(adress);
             connection = (HttpURLConnection) url.openConnection();
             connection.connect();
@@ -97,8 +91,8 @@ public class WebAPI {
         return responseFromServer;
     }
 
-    public static String  performPostCall(String requestURL,
-                                   HashMap<String, String> postDataParams) {
+    public static String performPostCall(String requestURL,
+                                         HashMap<String, String> postDataParams) {
 
         URL url;
         String response = "";
@@ -121,17 +115,16 @@ public class WebAPI {
             writer.flush();
             writer.close();
             os.close();
-            int responseCode=conn.getResponseCode();
+            int responseCode = conn.getResponseCode();
 
             if (responseCode == HttpsURLConnection.HTTP_OK) {
                 String line;
-                BufferedReader br=new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                while ((line=br.readLine()) != null) {
-                    response+=line;
+                BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                while ((line = br.readLine()) != null) {
+                    response += line;
                 }
-            }
-            else {
-                response="";
+            } else {
+                response = "";
 
             }
         } catch (Exception e) {
@@ -140,9 +133,10 @@ public class WebAPI {
 
         return response;
     }
-    private static String post(String url){
+
+    private static String post(String url) {
         String response = null;
-        try{
+        try {
             URL url1 = new URL(url);
             HttpURLConnection con = (HttpURLConnection) url1.openConnection();
             con.setRequestMethod("POST");
@@ -155,24 +149,25 @@ public class WebAPI {
             BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
             String inputLine;
             StringBuilder builder = new StringBuilder();
-            while ((inputLine = reader.readLine()) != null){
+            while ((inputLine = reader.readLine()) != null) {
                 builder.append(inputLine);
             }
             reader.close();
             response = builder.toString();
 
-        } catch (Exception e){
-            Log.e("conn",e.getMessage());
+        } catch (Exception e) {
+            Log.e("conn", e.getMessage());
         }
         return response;
     }
-    private static String getPostDataString(HashMap<String, String> params) throws UnsupportedEncodingException{
-        if(params == null){
+
+    private static String getPostDataString(HashMap<String, String> params) throws UnsupportedEncodingException {
+        if (params == null) {
             return "";
         }
         StringBuilder result = new StringBuilder();
         boolean first = true;
-        for(Map.Entry<String, String> entry : params.entrySet()){
+        for (Map.Entry<String, String> entry : params.entrySet()) {
             if (first)
                 first = false;
             else

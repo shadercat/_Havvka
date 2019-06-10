@@ -1,11 +1,13 @@
 package com.shadercat.havvka;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.SystemClock;
+import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,7 +18,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +32,11 @@ public class ListFragment extends Fragment {
     Context context;
     Animation rotateAnim;
     Animation stop;
+    FloatingActionButton fab;
+    mWorkingThread parallelThread;
+    Handler mUIHandler = new Handler();
+
+    int sortInt = 0;
 
     public ListFragment() {
         // Required empty public constructor
@@ -53,6 +59,7 @@ public class ListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_list, container, false);
+        fab = (FloatingActionButton) view.findViewById(R.id.fab);
         listView = (RecyclerView) view.findViewById(R.id.itemslist);
         return view;
     }
@@ -79,12 +86,21 @@ public class ListFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        parallelThread = new mWorkingThread("listitems");
+        parallelThread.start();
+        parallelThread.prepareHandler();
         rotateAnim = AnimationUtils.loadAnimation(context, R.anim.rotate_logo);
         stop = AnimationUtils.loadAnimation(context, R.anim.shake_logo);
         adapter = new ItemListAdapter(context, items);
         DividerItemDecoration itemDecor = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
         listView.addItemDecoration(itemDecor);
         listView.setAdapter(adapter);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SortDialog();
+            }
+        });
         adapter.setOnClickListeners(new ItemListAdapter.ClickListeners() {
             @Override
             public void OnClick(int position) {
@@ -117,7 +133,70 @@ public class ListFragment extends Fragment {
                 }).execute(items.get(pos));
             }
         });
-        new DataDownload().execute();
+
+        Runnable task = new Runnable() {
+            @Override
+            public void run() {
+                mUIHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.StartAnim();
+                    }
+                });
+                items = DataAdapter.GetProductList(context, DataAdapter.SORT_MODE_DEFAULT);
+                adapter.setItems(items);
+                mUIHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.StopAnim();
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+            }
+        };
+        parallelThread.postTask(task);
+    }
+
+    private void SortDialog() {
+        final String[] sortName = {getString(R.string.sort_rating),
+                getString(R.string.sort_first),
+                getString(R.string.sort_second),
+                getString(R.string.sort_desert),
+                getString(R.string.sort_drinks)};
+
+        AlertDialog.Builder builder;
+        builder = new AlertDialog.Builder(getContext());
+        builder.setTitle(getString(R.string.choose_sort)); // заголовок для диалога
+        builder.setItems(sortName, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, final int item) {
+                Runnable taskSort = new Runnable() {
+                    @Override
+                    public void run() {
+                        items = DataAdapter.GetProductList(context, item);
+                        adapter.setItems(items);
+                        mUIHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                adapter.notifyDataSetChanged();
+                            }
+                        });
+                    }
+                };
+                parallelThread.postTask(taskSort);
+            }
+        });
+        builder.setCancelable(false);
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    @Override
+    public void onDestroy() {
+        if (parallelThread != null) {
+            parallelThread.quit();
+        }
+        super.onDestroy();
     }
 
     public boolean isVisibleItem(int i) {
@@ -129,29 +208,5 @@ public class ListFragment extends Fragment {
 
     public interface ListFragmentInteractionListener {
         void ListFragmentInteraction(Uri link);
-    }
-
-    class DataDownload extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            adapter.StartAnim();
-        }
-
-        @Override
-        protected Void doInBackground(Void... aVoid) {
-            //TODO remove clock!
-            SystemClock.sleep(3000);
-            items = DataAdapter.GetProductList(context, DataAdapter.SORT_MODE_NONE);
-            adapter.setItems(items);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            adapter.StopAnim();
-            adapter.notifyDataSetChanged();
-        }
     }
 }

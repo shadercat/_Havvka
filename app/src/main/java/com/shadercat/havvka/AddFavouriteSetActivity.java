@@ -138,11 +138,15 @@ public class AddFavouriteSetActivity extends AppCompatActivity implements View.O
                         Runnable taskAddItem = new Runnable() {
                             @Override
                             public void run() {
-                                DataAdapter.AddItemToFavSet(getApplicationContext(), sets.get(position).getId(), itemId, picker.getValue());
+                                final boolean flag = DataAdapter.AddItemToFavSet(getApplicationContext(), sets.get(position).getId(), itemId, picker.getValue());
                                 mUIHandler.post(new Runnable() {
                                     @Override
                                     public void run() {
-                                        Toast.makeText(getApplicationContext(), getString(R.string.addedNewFavItem), Toast.LENGTH_SHORT).show();
+                                        if(flag){
+                                            Toast.makeText(getApplicationContext(), getString(R.string.addedNewFavItem), Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            Toast.makeText(getApplicationContext(), getString(R.string.add_error), Toast.LENGTH_SHORT).show();
+                                        }
                                         onBackPressed();
                                     }
                                 });
