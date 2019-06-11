@@ -72,7 +72,7 @@ public class FavouriteListAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     interface ClickListeners {
         void onClick(int position);
-
+        void longOnClick(int position);
         void onClickAdd();
     }
 
@@ -85,6 +85,15 @@ public class FavouriteListAdapter extends RecyclerView.Adapter<RecyclerView.View
             view.setOnClickListener(this);
             name = (TextView) view.findViewById(R.id.set_name_item);
             count = (TextView) view.findViewById(R.id.set_quantity_item);
+            view.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    if(mListener != null){
+                        mListener.longOnClick(getLayoutPosition());
+                    }
+                    return false;
+                }
+            });
         }
 
         @Override

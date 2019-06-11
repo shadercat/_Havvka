@@ -8,6 +8,8 @@ import android.util.Log;
 
 import org.json.JSONException;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -35,22 +37,22 @@ public class DataAdapter {
         String json;
         switch (sortMode) {
             case SORT_MODE_DEFAULT:
-                json = WebAPI.getJson(WebAPI.API + "/api/dishes/all-dishes");
+                json = WebAPI.performGetCall(WebAPI.API + "/api/dishes/all-dishes");
                 break;
             case SORT_MODE_DRINKS:
-                json = WebAPI.getJson(WebAPI.API + "/api/dishes/category-menu?dish_type=4");
+                json = WebAPI.performGetCall(WebAPI.API + "/api/dishes/category-menu?dish_type=4");
                 break;
             case SORT_MODE_FIRST:
-                json = WebAPI.getJson(WebAPI.API + "/api/dishes/category-menu?dish_type=1");
+                json = WebAPI.performGetCall(WebAPI.API + "/api/dishes/category-menu?dish_type=1");
                 break;
             case SORT_MODE_DESERTS:
-                json = WebAPI.getJson(WebAPI.API + "/api/dishes/category-menu?dish_type=3");
+                json = WebAPI.performGetCall(WebAPI.API + "/api/dishes/category-menu?dish_type=3");
                 break;
             case SORT_MODE_SECOND:
-                json = WebAPI.getJson(WebAPI.API + "/api/dishes/category-menu?dish_type=2");
+                json = WebAPI.performGetCall(WebAPI.API + "/api/dishes/category-menu?dish_type=2");
                 break;
             default:
-                json = WebAPI.getJson(WebAPI.API + "/api/dishes/all-dishes");
+                json = WebAPI.performGetCall(WebAPI.API + "/api/dishes/all-dishes");
         }
         ArrayList<Item> items = new ArrayList<>();
         try {
@@ -67,7 +69,7 @@ public class DataAdapter {
     public static ArrayList<Proposition> GetPropositionsForItem(int itemDd) {
         ArrayList<Proposition> propositions = new ArrayList<>();
         try {
-            propositions = Converter.parsePropositions(WebAPI.getJson("https://havvka-server-vlad-f96.c9users.io/api/organizations/dish-av-org" + itemDd));
+            propositions = Converter.parsePropositions(WebAPI.performGetCall("https://havvka-server-vlad-f96.c9users.io/api/organizations/dish-av-org" + itemDd));
         } catch (JSONException e) {
             Log.e("error", e.getMessage());
         }
@@ -77,21 +79,36 @@ public class DataAdapter {
     //get item by id
     public static Item GetItemById(int id) {
         Item item = new Item(id, "Sample name " + id, "Sample small description", "Sample big description",
-                "Sample ingridients", 2.30D, 5, "http://placehold.it/250/" + 123456 + "?text=" + 123465);
-        itemCache.put(item.getID(), item);
+                "Sample ingridients", 0.00D, 5, "http://placehold.it/250/" + 123456 + "?text=" + 123465);
+        try {
+            item = Converter.parseItem(WebAPI.performGetCall(WebAPI.API + "/api/dishes/gdish-by-id?dish_id=" + id));
+            itemCache.put(item.getID(), item);
+        } catch (JSONException e) {
+            Log.e("error", e.getMessage());
+        }
         return item;
     }
 
-    public static void SetRating(int rating, int itemId) {
-
+    public static boolean SetRating(int rating, int itemId) {
+        boolean rate = false;
+        if (UserInfo.IsCheckedAccount) {
+            try {
+                rate = Converter.parseResponseStatus(WebAPI.performPostCall(WebAPI.API + "/api/dishes/estimate-dish?" +
+                        "dish_id=" + itemId + "&mark_value=" + rating + "&user_email=" + UserInfo.UserEmail, null));
+            } catch (JSONException e) {
+                Log.e("JSONException", e.getMessage());
+            }
+        }
+        return rate;
     }
 
     //get fav sets
     public static ArrayList<FavouriteSet> GetFavouriteData(Context context) {
+
         ArrayList<FavouriteSet> sets = new ArrayList<>();
         if (UserInfo.IsCheckedAccount) {
             try {
-                sets = Converter.parseSets(WebAPI.getJson(WebAPI.API + "/api/sets/set-get?user_email=" + UserInfo.UserEmail));
+                sets = Converter.parseSets(WebAPI.performGetCall(WebAPI.API + "/api/sets/sets-get?user_email=" + UserInfo.UserEmail));
             } catch (JSONException e) {
                 Log.e("JSONException", e.getMessage());
             }
@@ -101,19 +118,44 @@ public class DataAdapter {
 
     //get fav items from set
     public static ArrayList<CartItem> GetFavItems(Context context, int id) {
-        ArrayList<CartItem> arrayList = new ArrayList<>();
-        arrayList.add(new CartItem(new Item(1, "Sample name " + 1, "Sample small description", "Sample big description",
-                "Sample ingridients", 2.30D, 4.4, "http://placehold.it/250/" + 123456 + "?text=" + 123465), 5));
-        arrayList.add(new CartItem(new Item(2, "Sample name " + 2, "Sample small description", "Sample big description",
-                "Sample ingridients", 2.30D, 5, "http://placehold.it/250/" + 123456 + "?text=" + 123465), 5));
-        arrayList.add(new CartItem(new Item(3, "Sample name " + 3, "Sample small description", "Sample big description",
-                "Sample ingridients", 2.30D, 5, "http://placehold.it/250/" + 123456 + "?text=" + 123465), 5));
-        return arrayList;
+        ArrayList<CartItem> cartItems = new ArrayList<>();
+        try {
+            cartItems = Converter.parseCartItems(WebAPI.performGetCall(WebAPI.API + "/api/sets/get-set-items-by-set?" +
+                    "set_id=" + id + "&user_email=" + UserInfo.UserEmail));
+        } catch (JSONException e) {
+            Log.e("JSONException", e.getMessage());
+        }
+        return cartItems;
     }
 
     //save fav set
-    public static void SaveFavSet(Context context, FavouriteSet set, boolean isNew) {
+    public static boolean SaveFavSet(Context context, FavouriteSet set, boolean isNew) {
+        Log.d("add SET", "sssssssssssssssssssssssssssssssssssssssssss");
+        String name = set.getName();
+        boolean isAdded = false;
+        if (UserInfo.IsCheckedAccount) {
+            try {
+                isAdded = Converter.parseResponseStatus(WebAPI.performPostCall(WebAPI.API + "/api/sets/add-set-by-login?" +
+                        "user_email=" + UserInfo.UserEmail + "&set_name=" + URLEncoder.encode(name, "UTF-8"), null));
+            } catch (JSONException e) {
+                Log.e("JSONException", e.getMessage());
+            } catch (UnsupportedEncodingException e) {
+                Log.e("UnsupportedEncoding", e.getMessage());
+            }
+        }
+        return isAdded;
+    }
 
+    public static boolean DeleteSet(Context context, int id) {
+        boolean isDeleted = false;
+        if (UserInfo.IsCheckedAccount) {
+            try {
+                isDeleted = Converter.parseResponseDeleted(WebAPI.performDeleteCall(WebAPI.API + "/api/sets/set_delete?set_id=" + id, null));
+            } catch (JSONException e) {
+                Log.e("JSONException", e.getMessage());
+            }
+        }
+        return isDeleted;
     }
 
 
@@ -122,8 +164,8 @@ public class DataAdapter {
         boolean isAdded = false;
         if (UserInfo.IsCheckedAccount) {
             try {
-                isAdded = Converter.parseResponse2(WebAPI.getJson(WebAPI.API + "/api/sets/sets-add-elem?set_id="
-                        + setId + "&user_email=" + UserInfo.UserEmail + "&dish_id=" + itemId + "&set_item_amount=" + count));
+                isAdded = Converter.parseResponseStatus(WebAPI.performPostCall(WebAPI.API + "/api/sets/sets-add-elem?set_id="
+                        + setId + "&user_email=" + UserInfo.UserEmail + "&dish_id=" + itemId + "&set_item_amount=" + count, null));
             } catch (JSONException e) {
                 Log.e("JSONException", e.getMessage());
             }
@@ -133,20 +175,22 @@ public class DataAdapter {
 
     public static boolean SetFavItemData(Context context, int setId, int itemId, int setMode, int quantity) {
         boolean isSet = false;
-        try {
-            switch (setMode) {
-                case SET_MODE_DELETE:
-                    isSet = Converter.parseResponse2(WebAPI.performPostCall(WebAPI.API + "/api/sets/sets-delete-elem?" +
-                            "set_id=" + setId + "&user_email=" + UserInfo.UserEmail + "&dish_id=" + itemId, null));
-                    break;
-                case SET_MODE_CHANGE:
-                    isSet = Converter.parseResponse2((WebAPI.performPostCall(WebAPI.API + "/api/sets/update-set-items-quentity?set_id=" +
-                            setId + "&item_id=" + itemId + "&amount=" + quantity, null)));
-                    break;
-                default:
+        if (UserInfo.IsCheckedAccount) {
+            try {
+                switch (setMode) {
+                    case SET_MODE_DELETE:
+                        isSet = Converter.parseResponseDeleted(WebAPI.performDeleteCall(WebAPI.API + "/api/sets/sets-delete-elem?" +
+                                "set_id=" + setId + "&user_email=" + UserInfo.UserEmail + "&dish_id=" + itemId, null));
+                        break;
+                    case SET_MODE_CHANGE:
+                        isSet = Converter.parseResponseStatus((WebAPI.performPostCall(WebAPI.API + "/api/sets/update-set-items-quentity?set_id=" +
+                                setId + "&itemId=" + itemId + "&amount=" + quantity, null)));
+                        break;
+                    default:
+                }
+            } catch (JSONException e) {
+                Log.e("JSONException", e.getMessage());
             }
-        } catch (JSONException e){
-            Log.e("JSONException", e.getMessage());
         }
         return isSet;
     }
@@ -154,9 +198,9 @@ public class DataAdapter {
     //get list of orders
     public static ArrayList<Order> GetOrderList(Context context) {
         ArrayList<Order> list = new ArrayList<>();
-        list.add(new Order(1, "ok", "26.26.26", 23.90));
-        list.add(new Order(2, "ok", "26.26.26", 23.90));
-        list.add(new Order(3, "ok", "26.26.26", 23.90));
+        list.add(new Order(1, "ok", "26.26.26", "12:50", 23.90));
+        list.add(new Order(2, "ok", "26.26.26", "12:50", 23.90));
+        list.add(new Order(3, "ok", "26.26.26", "12:50", 23.90));
         return list;
     }
 
@@ -172,7 +216,7 @@ public class DataAdapter {
     }
 
     public static Order GetOrderById(Context context, int id) {
-        return new Order(id, "ok", "22:30", 240.90);
+        return new Order(id, "ok", "22.06.19", "22:30", 240.90);
     }
 
     public static ArrayList<Proposition> GetProposition(Context context) {

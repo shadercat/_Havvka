@@ -204,11 +204,15 @@ public class InformationActivity extends AppCompatActivity {
                         Runnable rateTask = new Runnable() {
                             @Override
                             public void run() {
-                                DataAdapter.SetRating(bar.getNumStars(), itemId);
+                                final boolean flag = DataAdapter.SetRating(bar.getNumStars(), itemId);
                                 mUIHandler.post(new Runnable() {
                                     @Override
                                     public void run() {
-                                        Toast.makeText(getApplicationContext(), getText(R.string.sendRating), Toast.LENGTH_SHORT).show();
+                                        if(flag){
+                                            Toast.makeText(getApplicationContext(), getText(R.string.sendRating), Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            Toast.makeText(getApplicationContext(), getText(R.string.error), Toast.LENGTH_SHORT).show();
+                                        }
                                     }
                                 });
                             }

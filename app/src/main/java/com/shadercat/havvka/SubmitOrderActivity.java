@@ -59,6 +59,9 @@ public class SubmitOrderActivity extends AppCompatActivity {
         waitIc = (ImageView) findViewById(R.id.ic_wait);
         animation = AnimationUtils.loadAnimation(this, R.anim.rotate_logo);
 
+        if(calendar.get(Calendar.HOUR_OF_DAY) < 9 || calendar.get(Calendar.HOUR_OF_DAY) > 18){
+            calendar.set(Calendar.HOUR_OF_DAY, 12);
+        }
 
         parallelThread = new mWorkingThread("submitorderactivity");
         parallelThread.start();
@@ -163,9 +166,14 @@ public class SubmitOrderActivity extends AppCompatActivity {
                 new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                        calendar.set(Calendar.MINUTE, minute);
-                        setDate();
+                        if(hourOfDay >= 9 && hourOfDay <= 18){
+                            calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                            calendar.set(Calendar.MINUTE, minute);
+                            setDate();
+                        }
+                        else {
+                            Toast.makeText(getApplicationContext(),getString(R.string.invalid_time),Toast.LENGTH_LONG).show();
+                        }
                     }
                 },
                 hourOfDay,

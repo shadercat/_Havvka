@@ -27,10 +27,7 @@ public class WebAPI {
 
     public static boolean CheckUserInfo(String email, String password) {
         if (email != null && password != null) {
-            HashMap<String, String> values = new HashMap<>();
-            values.put("user_email", email.trim());
-            values.put("user_password", password);
-            String response = performPostCall(API + "/users/" + email.trim() + "&" + password, values);
+            String response = performPostCall(API + "/users/" + email.trim() + "&" + password, null);
             boolean flag = false;
             try {
                 flag = Converter.parseResponse(response);
@@ -53,7 +50,8 @@ public class WebAPI {
         return isSend;
     }
 
-    public static String getJson(String adress) {
+    public static String performGetCall(String adress) {
+        Log.d("performGetCall", adress);
         HttpURLConnection connection = null;
         String responseFromServer = "";
         BufferedReader reader = null;
@@ -94,6 +92,7 @@ public class WebAPI {
     public static String performPostCall(String requestURL,
                                          HashMap<String, String> postDataParams) {
 
+        Log.d("performPostCall", requestURL);
         URL url;
         String response = "";
         try {
@@ -134,6 +133,48 @@ public class WebAPI {
         return response;
     }
 
+    public static String performDeleteCall(String requestURL,
+                                         HashMap<String, String> postDataParams) {
+
+        Log.d("performDeleteCall", requestURL);
+        URL url;
+        String response = "";
+        try {
+            url = new URL(requestURL);
+
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setReadTimeout(15000);
+            conn.setConnectTimeout(15000);
+            conn.setRequestMethod("DELETE");
+            conn.setDoInput(true);
+
+
+            OutputStream os = conn.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(
+                    new OutputStreamWriter(os, "UTF-8"));
+            writer.write(getPostDataString(postDataParams));
+
+            writer.flush();
+            writer.close();
+            os.close();
+            int responseCode = conn.getResponseCode();
+
+            if (responseCode == HttpsURLConnection.HTTP_OK) {
+                String line;
+                BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                while ((line = br.readLine()) != null) {
+                    response += line;
+                }
+            } else {
+                response = "";
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return response;
+    }
     private static String post(String url) {
         String response = null;
         try {

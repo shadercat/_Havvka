@@ -4,6 +4,7 @@ public class Order {
     private int id;
     private String status;
     private String date;
+    private String time;
     private double price;
 
     public Order(int id, String status, String date, double price) {
@@ -11,6 +12,11 @@ public class Order {
         this.date = date;
         this.status = status;
         this.price = price;
+    }
+
+    public Order(int id, String status, String date, String time, double price){
+        this(id,status,date,price);
+        this.time = time;
     }
 
     public String getStatus() {
@@ -43,5 +49,13 @@ public class Order {
 
     public double getPrice() {
         return price;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 }

@@ -18,6 +18,7 @@ import java.util.Locale;
 public class OrderInformationActivity extends AppCompatActivity {
     TextView orderId;
     TextView orderDate;
+    TextView orderTime;
     TextView orderStatus;
     TextView orderCost;
     ImageView backArrow;
@@ -35,6 +36,7 @@ public class OrderInformationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_order_information);
         orderId = (TextView) findViewById(R.id.order_id_info);
         orderDate = (TextView) findViewById(R.id.order_date_info);
+        orderTime = (TextView) findViewById(R.id.order_time_info);
         orderCost = (TextView) findViewById(R.id.order_cost_info);
         orderStatus = (TextView) findViewById(R.id.order_status_info);
         itemList = (RecyclerView) findViewById(R.id.orderItemsList);
@@ -86,6 +88,7 @@ public class OrderInformationActivity extends AppCompatActivity {
                         if (order != null) {
                             orderId.setText(String.valueOf(order.getId()));
                             orderDate.setText(order.getDate());
+                            orderTime.setText(order.getTime());
                             orderCost.setText(String.format(Locale.getDefault(), "%.2f", order.getPrice()));
                             orderStatus.setText(order.getStatus());
                         }

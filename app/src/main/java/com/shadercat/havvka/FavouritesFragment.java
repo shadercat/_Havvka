@@ -84,6 +84,11 @@ public class FavouritesFragment extends Fragment {
             }
 
             @Override
+            public void longOnClick(int position) {
+                DialogDelete(position);
+            }
+
+            @Override
             public void onClickAdd() {
                 AddDialog();
             }
@@ -106,6 +111,38 @@ public class FavouritesFragment extends Fragment {
         parallelThread.postTask(datadownloadTask);
     }
 
+    private void DialogDelete(final int pos){
+        AlertDialog.Builder ad;
+        ad = new AlertDialog.Builder(context);
+        ad.setMessage(getString(R.string.delete_question)); // сообщение
+        ad.setPositiveButton(getString(R.string.delete), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int arg1) {
+                Runnable deleteTask = new Runnable() {
+                    @Override
+                    public void run() {
+                        final boolean flag = DataAdapter.DeleteSet(getContext(), sets.get(pos).getId());
+                        mUIHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(!flag){
+                                    Toast.makeText(getContext(),getString(R.string.delete_error),Toast.LENGTH_LONG).show();
+                                } else {
+                                    parallelThread.postTask(datadownloadTask);
+                                }
+                            }
+                        });
+                    }
+                };
+                parallelThread.postTask(deleteTask);
+            }
+        });
+        ad.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int arg1) {
+
+            }
+        });
+        ad.show();
+    }
     @Override
     public void onResume() {
         if (parallelThread.isAlive() && datadownloadTask != null) {
@@ -140,11 +177,15 @@ public class FavouritesFragment extends Fragment {
                                 @Override
                                 public void run() {
                                     FavouriteSet fs = new FavouriteSet(0, name, 0);
-                                    DataAdapter.SaveFavSet(getContext(), fs, true);
+                                    final boolean flag = DataAdapter.SaveFavSet(getContext(), fs, true);
                                     mUIHandler.post(new Runnable() {
                                         @Override
                                         public void run() {
-                                            Toast.makeText(getContext(), getString(R.string.addedNewFavSet), Toast.LENGTH_SHORT).show();
+                                            if(flag){
+                                                Toast.makeText(getContext(), getString(R.string.addedNewFavSet), Toast.LENGTH_SHORT).show();
+                                            } else {
+                                                Toast.makeText(getContext(), getString(R.string.add_error), Toast.LENGTH_SHORT).show();
+                                            }
                                         }
                                     });
                                 }
