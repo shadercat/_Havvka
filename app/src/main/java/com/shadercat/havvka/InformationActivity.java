@@ -157,15 +157,11 @@ public class InformationActivity extends AppCompatActivity {
 
     private void Dialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        // Get the layout inflater
         View inflater = this.getLayoutInflater().inflate(R.layout.dialog_quantity, null);
         final NumberPicker picker = (NumberPicker) inflater.findViewById(R.id.numberPicker);
         picker.setMaxValue(10);
         picker.setMinValue(1);
-        // Inflate and set the layout for the dialog
-        // Pass null as the parent view because its going in the dialog layout
         builder.setView(inflater)
-                // Add action buttons
                 .setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
@@ -190,14 +186,9 @@ public class InformationActivity extends AppCompatActivity {
 
     private void RateDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        // Get the layout inflater
         View inflater = this.getLayoutInflater().inflate(R.layout.rating_alert, null);
         final RatingBar bar = (RatingBar) inflater.findViewById(R.id.ratingbar);
-
-        // Inflate and set the layout for the dialog
-        // Pass null as the parent view because its going in the dialog layout
         builder.setView(inflater)
-                // Add action buttons
                 .setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
@@ -208,7 +199,7 @@ public class InformationActivity extends AppCompatActivity {
                                 mUIHandler.post(new Runnable() {
                                     @Override
                                     public void run() {
-                                        if(flag){
+                                        if (flag) {
                                             Toast.makeText(getApplicationContext(), getText(R.string.sendRating), Toast.LENGTH_SHORT).show();
                                         } else {
                                             Toast.makeText(getApplicationContext(), getText(R.string.error), Toast.LENGTH_SHORT).show();

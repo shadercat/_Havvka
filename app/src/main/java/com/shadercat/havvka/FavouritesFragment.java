@@ -111,7 +111,7 @@ public class FavouritesFragment extends Fragment {
         parallelThread.postTask(datadownloadTask);
     }
 
-    private void DialogDelete(final int pos){
+    private void DialogDelete(final int pos) {
         AlertDialog.Builder ad;
         ad = new AlertDialog.Builder(context);
         ad.setMessage(getString(R.string.delete_question)); // сообщение
@@ -124,8 +124,8 @@ public class FavouritesFragment extends Fragment {
                         mUIHandler.post(new Runnable() {
                             @Override
                             public void run() {
-                                if(!flag){
-                                    Toast.makeText(getContext(),getString(R.string.delete_error),Toast.LENGTH_LONG).show();
+                                if (!flag) {
+                                    Toast.makeText(getContext(), getString(R.string.delete_error), Toast.LENGTH_LONG).show();
                                 } else {
                                     parallelThread.postTask(datadownloadTask);
                                 }
@@ -143,6 +143,7 @@ public class FavouritesFragment extends Fragment {
         });
         ad.show();
     }
+
     @Override
     public void onResume() {
         if (parallelThread.isAlive() && datadownloadTask != null) {
@@ -181,7 +182,7 @@ public class FavouritesFragment extends Fragment {
                                     mUIHandler.post(new Runnable() {
                                         @Override
                                         public void run() {
-                                            if(flag){
+                                            if (flag) {
                                                 Toast.makeText(getContext(), getString(R.string.addedNewFavSet), Toast.LENGTH_SHORT).show();
                                             } else {
                                                 Toast.makeText(getContext(), getString(R.string.add_error), Toast.LENGTH_SHORT).show();

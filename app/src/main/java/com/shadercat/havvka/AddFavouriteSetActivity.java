@@ -79,7 +79,7 @@ public class AddFavouriteSetActivity extends AppCompatActivity implements View.O
         });
     }
 
-    private void DialogDelete(final int pos){
+    private void DialogDelete(final int pos) {
         AlertDialog.Builder ad;
         ad = new AlertDialog.Builder(this);
         ad.setMessage(getString(R.string.delete_question)); // сообщение
@@ -92,8 +92,8 @@ public class AddFavouriteSetActivity extends AppCompatActivity implements View.O
                         mUIHandler.post(new Runnable() {
                             @Override
                             public void run() {
-                                if(!flag){
-                                    Toast.makeText(getApplicationContext(),getString(R.string.delete_error),Toast.LENGTH_LONG).show();
+                                if (!flag) {
+                                    Toast.makeText(getApplicationContext(), getString(R.string.delete_error), Toast.LENGTH_LONG).show();
                                 } else {
                                     redownloadSets();
                                 }
@@ -111,6 +111,7 @@ public class AddFavouriteSetActivity extends AppCompatActivity implements View.O
         });
         ad.show();
     }
+
     @Override
     public void onClick(View v) {
         onBackPressed();
@@ -154,7 +155,7 @@ public class AddFavouriteSetActivity extends AppCompatActivity implements View.O
                                     mUIHandler.post(new Runnable() {
                                         @Override
                                         public void run() {
-                                            if(flag){
+                                            if (flag) {
                                                 Toast.makeText(getApplicationContext(), getString(R.string.addedNewFavSet), Toast.LENGTH_SHORT).show();
                                             } else {
                                                 Toast.makeText(getApplicationContext(), getString(R.string.add_error), Toast.LENGTH_SHORT).show();
@@ -197,7 +198,7 @@ public class AddFavouriteSetActivity extends AppCompatActivity implements View.O
                                 mUIHandler.post(new Runnable() {
                                     @Override
                                     public void run() {
-                                        if(flag){
+                                        if (flag) {
                                             Toast.makeText(getApplicationContext(), getString(R.string.addedNewFavItem), Toast.LENGTH_SHORT).show();
                                         } else {
                                             Toast.makeText(getApplicationContext(), getString(R.string.add_error), Toast.LENGTH_SHORT).show();

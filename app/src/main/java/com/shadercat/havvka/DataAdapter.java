@@ -15,7 +15,6 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
-//use this class for getting data
 public class DataAdapter {
     public static final int SORT_MODE_DEFAULT = 0;
     public static final int SORT_MODE_DESERTS = 3;

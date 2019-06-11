@@ -134,7 +134,7 @@ public class WebAPI {
     }
 
     public static String performDeleteCall(String requestURL,
-                                         HashMap<String, String> postDataParams) {
+                                           HashMap<String, String> postDataParams) {
 
         Log.d("performDeleteCall", requestURL);
         URL url;
@@ -175,6 +175,7 @@ public class WebAPI {
 
         return response;
     }
+
     private static String post(String url) {
         String response = null;
         try {

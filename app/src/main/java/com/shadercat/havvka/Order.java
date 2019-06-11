@@ -14,8 +14,8 @@ public class Order {
         this.price = price;
     }
 
-    public Order(int id, String status, String date, String time, double price){
-        this(id,status,date,price);
+    public Order(int id, String status, String date, String time, double price) {
+        this(id, status, date, price);
         this.time = time;
     }
 
